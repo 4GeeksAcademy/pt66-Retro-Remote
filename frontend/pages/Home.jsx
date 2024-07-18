@@ -1,105 +1,68 @@
-import React from 'react';
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+import React, { useEffect, useState, useContext } from 'react';
+import axios from 'axios';
 import { Card, Button, Row, Col, Container } from 'react-bootstrap';
+import { FavoritesContext } from '../pages/FavoritesContext'; // Import the context
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar, faEye } from '@fortawesome/free-solid-svg-icons';
 import '../index.css'; // Import the CSS file
 
-const moviesInTheaters = [
-  {
-    id: 1,
-    title: 'Movie Title 1',
-    director: 'Director 1',
-    releaseYear: 2024,
-    image: 'path/to/image1.jpg',
-  },
-  // Add more movie objects here
-];
+const API_KEY = 'c2fbec3b6737ac39d91ec2bc021181f7';
+const ACCESS_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiMWZkZGM2YTI2MWJiMDI4MTE4ZTJlYTM5IzOTJlY2MTJiY2ZlMzNDNUDSO54';
 
-const trendingContent = [
-  {
-    id: 1,
-    title: 'Trending Movie 1',
-    director: 'Director 1',
-    releaseYear: 2024,
-    image: 'path/to/image1.jpg',
-    streamingService:'Hulu'
-  },
-  {
-    id: 2,
-    title: 'Trending Series 1',
-    director: 'Director 2',
-    releaseYear: 2023,
-    image: 'path/to/image2.jpg',
-    streamingService:'Amazon'
-  },
-  {
-    id: 3,
-    title: 'Trending Documentary 1',
-    director: 'Director 3',
-    releaseYear: 2022,
-    image: 'path/to/image3.jpg',
-    streamingService:'Netflix'
-  },
-  // Add more content objects here
-];
+const Home = () => {
+  const [movies, setMovies] = useState([]);
+  const { favorites, toggleFavorite, addToPersonalQueue } = useContext(FavoritesContext);
 
-export const Home = () => {
-  const { store, dispatch } = useGlobalReducer();
+  useEffect(() => {
+    console.log("Home component mounted");
+
+    const fetchContent = async () => {
+      try {
+        const moviesResponse = await axios.get('https://api.themoviedb.org/3/trending/movie/week', {
+          headers: {
+            'Authorization': `Bearer ${ACCESS_TOKEN}`,
+            'Content-Type': 'application/json;charset=utf-8'
+          }
+        });
+        console.log("Movies API response:", moviesResponse.data.results);
+        setMovies(moviesResponse.data.results);
+      } catch (error) {
+        console.error('Error fetching content:', error);
+      }
+    };
+    fetchContent();
+  }, []);
+
+  console.log("FavoritesContext in Home:", favorites, toggleFavorite, addToPersonalQueue);
 
   return (
     <Container className="mt-5">
       <div className="text-center">
-        <h1>Retro Remote!!</h1>
-        <p>
-          <img src={rigoImageUrl} alt="Rigo" />
-        </p>
+        <h1>Retro Remote!</h1>
       </div>
-
-      <h1 className="mt-5">Movies in Theaters</h1>
+      <h1 className="mt-5">Movies</h1>
       <Row>
-        {moviesInTheaters.map((movie) => (
+        {movies.map((movie) => (
           <Col key={movie.id} sm={12} md={6} lg={4} xl={3}>
-            <Card className="mb-4">
-              <Card.Img variant="top" src={movie.image} />
+            <Card className="mb-4 movie-card">
+              <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
               <Card.Body>
                 <Card.Title>{movie.title}</Card.Title>
                 <Card.Text>
-                  <strong>Director:</strong> {movie.director}
-                  <br />
-                  <strong>Release Year:</strong> {movie.releaseYear}
+                  <strong>Release Year:</strong> {new Date(movie.release_date).getFullYear()}
                 </Card.Text>
-                <textarea
-                  className="form-control mb-2"
-                  maxLength="361"
-                  placeholder="Add your review (max 361 characters)"
-                ></textarea>
-                <Button variant="outline-primary">Favorite ★</Button>
               </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-
-      <h1 className="mt-5">Trending</h1>
-      <Row>
-        {trendingContent.map((content) => (
-          <Col key={content.id} sm={12} md={6} lg={4} xl={3}>
-            <Card className="mb-4">
-              <Card.Img variant="top" src={content.image} />
-              <Card.Body>
-                <Card.Title>{content.title}</Card.Title>
-                <Card.Text>
-                  <strong>Director:</strong> {content.director}
-                  <br />
-                  <strong>Release Year:</strong> {content.releaseYear}
-                </Card.Text>
-                <textarea
-                  className="form-control mb-2"
-                  maxLength="361"
-                  placeholder="Add your review (max 361 characters)"
-                ></textarea>
-                <Button variant="outline-primary">Favorite ★</Button>
-              </Card.Body>
+              <Card.Footer className="d-flex justify-content-between align-items-center">
+                <Button
+                  variant={favorites.find(fav => fav.id === movie.id) ? 'primary' : 'outline-primary'}
+                  onClick={() => toggleFavorite(movie)}
+                >
+                  <FontAwesomeIcon icon={faStar} /> {favorites.find(fav => fav.id === movie.id) ? 'Unfavorite' : 'Favorite'}
+                </Button>
+                <Button variant="info" onClick={() => addToPersonalQueue(movie)}>
+                  <FontAwesomeIcon icon={faEye} /> Add to Queue
+                </Button>
+              </Card.Footer>
             </Card>
           </Col>
         ))}
@@ -107,3 +70,39 @@ export const Home = () => {
     </Container>
   );
 };
+
+export default Home;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

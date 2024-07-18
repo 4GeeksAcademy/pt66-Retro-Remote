@@ -1,11 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import { FavoritesProvider } from './FavoritesContext';
+import { BrowserRouter, RouterProvider } from 'react-router-dom';
+import { router } from './routes';
 
-ReactDOM.render(
-  <FavoritesProvider>
-    <App />
-  </FavoritesProvider>,
-  document.getElementById('root')
-);
+const App = () => {
+  console.log("App component rendered"); // Add logging
+
+  return (
+    <BrowserRouter>
+      <RouterProvider router={router} />
+    </BrowserRouter>
+  );
+};
+
+export default App;

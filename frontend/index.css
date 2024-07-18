@@ -1,34 +1,33 @@
 .movie-card {
-    border: none;
-    background-color: transparent;
-    box-shadow: none;
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  .movie-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .movie-card .card-img-top {
-    border-radius: 10px;
-  }
-  
-  .movie-card .card-body {
-    padding: 1rem;
-    text-align: center;
-  }
-  
-  .movie-card .card-title {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .movie-card .card-text {
-    font-size: 0.9rem;
-    color: #888;
-  }
-  
-  .movie-card .btn {
-    margin-top: 0.5rem;
-  }
-  
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+  transition: transform 0.2s ease-in-out;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+}
+
+.movie-card .card-img-top {
+  border-radius: 10px;
+}
+
+.movie-card .card-body {
+  padding: 1rem;
+  text-align: center;
+}
+
+.movie-card .card-title {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.movie-card .card-text {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.movie-card .btn {
+  margin-top: 0.5rem;
+}
