@@ -1,0 +1,36 @@
+body {
+    background-color: #001f3f; /* Dark blue background */
+    color: #ffffff; /* White text color */
+  }
+  
+  .card {
+    background-color: #1a1a1a; /* Dark background for cards */
+    border: 2px solid #ffffff; /* White border */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 0 10px 5px rgba(255, 215, 0, 0.8); /* Glowing lights effect */
+    margin-bottom: 20px;
+  }
+  
+  .card img {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  .card-title, .card-text {
+    color: #ffffff; /* White text for titles and text */
+  }
+  
+  textarea.form-control {
+    background-color: #2a2a2a; /* Dark background for textarea */
+    color: #ffffff; /* White text color for textarea */
+    border: 1px solid #ffffff; /* White border for textarea */
+  }
+  
+  button {
+    margin-top: 10px;
+  }
+  
+  .container {
+    padding-top: 20px;
+  }
+  
