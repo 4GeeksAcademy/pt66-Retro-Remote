@@ -1,36 +1,34 @@
-body {
-    background-color: #001f3f; /* Dark blue background */
-    color: #ffffff; /* White text color */
+.movie-card {
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+    transition: transform 0.2s ease-in-out;
   }
   
-  .card {
-    background-color: #1a1a1a; /* Dark background for cards */
-    border: 2px solid #ffffff; /* White border */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 0 10px 5px rgba(255, 215, 0, 0.8); /* Glowing lights effect */
-    margin-bottom: 20px;
+  .movie-card:hover {
+    transform: translateY(-5px);
   }
   
-  .card img {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+  .movie-card .card-img-top {
+    border-radius: 10px;
   }
   
-  .card-title, .card-text {
-    color: #ffffff; /* White text for titles and text */
+  .movie-card .card-body {
+    padding: 1rem;
+    text-align: center;
   }
   
-  textarea.form-control {
-    background-color: #2a2a2a; /* Dark background for textarea */
-    color: #ffffff; /* White text color for textarea */
-    border: 1px solid #ffffff; /* White border for textarea */
+  .movie-card .card-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
   }
   
-  button {
-    margin-top: 10px;
+  .movie-card .card-text {
+    font-size: 0.9rem;
+    color: #888;
   }
   
-  .container {
-    padding-top: 20px;
+  .movie-card .btn {
+    margin-top: 0.5rem;
   }
   
