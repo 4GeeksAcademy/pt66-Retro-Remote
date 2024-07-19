@@ -1,17 +1,19 @@
 import React, { useContext } from 'react';
-import { Card, Button, Row, Col, Container } from 'react-bootstrap';
-import { FavoritesContext } from '../FavoritesContext'; // Import the context
+import { FavoritesContext } from './FavoritesContext';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 
 const PersonalQueue = () => {
-  const { favorites, addToPersonalQueue } = useContext(FavoritesContext); // Use the context
+  const { personalQueue } = useContext(FavoritesContext);
+
+  console.log("PersonalQueue component - Personal Queue: ", personalQueue);
 
   return (
     <Container className="mt-5">
       <h1>Your Personal Queue</h1>
       <Row>
-        {favorites.map((movie) => (
-          <Col key={movie.id} sm={12} md={6} lg={4} xl={3}>
-            <Card className="mb-4 movie-card">
+        {personalQueue.map((movie) => (
+          <Col key={movie.id} sm={12} md={6} lg={4} xl={3} className="mb-4 movie-card">
+            <Card>
               <Card.Img variant="top" src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
               <Card.Body>
                 <Card.Title>{movie.title}</Card.Title>
@@ -19,14 +21,6 @@ const PersonalQueue = () => {
                   <strong>Release Year:</strong> {new Date(movie.release_date).getFullYear()}
                 </Card.Text>
               </Card.Body>
-              <Card.Footer className="d-flex justify-content-between align-items-center">
-                <Button
-                  variant="info"
-                  onClick={() => addToPersonalQueue(movie)}
-                >
-                  Add to Queue
-                </Button>
-              </Card.Footer>
             </Card>
           </Col>
         ))}
@@ -36,3 +30,12 @@ const PersonalQueue = () => {
 };
 
 export default PersonalQueue;
+
+
+
+
+
+
+
+
+

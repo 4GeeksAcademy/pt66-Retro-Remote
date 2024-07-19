@@ -1,15 +1,24 @@
 import React from 'react';
-import { BrowserRouter, RouterProvider } from 'react-router-dom';
-import { router } from './routes';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { FavoritesProvider } from './components/FavoritesContext'; // Adjust path as needed
+import Layout from './layouts/Layout'; // Adjust path as needed
+import Home from './pages/Home'; // Adjust path as needed
+import PersonalQueue from './pages/PersonalQueue'; // Adjust path as needed
 
-const App = () => {
-  console.log("App component rendered"); // Add logging
-
+function App() {
   return (
-    <BrowserRouter>
-      <RouterProvider router={router} />
-    </BrowserRouter>
+    <FavoritesProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="personal-queue" element={<PersonalQueue />} />
+            {/* Add other routes here */}
+          </Route>
+        </Routes>
+      </Router>
+    </FavoritesProvider>
   );
-};
+}
 
 export default App;

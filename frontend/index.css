@@ -31,3 +31,12 @@
 .movie-card .btn {
   margin-top: 0.5rem;
 }
+.card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dark-blue-background {
+  background: linear-gradient(to right, #003366, #004d00); /* Dark blue to green tinge */
+  color: #fff; /* White text for contrast */
+}

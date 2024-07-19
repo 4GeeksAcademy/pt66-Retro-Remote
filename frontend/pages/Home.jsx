@@ -1,13 +1,23 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Card, Button, Row, Col, Container } from 'react-bootstrap';
 import { FavoritesContext } from '../pages/FavoritesContext'; // Import the context
 
 const Home = () => {
-  const { favorites, toggleFavorite } = useContext(FavoritesContext); // Use the context
+  const { favorites, toggleFavorite, addToPersonalQueue } = useContext(FavoritesContext); // Use the context
+  const [httpbin, setHttpbin] = useState({});
+
+  useEffect(() => {
+    const getHttpBin = async () => {
+      const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/relay");
+      const data = await resp.json();
+      setHttpbin(data);
+    };
+    getHttpBin();
+  }, []);
 
   return (
     <Container className="mt-5">
-      <h1>Your Favorite Movies</h1>
+      <h1>Users Favorite Movies</h1>
       <Row>
         {favorites.map((movie) => (
           <Col key={movie.id} sm={12} md={6} lg={4} xl={3}>
@@ -24,13 +34,20 @@ const Home = () => {
                   variant="primary"
                   onClick={() => toggleFavorite(movie)}
                 >
-                  Unfavorite
+                  ⭐ {movie.stars}
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => addToPersonalQueue(movie)}
+                >
+                  👁️
                 </Button>
               </Card.Footer>
             </Card>
           </Col>
         ))}
       </Row>
+      <pre>{JSON.stringify(httpbin, null, 2)}</pre>
     </Container>
   );
 };

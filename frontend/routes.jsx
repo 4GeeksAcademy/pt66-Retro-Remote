@@ -9,6 +9,7 @@ import { Layout } from "./pages/Layout";
 import  Home  from "./pages/Home";
 import { Single } from "./pages/Single";
 import { Demo } from "./pages/Demo";
+import PersonalQueue from "./pages/PersonalQueue";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -16,6 +17,7 @@ export const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="single/:theID" element={<Single />} />
       <Route path="demo" element={<Demo />} />
+      <Route path="personal-queue" element={<PersonalQueue />} />
     </Route>
   )
 );
