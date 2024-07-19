@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Card, Button, Row, Col, Container } from 'react-bootstrap';
 import { FavoritesContext } from '../pages/FavoritesContext'; // Import the context
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   const { favorites, toggleFavorite, addToPersonalQueue } = useContext(FavoritesContext); // Use the context
@@ -17,7 +18,8 @@ const Home = () => {
 
   return (
     <Container className="mt-5">
-      <h1>Users Favorite Movies</h1>
+      <Link to="/personal-queue">personalQueue</Link>
+      <h1>Users Recommended Movies and TV</h1>
       <Row>
         {favorites.map((movie) => (
           <Col key={movie.id} sm={12} md={6} lg={4} xl={3}>
