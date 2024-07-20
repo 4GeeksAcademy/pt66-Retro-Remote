@@ -47,7 +47,12 @@ function TopRated() {
           {movies.map((movie) => (
             <div key={movie.id}>
               <div style={{ cursor: "grab" }}>
-                <img src={`${baseImageUrl}${movie.poster_path}`} alt={movie.title} width="140" height="210" border="10px solid #111111" />
+                <img src={`${baseImageUrl}${movie.poster_path}`} 
+                alt={movie.title} 
+                width="140" 
+                height="210" 
+                border="10px solid #111111"
+                 />
               </div>  
             </div>
           ))}

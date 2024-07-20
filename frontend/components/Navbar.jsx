@@ -21,11 +21,13 @@ const Navbar = () => {
     }
   };
 
+  const fontColorStyle = { color: '#198754' }; // Same color as btn-outline-success
+
   return (
-    <div style={{ fontFamily: "lanto, sans serif" }}>
+    <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid" style={{ marginLeft: "50px" }}>
-          <a className="navbar-brand" href="#">Welcome Armando</a>
+          <a className="navbar-brand" href="#" style={fontColorStyle}>Welcome Armando</a>
           <div style={{ marginLeft: "150px" }}>
             <form className="d-flex" onSubmit={handleSearch}>
               <input
@@ -40,15 +42,15 @@ const Navbar = () => {
               <button className="btn btn-outline-success" type="submit">Search</button>
             </form>
           </div>
-          <div className="collapse navbar-collapse" id="navbarNavDropdown" style={{ paddingRight: "50px" }}>
+          <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={fontColorStyle}>
                   Dropdown link
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a className="dropdown-item" href="#">Favorites</a></li>
-                  <li><a className="dropdown-item" href="#">Profile</a></li>
+                  <li><a className="dropdown-item" href="#" style={fontColorStyle}>Favorites</a></li>
+                  <li><a className="dropdown-item" href="#" style={fontColorStyle}>Profile</a></li>
                 </ul>
               </li>
             </ul>
@@ -76,4 +78,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 
