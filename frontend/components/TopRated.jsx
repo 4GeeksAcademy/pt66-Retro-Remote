@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Slider from "react-slick";
 
-const apiKey = '906a1422e70c3c8ba8e832c96e9b90d7';
+const apiKey = 'a68e3a95bccd13e0bbb80357ef4b13bf';
 const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // Base URL for the poster images
 
 function TopRated() {
@@ -28,35 +29,46 @@ function TopRated() {
     fetchTopRated();
   }, []);
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 4
+  };
+
   return (
-      <div style={{ fontFamily: "lato, san serif", display: "flex", paddingLeft: "30px", width: "100%", height: "auto", backgroundColor: "#59788e" }}>
-        <div style={{ width: "50%" }}>
-          <h1>Top Rated Movies</h1>
-          <ul style={{ listStyleType: "none" }}>
-            {movies.map((movie) => (
-              <li key={movie.id}>
-                <div style={{ width: "219px", marginLeft: "50px", marginTop: "30px", border: "10px #8e6f59 solid" }}>
-                  <img src={`${baseImageUrl}${movie.poster_path}`} alt={movie.title} width="200" height="300" />
-                </div>        
-                {movie.title}
-              </li>
-            ))}
-          </ul>
-        </div>  
-        <div styles={{ marginLeft: "20px" }}>
-          <h1>Top Rated TV Shows</h1>
-          <ul style={{ listStyleType: "none" }}>
-          {shows.map((show) => (
-            <li key={show.id}>
-              <div style={{ width: "219px", marginLeft: "50px", marginTop: "30px", border: "10px #8e6f59 solid" }}>
-                <img src={`${baseImageUrl}${show.poster_path}`} alt={show.name} width="200" height="300" />
-              </div>
-              {show.name}
-              </li>
-             ))}
-          </ul>
-          </div>
+    <div style={{ fontFamily: "lato, san serif", paddingLeft: "20px", backgroundColor: "#59788e" }}>
+      <div style={{ width: "75%", margin: "0 auto" }}>
+        <div style={{ textAlign: "center" }}>
+          <h1 style={{ fontWeight: "700", padding: "30px" }}>Top Rated Movies</h1>
+        </div>
+        <Slider {...settings}>
+          {movies.map((movie) => (
+            <div key={movie.id}>
+              <div style={{ cursor: "grab" }}>
+                <img src={`${baseImageUrl}${movie.poster_path}`} alt={movie.title} width="140" height="210" border="10px solid #111111" />
+              </div>  
+            </div>
+          ))}
+        </Slider>
       </div>
+      <div style={{ width: "75%", margin: "0 auto" }}>
+        <div style={{ textAlign: "center" }}>
+          <h1>Top Rated TV Shows</h1>
+        </div>
+        <Slider {...settings}>
+          {shows.map((show) => (
+            <div key={show.id}>
+              <div style= {{cursor: "grab" }}>
+                <img src={`${baseImageUrl}${show.poster_path}`} alt={show.name} width="140" height="210" border="10px solid #111111"/>
+                <p style={{ textAlign: "center" }}>{show.name}</p>
+              </div>
+            </div>
+          ))}
+        </Slider>
+      </div>
+    </div>
   );
 }
 
