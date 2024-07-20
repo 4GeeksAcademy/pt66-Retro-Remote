@@ -38,7 +38,7 @@ function TopRated() {
   };
 
   return (
-    <div style={{ fontFamily: "lato, san serif", paddingLeft: "20px", backgroundColor: "#59788e" }}>
+    <div style={{ fontFamily: "lato, sans serif", paddingLeft: "20px", backgroundColor: "#59788e" }}>
       <div style={{ width: "75%", margin: "0 auto" }}>
         <div style={{ textAlign: "center" }}>
           <h1 style={{ fontWeight: "700", padding: "30px" }}>Top Rated Movies</h1>
@@ -54,8 +54,8 @@ function TopRated() {
         </Slider>
       </div>
       <div style={{ width: "75%", margin: "0 auto" }}>
-        <div style={{ textAlign: "center" }}>
-          <h1>Top Rated TV Shows</h1>
+        <div style={{ textAlign: "center", marginTop: "50px" }}>
+          <h1 style={{ fontWeight: "700", padding: "30px" }}>Top Rated TV Shows</h1>
         </div>
         <Slider {...settings}>
           {shows.map((show) => (
