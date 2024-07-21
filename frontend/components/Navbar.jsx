@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import '../assets/css/Navbar.css';
 
-const apiKey = '3a3e3e64a22e810b08f4fe90fde7867e';
+const apiKey = 'a7ba0658cfc3a38d6d91557702b4f43a';
 
 const Navbar = () => {
   const [query, setQuery] = useState('');
@@ -14,10 +15,8 @@ const Navbar = () => {
     event.preventDefault();
     if (query.length > 2) {
       try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`
-        );
-        setResults(response.data.results);
+        const response = await axios.get(`https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${query}`);
+        setResults(response.data.results || []);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -30,10 +29,8 @@ const Navbar = () => {
 
     if (query.length > 2) {
       try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`
-        );
-        setSuggestions(response.data.results);
+        const response = await axios.get(`https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${query}`);
+        setSuggestions(response.data.results || []);
       } catch (error) {
         console.error('Error fetching suggestions:', error);
       }
@@ -43,20 +40,21 @@ const Navbar = () => {
   };
 
   const handleSuggestionClick = (suggestion) => {
-    setQuery(suggestion.title);
+    setQuery(suggestion.title || suggestion.name);
     setResults([suggestion]);
     setSuggestions([]);
   };
 
-  const fontColorStyle = { color: '#198754' }; // Same color as btn-outline-success
-
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container-fluid" style={{ marginLeft: "50px" }}>
-          <a className="navbar-brand" href="#" style={fontColorStyle}>Welcome Armando</a>
-          <div style={{ marginLeft: "150px" }}>
-            <form className="d-flex" onSubmit={handleSearch}>
+      <nav className="navbar navbar-expand-lg">
+        <div className="container-fluid welcome">
+          <a className="navbar-brand" href="#">Welcome to:____________</a>
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse searchbar" id="navbarNavDropdown">
+            <form className="d-flex me-auto searchBar" onSubmit={handleSearch}>
               <div style={{ position: 'relative' }}>
                 <input
                   className="form-control me-2"
@@ -75,24 +73,23 @@ const Navbar = () => {
                         className="list-group-item list-group-item-action"
                         onClick={() => handleSuggestionClick(suggestion)}
                       >
-                        {suggestion.title}
+                        {suggestion.title || suggestion.name}
                       </li>
                     ))}
                   </ul>
                 )}
               </div>
-              <button className="btn btn-outline-success" type="submit">Search</button>
+              <button className="btn" type="submit">Search</button>
             </form>
-          </div>
-          <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" style={fontColorStyle}>
-                  Dropdown link
+                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Menu
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a className="dropdown-item" href="#" style={fontColorStyle}>Favorites</a></li>
-                  <li><a className="dropdown-item" href="#" style={fontColorStyle}>Profile</a></li>
+                  <li><a className="dropdown-item" href="#">Sign in</a></li>
+                  <li><a className="dropdown-item" href="#">Favorites</a></li>
+                  <li><a className="dropdown-item" href="#">Profile</a></li>
                 </ul>
               </li>
             </ul>
@@ -102,13 +99,13 @@ const Navbar = () => {
 
       <div className="container mt-4">
         <div className="row">
-          {results.map((movie) => (
-            <div className="col-md-3 mb-4" key={movie.id}>
+          {results.map((item) => (
+            <div className="col-md-3 mb-4" key={item.id}>
               <div className="card">
-                <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} className="card-img-top" alt={movie.title} />
+                <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} className="card-img-top" alt={item.title || item.name} />
                 <div className="card-body">
-                  <h5 className="card-title">{movie.title}</h5>
-                  <p className="card-text">{movie.overview}</p>
+                  <h5 className="card-title">{item.title || item.name}</h5>
+                  <p className="card-text">{item.release_date || item.first_air_date}</p>
                 </div>
               </div>
             </div>
@@ -120,4 +117,8 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
+
 

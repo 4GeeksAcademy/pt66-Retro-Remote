@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Slider from "react-slick";
-import "../assets/css/TopRated.css"
+import '../assets/css/TopRated.css'
 
-const apiKey = '3a3e3e64a22e810b08f4fe90fde7867e';
-const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // Base URL for the poster images
+const apiKey = 'a7ba0658cfc3a38d6d91557702b4f43a';
 
 function TopRated() {
   const [movies, setMovies] = useState([]);
@@ -13,15 +12,13 @@ function TopRated() {
   useEffect(() => {
     const fetchTopRated = async () => {
       try {
-        const movieResponse = await axios.get(
-          `https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}`
-        );
-        setMovies(movieResponse.data.results);
+        // Fetch top-rated movies
+        const movieResponse = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}`);
+        setMovies(movieResponse.data.results || []);
 
-        const showResponse = await axios.get(
-          `https://api.themoviedb.org/3/tv/top_rated?api_key=${apiKey}`
-        );
-        setShows(showResponse.data.results);
+        // Fetch top-rated TV shows
+        const showResponse = await axios.get(`https://api.themoviedb.org/3/tv/top_rated?api_key=${apiKey}`);
+        setShows(showResponse.data.results || []);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -48,12 +45,12 @@ function TopRated() {
           {movies.map((movie) => (
             <div key={movie.id}>
               <div className="thirdCon">
-                <img src={`${baseImageUrl}${movie.poster_path}`} 
-                alt={movie.title} 
-                width="140" 
-                height="210" 
-                className="imgBorder"/>
-              <p className="movieTitle">{movie.title}</p>
+                <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
+                     alt={movie.title} 
+                     width="140" 
+                     height="210" 
+                     className="imgBorder"/>
+                <p className="movieTitle">{movie.title}</p>
               </div>  
             </div>
           ))}
@@ -66,12 +63,12 @@ function TopRated() {
         <Slider {...settings}>
           {shows.map((show) => (
             <div key={show.id}>
-              <div style= {{cursor: "grab" }}>
-                <img src={`${baseImageUrl}${show.poster_path}`} 
-                alt={show.name} 
-                width="140" 
-                height="210"
-                className="imgBorder"/>
+              <div style={{cursor: "grab"}}>
+                <img src={`https://image.tmdb.org/t/p/w500${show.poster_path}`} 
+                     alt={show.name} 
+                     width="140" 
+                     height="210"
+                     className="imgBorder"/>
                 <p className="showTitle">{show.name}</p>
               </div>
             </div>
