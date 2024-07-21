@@ -1,24 +1,51 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-const apiKey = 'YOUR_API_KEY'; // Replace with your actual API key
+const apiKey = '3a3e3e64a22e810b08f4fe90fde7867e';
 
 const Navbar = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
 
   const handleSearch = async (event) => {
     event.preventDefault();
-    try {
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`
-      );
-      setResults(response.data.results);
-    } catch (error) {
-      console.error('Error fetching data:', error);
+    if (query.length > 2) {
+      try {
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`
+        );
+        setResults(response.data.results);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     }
+  };
+
+  const handleInputChange = async (event) => {
+    const query = event.target.value;
+    setQuery(query);
+
+    if (query.length > 2) {
+      try {
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`
+        );
+        setSuggestions(response.data.results);
+      } catch (error) {
+        console.error('Error fetching suggestions:', error);
+      }
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setQuery(suggestion.title);
+    setResults([suggestion]);
+    setSuggestions([]);
   };
 
   const fontColorStyle = { color: '#198754' }; // Same color as btn-outline-success
@@ -30,15 +57,30 @@ const Navbar = () => {
           <a className="navbar-brand" href="#" style={fontColorStyle}>Welcome Armando</a>
           <div style={{ marginLeft: "150px" }}>
             <form className="d-flex" onSubmit={handleSearch}>
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                style={{ width: '400px' }} // Adjust the width as needed
-              />
+              <div style={{ position: 'relative' }}>
+                <input
+                  className="form-control me-2"
+                  type="search"
+                  placeholder="Search"
+                  aria-label="Search"
+                  value={query}
+                  onChange={handleInputChange}
+                  style={{ width: '400px' }} // Adjust the width as needed
+                />
+                {suggestions.length > 0 && (
+                  <ul className="list-group position-absolute" style={{ width: '400px', zIndex: 1000 }}>
+                    {suggestions.map((suggestion) => (
+                      <li
+                        key={suggestion.id}
+                        className="list-group-item list-group-item-action"
+                        onClick={() => handleSuggestionClick(suggestion)}
+                      >
+                        {suggestion.title}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
               <button className="btn btn-outline-success" type="submit">Search</button>
             </form>
           </div>
@@ -78,5 +120,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
 

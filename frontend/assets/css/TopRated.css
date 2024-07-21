@@ -1,0 +1,38 @@
+.firstCon {
+    font-family: lato, sans serif;
+    padding-left: 20px;
+    background-color: #fceaab;
+    color: #59788e;
+}
+.secondCon{
+     width: 75%; 
+     margin: 0 auto;
+}
+.thirdCon{
+    cursor: grab; 
+}
+.thirdCon:active {
+    cursor: grabbing;
+}
+.carousel {
+    width: 75%; 
+    margin: 0 auto; 
+}
+.topRated {
+    text-align: center; 
+    margin-top: 50px; 
+}
+.title {
+     font-weight: 700; 
+     padding: 30px;
+}
+.imgBorder {
+    border: 10px solid #111111;
+    border-radius: 5%
+}
+.movieTitle, .showTitle {
+    text-align: center;
+    margin-top: 10px;
+
+    width: 50%;
+  }

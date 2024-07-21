@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Slider from "react-slick";
+import "../assets/css/TopRated.css"
 
-const apiKey = 'a68e3a95bccd13e0bbb80357ef4b13bf';
+const apiKey = '3a3e3e64a22e810b08f4fe90fde7867e';
 const baseImageUrl = 'https://image.tmdb.org/t/p/w500'; // Base URL for the poster images
 
 function TopRated() {
@@ -38,36 +39,40 @@ function TopRated() {
   };
 
   return (
-    <div style={{ fontFamily: "lato, sans serif", paddingLeft: "20px", backgroundColor: "#59788e" }}>
-      <div style={{ width: "75%", margin: "0 auto" }}>
-        <div style={{ textAlign: "center" }}>
-          <h1 style={{ fontWeight: "700", padding: "30px" }}>Top Rated Movies</h1>
+    <div className="firstCon">
+      <div className="carousel">
+        <div className="topRated">
+          <h1 className="title">Top Rated Movies</h1>
         </div>
         <Slider {...settings}>
           {movies.map((movie) => (
             <div key={movie.id}>
-              <div style={{ cursor: "grab" }}>
+              <div className="thirdCon">
                 <img src={`${baseImageUrl}${movie.poster_path}`} 
                 alt={movie.title} 
                 width="140" 
                 height="210" 
-                border="10px solid #111111"
-                 />
+                className="imgBorder"/>
+              <p className="movieTitle">{movie.title}</p>
               </div>  
             </div>
           ))}
         </Slider>
       </div>
-      <div style={{ width: "75%", margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginTop: "50px" }}>
-          <h1 style={{ fontWeight: "700", padding: "30px" }}>Top Rated TV Shows</h1>
+      <div className="carousel">
+        <div className="topRated">
+          <h1 className="title">Top Rated TV Shows</h1>
         </div>
         <Slider {...settings}>
           {shows.map((show) => (
             <div key={show.id}>
               <div style= {{cursor: "grab" }}>
-                <img src={`${baseImageUrl}${show.poster_path}`} alt={show.name} width="140" height="210" border="10px solid #111111"/>
-                <p style={{ textAlign: "center" }}>{show.name}</p>
+                <img src={`${baseImageUrl}${show.poster_path}`} 
+                alt={show.name} 
+                width="140" 
+                height="210"
+                className="imgBorder"/>
+                <p className="showTitle">{show.name}</p>
               </div>
             </div>
           ))}
