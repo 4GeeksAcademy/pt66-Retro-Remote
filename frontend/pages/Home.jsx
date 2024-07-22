@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Card, Button, Row, Col, Container } from 'react-bootstrap';
-import { FavoritesContext } from '../pages/FavoritesContext'; // Import the context
+import { FavoritesContext } from './FavoritesContext'; // Import the context
 import { Link } from 'react-router-dom';
 
 const Home = () => {
@@ -38,6 +38,14 @@ const Home = () => {
                 >
                   ⭐ {movie.stars}
                 </Button>
+                <Link to={`/details/${movie.id}`}>
+                  <Button
+                    variant="dark"
+                    style={{ color: 'white' }}
+                  >
+                    Details
+                  </Button>
+                </Link>
                 <Button
                   variant="secondary"
                   onClick={() => addToPersonalQueue(movie)}
