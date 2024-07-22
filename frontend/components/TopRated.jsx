@@ -3,7 +3,7 @@ import axios from 'axios';
 import Slider from "react-slick";
 import '../assets/css/TopRated.css'
 
-const apiKey = 'a7ba0658cfc3a38d6d91557702b4f43a';
+const apiKey = '4c82898ea005920b54c572b6a507c2fe';
 
 function TopRated() {
   const [movies, setMovies] = useState([]);

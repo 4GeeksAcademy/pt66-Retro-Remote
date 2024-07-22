@@ -1,66 +1,54 @@
+
 /* Navbar.css */
 .welcome {
-    margin-left: 50px;
+  margin-left: 50px;
 }
 .searchbar {
-    margin-left: 150px;
+  margin-left: 150px;
 }
 .navbar {
-    background-color: #343a40;
-  }
-  
-  .navbar-brand {
-    color: #fceaab;
-    font-weight: bold;
-  }
-  
-  .navbar-toggler {
-    border-color: #fceaab;
-  }
-  
-  .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28152,197,61, 1%29' stroke-width='2' linecap='round' linejoin='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-  }
-  
-  .nav-link {
-    color: #fceaab;
-  }
-  
-  .nav-link:hover {
-    color: #59788e;
-  }
-  
-  .dropdown-menu {
-    background-color: #fceaab;
-    border: none;
-  }
-  
-  .dropdown-item {
-    color: #198754;
-  }
-  
-  .dropdown-item:hover {
-    background-color: #495057;
-  }
-  
-  .searchBar .form-control {
-    border-color: #198754;
-  }
-  
-  .searchBar .btn {
-    background-color: #198754;
-    color: #fff;
-  }
-  
-  .searchBar .btn:hover {
-    background-color: #157347;
-  }
-  
-  .list-group-item-action {
-    cursor: pointer;
-  }
-  
-  .list-group-item-action:hover {
-    background-color: #f8f9fa;
-  }
-  
+  background-color: #343a40;
+}
+.navbar-brand {
+  color: #fceaab;
+  font-weight: bold;
+}
+.navbar-toggler {
+  border-color: #fceaab;
+}
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28152,197,61, 1%29' stroke-width='2' linecap='round' linejoin='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+.nav-link {
+  color: #fceaab;
+}
+.nav-link:hover {
+  color: #59788e;
+}
+.dropdown-menu {
+  background-color: #fceaab;
+  border: none;
+  z-index: 1050;
+}
+.dropdown-item {
+  color: #198754;
+}
+.dropdown-item:hover {
+  background-color: #495057;
+}
+.searchBar .form-control {
+  border-color: #198754;
+}
+.searchBar .btn {
+  background-color: #198754;
+  color: #fff;
+}
+.searchBar .btn:hover {
+  background-color: #157347;
+}
+.list-group-item-action {
+  cursor: pointer;
+}
+.list-group-item-action:hover {
+  background-color: #f8f9fa;
+}

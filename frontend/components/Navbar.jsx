@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../assets/css/Navbar.css';
+import '@popperjs/core';
 
-const apiKey = 'a7ba0658cfc3a38d6d91557702b4f43a';
+const apiKey = '4c82898ea005920b54c572b6a507c2fe';
 
 const Navbar = () => {
   const [query, setQuery] = useState('');
@@ -45,16 +46,30 @@ const Navbar = () => {
     setSuggestions([]);
   };
 
+  useEffect(() => {
+    const dropdown = document.getElementById('navbarDropdownMenuLink');
+    if (dropdown) {
+      dropdown.addEventListener('show.bs.dropdown', () => console.log('Dropdown is shown'));
+      dropdown.addEventListener('hide.bs.dropdown', () => console.log('Dropdown is hidden'));
+    }
+    return () => {
+      if (dropdown) {
+        dropdown.removeEventListener('show.bs.dropdown', () => console.log('Dropdown is shown'));
+        dropdown.removeEventListener('hide.bs.dropdown', () => console.log('Dropdown is hidden'));
+      }
+    };
+  }, []);
+
   return (
     <div>
-      <nav className="navbar navbar-expand-lg">
-        <div className="container-fluid welcome">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div className="container-fluid">
           <a className="navbar-brand" href="#">Welcome to:____________</a>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse searchbar" id="navbarNavDropdown">
-            <form className="d-flex me-auto searchBar" onSubmit={handleSearch}>
+          <div className="collapse navbar-collapse" id="navbarNavDropdown">
+            <form className="d-flex me-auto" onSubmit={handleSearch}>
               <div style={{ position: 'relative' }}>
                 <input
                   className="form-control me-2"
@@ -63,7 +78,7 @@ const Navbar = () => {
                   aria-label="Search"
                   value={query}
                   onChange={handleInputChange}
-                  style={{ width: '400px' }} // Adjust the width as needed
+                  style={{ width: '400px' }}
                 />
                 {suggestions.length > 0 && (
                   <ul className="list-group position-absolute" style={{ width: '400px', zIndex: 1000 }}>
@@ -79,7 +94,7 @@ const Navbar = () => {
                   </ul>
                 )}
               </div>
-              <button className="btn" type="submit">Search</button>
+              <button className="btn btn-outline-primary" type="submit">Search</button>
             </form>
             <ul className="navbar-nav ms-auto">
               <li className="nav-item dropdown">
@@ -117,8 +132,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
-
-
-
