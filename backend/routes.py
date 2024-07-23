@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from backend.models import db, User
+from backend.models import db, User, Reviews
 from flask_cors import CORS
 
 api = Blueprint('api', __name__, url_prefix="/api")
@@ -19,3 +19,20 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+@api.route("/review", methods=["POST"])
+def add_review():
+    print('method called')
+    body = request.json
+
+    print(body)
+    
+    review = Reviews(
+        review=body["reviewData"],
+        movie_id=body["movieId"]
+    )
+    db.session.add(review)
+    db.session.commit()
+    db.session.refresh(review)
+
+    return jsonify(review.serialize())

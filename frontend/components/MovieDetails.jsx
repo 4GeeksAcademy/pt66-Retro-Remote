@@ -4,6 +4,7 @@ import { DateTime,Duration } from "luxon";
 
 export const MovieDetails = () => {
     const {id} = useParams();
+    console.log(id);
     const [movieDetails,setMovieDetails] = useState({})
     const [releaseYear,setReleaseYear] = useState();
     const [movieDuration,setMovieDuration] = useState({hours:'',minutes:''});
@@ -48,25 +49,30 @@ export const MovieDetails = () => {
 },[])
 
         async function handleSubmitReview(e){
+            console.log(id);
              e.preventDefault();
              console.log(reviewData);
-            // const resp = await fetch("https://supreme-potato-jwp7xg67qqcx99-3001.app.github.dev/api/signup", {
-            //     method: "POST",
-            //     body: JSON.stringify(formData),
-            //     headers: {
-            //     "Content-Type": "application/json"
-            //     }
-            //     });
-            //     if(resp.ok)
-            //         {
-            //             const response_from = await resp.json();
-            //             setFormData({email: "",password: ""})
-            //             console.log(response_from)
+             const review_data = {
+                reviewData : reviewData,
+                movieId : id
+             }
+            const resp = await fetch("https://studious-cod-qg54wxr99gfx9pq-3001.app.github.dev/api/review", {
+                method: "POST",
+                body: JSON.stringify(review_data),
+                headers: {
+                "Content-Type": "application/json"
+                }
+                });
+                if(resp.ok)
+                    {
+                        const response_data = await resp.json();
+                        setReviewData()
+                        console.log(response_data)
                                                 
-            //         }else{
-            //             const error = await resp.json();
-            //             console.log(error);
-            //         }
+                    }else{
+                        const error = await resp.json();
+                        console.log(error);
+                    }
 
         }
 
