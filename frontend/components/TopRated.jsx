@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Slider from "react-slick";
-import '../assets/css/TopRated.css'
-
-const apiKey = '4c82898ea005920b54c572b6a507c2fe';
+import '../assets/css/TopRated.css'; 
 
 function TopRated() {
   const [movies, setMovies] = useState([]);
@@ -12,13 +10,11 @@ function TopRated() {
   useEffect(() => {
     const fetchTopRated = async () => {
       try {
-        // Fetch top-rated movies
-        const movieResponse = await axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}`);
-        setMovies(movieResponse.data.results || []);
+        const movieResponse = await axios.get('http://localhost:3000/api/top-rated/movies');
+        setMovies(movieResponse.data || []);
 
-        // Fetch top-rated TV shows
-        const showResponse = await axios.get(`https://api.themoviedb.org/3/tv/top_rated?api_key=${apiKey}`);
-        setShows(showResponse.data.results || []);
+        const showResponse = await axios.get('http://localhost:3000/api/top-rated/shows');
+        setShows(showResponse.data || []);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -80,3 +76,5 @@ function TopRated() {
 }
 
 export default TopRated;
+
+

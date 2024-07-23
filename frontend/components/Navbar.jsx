@@ -2,21 +2,20 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import '../assets/css/Navbar.css';
-import '@popperjs/core';
-
-const apiKey = '4c82898ea005920b54c572b6a507c2fe';
+import '../assets/css/Navbar.css'; // Adjust the import path as necessary
 
 const Navbar = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
 
+  const apiBaseUrl = 'http://localhost:5000/api';
+
   const handleSearch = async (event) => {
     event.preventDefault();
     if (query.length > 2) {
       try {
-        const response = await axios.get(`https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${query}`);
+        const response = await axios.get(`${apiBaseUrl}/search`, { params: { query } });
         setResults(response.data.results || []);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -30,7 +29,7 @@ const Navbar = () => {
 
     if (query.length > 2) {
       try {
-        const response = await axios.get(`https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${query}`);
+        const response = await axios.get(`${apiBaseUrl}/search`, { params: { query } });
         setSuggestions(response.data.results || []);
       } catch (error) {
         console.error('Error fetching suggestions:', error);
