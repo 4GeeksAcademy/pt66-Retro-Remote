@@ -1,0 +1,60 @@
+body{
+    background-color: black;
+    color:white;
+}
+
+.movieDetailsWrapper{
+    background: linear-gradient(217deg, rgba(127, 125, 125, 0.8), rgba(255,0,0,0) 70.71%),
+    linear-gradient(127deg, rgba(97, 101, 97, 0.8), rgba(0,255,0,0) 70.71%),
+    linear-gradient(336deg, rgba(194, 220, 208, 0.8), rgba(0,0,255,0) 70.71%),
+    linear-gradient(336deg, rgba(29, 36, 33, 0.8), rgba(0,0,255,0) 70.71%);
+    height: 50rem;
+    width: 71rem;
+    margin: auto;
+    margin-top: 4rem;
+}
+
+.genres span {
+    border:1px solid white;
+    padding:0.3rem;
+    margin-right:1rem;
+    border-radius:0.5rem
+} 
+
+.type, .form-label{
+    font-weight: bold;
+}
+
+.names{
+    color:rgb(234, 98, 98);
+    font-weight: bold;
+    padding-left: 1rem;
+}
+
+
+.actors span:not(:last-of-type,:first-of-type)::after {
+    padding:1rem;
+    content: '\00B7';
+  }
+
+  .writers span:not(:last-of-type,:first-of-type)::after {
+    padding:1rem;
+    content: '\00B7';
+  }
+
+
+  .directors span:not(:last-of-type,:first-of-type)::after {
+    padding:1rem;
+    content: '\00B7';
+  }
+#exampleFormControlTextarea1{
+    max-width:40rem;
+}
+
+img{
+    height:17rem;
+}
+ 
+.container1{
+    width:14rem;
+}
