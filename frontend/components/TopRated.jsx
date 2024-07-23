@@ -6,14 +6,15 @@ import '../assets/css/TopRated.css';
 function TopRated() {
   const [movies, setMovies] = useState([]);
   const [shows, setShows] = useState([]);
-
+  const apiBaseUrl = "https://symmetrical-goggles-976jrw75rxr6hpp5p-3001.app.github.dev/api"
+  // need to get rid this, calls are being made in the store so i should get it from there
   useEffect(() => {
     const fetchTopRated = async () => {
       try {
-        const movieResponse = await axios.get('http://localhost:3000/api/top-rated/movies');
+        const movieResponse = await axios.get(apiBaseUrl+'/top-rated/movies');
         setMovies(movieResponse.data || []);
 
-        const showResponse = await axios.get('http://localhost:3000/api/top-rated/shows');
+        const showResponse = await axios.get(apiBaseUrl+'/top-rated/shows');
         setShows(showResponse.data || []);
       } catch (error) {
         console.error('Error fetching data:', error);

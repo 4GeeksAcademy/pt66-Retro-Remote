@@ -9,7 +9,8 @@ const Navbar = () => {
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
 
-  const apiBaseUrl = 'http://localhost:5000/api';
+  // const apiBaseUrl = process.env.BACKEND_URL+'/api';
+  const apiBaseUrl = "https://symmetrical-goggles-976jrw75rxr6hpp5p-3001.app.github.dev/api"
 
   const handleSearch = async (event) => {
     event.preventDefault();

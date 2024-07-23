@@ -12,6 +12,8 @@ sqlalchemy = "*"
 flask-cors = "*"
 flask-admin = "*"
 python-dotenv = "*"
+flask-jwt-extended = "*"
+requests = "*"
 
 [dev-packages]
 
