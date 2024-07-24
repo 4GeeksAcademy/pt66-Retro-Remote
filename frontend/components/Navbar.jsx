@@ -1,16 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import '../assets/css/Navbar.css'; // Adjust the import path as necessary
+import '../assets/css/Navbar.css';
 
 const Navbar = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
+  const dropdownRef = useRef(null);
 
-  // const apiBaseUrl = process.env.BACKEND_URL+'/api';
-  const apiBaseUrl = "https://symmetrical-goggles-976jrw75rxr6hpp5p-3001.app.github.dev/api"
+  const apiBaseUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/api";
+
+  const fetchSuggestions = async (query) => {
+    try {
+      const response = await axios.get(`${apiBaseUrl}/search`, { params: { query } });
+      setSuggestions(response.data.results || []);
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+    }
+  };
 
   const handleSearch = async (event) => {
     event.preventDefault();
@@ -24,17 +33,12 @@ const Navbar = () => {
     }
   };
 
-  const handleInputChange = async (event) => {
+  const handleInputChange = (event) => {
     const query = event.target.value;
     setQuery(query);
 
     if (query.length > 2) {
-      try {
-        const response = await axios.get(`${apiBaseUrl}/search`, { params: { query } });
-        setSuggestions(response.data.results || []);
-      } catch (error) {
-        console.error('Error fetching suggestions:', error);
-      }
+      fetchSuggestions(query);
     } else {
       setSuggestions([]);
     }
@@ -47,15 +51,20 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    const dropdown = document.getElementById('navbarDropdownMenuLink');
+    const dropdown = dropdownRef.current;
+
+    const showDropdown = () => console.log('Dropdown is shown');
+    const hideDropdown = () => console.log('Dropdown is hidden');
+
     if (dropdown) {
-      dropdown.addEventListener('show.bs.dropdown', () => console.log('Dropdown is shown'));
-      dropdown.addEventListener('hide.bs.dropdown', () => console.log('Dropdown is hidden'));
+      dropdown.addEventListener('show.bs.dropdown', showDropdown);
+      dropdown.addEventListener('hide.bs.dropdown', hideDropdown);
     }
+
     return () => {
       if (dropdown) {
-        dropdown.removeEventListener('show.bs.dropdown', () => console.log('Dropdown is shown'));
-        dropdown.removeEventListener('hide.bs.dropdown', () => console.log('Dropdown is hidden'));
+        dropdown.removeEventListener('show.bs.dropdown', showDropdown);
+        dropdown.removeEventListener('hide.bs.dropdown', hideDropdown);
       }
     };
   }, []);
@@ -98,7 +107,7 @@ const Navbar = () => {
             </form>
             <ul className="navbar-nav ms-auto">
               <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" ref={dropdownRef}>
                   Menu
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">

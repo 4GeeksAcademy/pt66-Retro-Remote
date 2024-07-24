@@ -1,4 +1,3 @@
-# models.py
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -16,5 +15,6 @@ class User(db.Model):
         return {
             "id": self.id,
             "email": self.email,
-           
+            # Don't include the password in the serialized data for security reasons
         }
+

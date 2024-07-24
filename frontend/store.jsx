@@ -1,23 +1,23 @@
 import React, { createContext, useReducer, useContext } from 'react';
 
-
 export const initialState = {
   movies: [],
   shows: []
 };
 
-
 export function storeReducer(state = initialState, action) {
   switch (action.type) {
     case 'set_movies':
+      console.log('Setting movies:', action.payload); // Log the action payload
       return {
         ...state,
-        movies: action.payload
+        movies: action.payload.results || action.payload // Ensure it handles the correct payload structure
       };
     case 'set_shows':
+      console.log('Setting shows:', action.payload); // Log the action payload
       return {
         ...state,
-        shows: action.payload
+        shows: action.payload.results || action.payload // Ensure it handles the correct payload structure
       };
     default:
       return state;

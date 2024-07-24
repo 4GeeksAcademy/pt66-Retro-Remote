@@ -1,28 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import Slider from "react-slick";
 import '../assets/css/TopRated.css'; 
+import { useGlobalReducer } from '../store';
 
 function TopRated() {
-  const [movies, setMovies] = useState([]);
-  const [shows, setShows] = useState([]);
-  const apiBaseUrl = "https://symmetrical-goggles-976jrw75rxr6hpp5p-3001.app.github.dev/api"
-  // need to get rid this, calls are being made in the store so i should get it from there
-  useEffect(() => {
-    const fetchTopRated = async () => {
-      try {
-        const movieResponse = await axios.get(apiBaseUrl+'/top-rated/movies');
-        setMovies(movieResponse.data || []);
+  const { store } = useGlobalReducer();
+  const { movies = [], shows = [] } = store;
 
-        const showResponse = await axios.get(apiBaseUrl+'/top-rated/shows');
-        setShows(showResponse.data || []);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchTopRated();
-  }, []);
+  console.log('Movies in TopRated:', movies); // Log movies in TopRated
+  console.log('Shows in TopRated:', shows);   // Log shows in TopRated
 
   const settings = {
     dots: true,
@@ -31,6 +17,10 @@ function TopRated() {
     slidesToShow: 4,
     slidesToScroll: 4
   };
+
+  if (!movies.length && !shows.length) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="firstCon">
@@ -42,12 +32,12 @@ function TopRated() {
           {movies.map((movie) => (
             <div key={movie.id}>
               <div className="thirdCon">
+                <p>{movie.title}</p>
                 <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
                      alt={movie.title} 
                      width="140" 
                      height="210" 
                      className="imgBorder"/>
-                <p className="movieTitle">{movie.title}</p>
               </div>  
             </div>
           ))}
@@ -60,13 +50,13 @@ function TopRated() {
         <Slider {...settings}>
           {shows.map((show) => (
             <div key={show.id}>
-              <div style={{cursor: "grab"}}>
+              <div className="thirdCon">
+                <p>{show.name}</p>
                 <img src={`https://image.tmdb.org/t/p/w500${show.poster_path}`} 
                      alt={show.name} 
                      width="140" 
                      height="210"
                      className="imgBorder"/>
-                <p className="showTitle">{show.name}</p>
               </div>
             </div>
           ))}
@@ -77,5 +67,3 @@ function TopRated() {
 }
 
 export default TopRated;
-
-
