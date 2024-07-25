@@ -20,12 +20,10 @@ function TopRated() {
       chunkedItems.push(items.slice(i, i + 4));
     }
 
-
     return chunkedItems.map((group, index) => (
       <Carousel.Item key={`${type}-${index}`}>
-        <div className="carousel-group">
           {group.map(item => (
-            <div className="carousel-item" key={item.id}>
+            <div key={item.id}>
               {item.poster_path ? (
                 <img 
                   src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
@@ -36,14 +34,13 @@ function TopRated() {
               ) : (
                 <div>No image available</div>
               )}
-              <Carousel.Caption>
+              {/* <Carousel.Caption>
                 <p className={type === 'movie' ? "movieTitle" : "showTitle"}>
                   {type === 'movie' ? item.title : item.name}
                 </p>
-              </Carousel.Caption>
+              </Carousel.Caption> */}
             </div>
           ))}
-        </div>
       </Carousel.Item>
     ));
   };
@@ -54,17 +51,19 @@ function TopRated() {
         <div className="topRated">
           <h1 className="title">Top Rated Movies</h1>
         </div>
-        <Carousel interval={5000} indicators={true}>
-          {console.log(renderCarouselItems(movies, 'movie')), "HERE"}
+        <Carousel  indicators={true}>
+          {renderCarouselItems(movies, 'movie')}
         </Carousel>
       </div>
       <div className="carousel">
         <div className="topRated">
           <h1 className="title">Top Rated TV Shows</h1>
         </div>
-        <Carousel interval={5000} indicators={true}>
+        <Carousel  indicators={true}>
           {renderCarouselItems(shows, 'show')}
         </Carousel>
+        {/* interval={5000}
+interval={5000} */}
       </div>
     </div>
   );

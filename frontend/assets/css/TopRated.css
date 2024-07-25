@@ -1,20 +1,33 @@
+.firstCon {
+  padding: 20px;
+}
+
 .carousel-group {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .carousel-item {
-  flex: 1;
-  margin: 0 10px;
   text-align: center;
+  margin: 10px;
+}
+
+.carousel-item.active {
+  display: flex;
+
+  div {
+    margin: 0 20px;
+  }
 }
 
 .imgBorder {
-  width: 100%;
-  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .movieTitle, .showTitle {
-  font-size: 1rem;
-  text-align: center;
-} 
+  font-size: 1em;
+  color: #fff;
+  width: 100%;
+  display: flex;
+}

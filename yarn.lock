@@ -1887,6 +1887,11 @@ queue-microtask@^1.2.2:
   resolved "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
+react-bootstrap-carousel@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.npmjs.org/react-bootstrap-carousel/-/react-bootstrap-carousel-4.1.1.tgz"
+  integrity sha512-nlkmx33jclOfEi1lAfFRRiDO5F2u4D03dbIhvrFPiUoiKgkMngeSZMFg6gY/sQPAhv3pQqhti5evoVgZMFaV2g==
+
 react-bootstrap@^2.10.4:
   version "2.10.4"
   resolved "https://registry.npmjs.org/react-bootstrap/-/react-bootstrap-2.10.4.tgz"
@@ -1905,7 +1910,7 @@ react-bootstrap@^2.10.4:
     uncontrollable "^7.2.1"
     warning "^4.0.3"
 
-"react-dom@^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0", react-dom@^18.2.0, react-dom@>=16.14.0, react-dom@>=16.6.0, react-dom@>=16.8:
+"react-dom@^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0 || ^18.0.0", react-dom@^18.2.0, react-dom@>=16.14.0, react-dom@>=16.6.0, react-dom@>=16.8, react-dom@>=16.8.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"
   integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
