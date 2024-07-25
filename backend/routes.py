@@ -10,12 +10,11 @@ CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///yourdatabase.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Initialize the database with the app
+
 db.init_app(app)
 
 TMDB_API_KEY = 'f6baeddacfa89dbde94bc3da34db9694'
 
-# Create a Blueprint for the API routes
 api = Blueprint('api', __name__, url_prefix="/api")
 
 @api.route('/top-rated/movies', methods=['GET'])

@@ -8,7 +8,7 @@ const FetchInitialData = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
+      // try {
         // Fetch top-rated movies
         const movieResponse = await axios.get(`${apiBaseUrl}/top-rated/movies`);
         console.log('Movies fetched:', movieResponse.data); // Log the fetched movies
@@ -18,9 +18,9 @@ const FetchInitialData = () => {
         const showResponse = await axios.get(`${apiBaseUrl}/top-rated/shows`);
         console.log('Shows fetched:', showResponse.data); // Log the fetched shows
         dispatch({ type: 'set_shows', payload: showResponse.data });
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+      // } catch (error) {
+      //   console.error('Error fetching data:', error);
+      // }
     };
 
     fetchData();

@@ -1,0 +1,36 @@
+.container {
+    max-width: 500px;
+  }
+  
+  .text-center {
+    color: #343a40;
+    margin-bottom: 20px;
+  }
+  
+  .form-label {
+    color: #495057;
+  }
+  
+  .form-control {
+    border-color: #ced4da;
+  }
+  
+  .form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+  }
+  
+  .text-danger {
+    font-size: 0.875rem;
+  }
+  

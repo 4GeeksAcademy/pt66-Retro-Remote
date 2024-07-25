@@ -1,5 +1,5 @@
 import React from 'react';
-import Slider from "react-slick";
+import { Carousel } from 'react-bootstrap';
 import '../assets/css/TopRated.css'; 
 import { useGlobalReducer } from '../store';
 
@@ -7,20 +7,45 @@ function TopRated() {
   const { store } = useGlobalReducer();
   const { movies = [], shows = [] } = store;
 
-  console.log('Movies in TopRated:', movies); // Log movies in TopRated
-  console.log('Shows in TopRated:', shows);   // Log shows in TopRated
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4
-  };
+  console.log('Movies in TopRated:', movies); 
+  console.log('Shows in TopRated:', shows);  
 
   if (!movies.length && !shows.length) {
     return <div>Loading...</div>;
   }
+
+  const renderCarouselItems = (items, type) => {
+    const chunkedItems = [];
+    for (let i = 0; i < items.length; i += 4) {
+      chunkedItems.push(items.slice(i, i + 4));
+    }
+
+    return chunkedItems.map((group, index) => (
+      <Carousel.Item key={`${type}-${index}`}>
+        <div className="carousel-group">
+          {group.map(item => (
+            <div className="carousel-item" key={item.id}>
+              {item.poster_path ? (
+                <img 
+                  src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
+                  alt={type === 'movie' ? item.title : item.name} 
+                  className="imgBorder"
+                  style={{ width: "140px", height: "210px" }}
+                />
+              ) : (
+                <div>No image available</div>
+              )}
+              <Carousel.Caption>
+                <p className={type === 'movie' ? "movieTitle" : "showTitle"}>
+                  {type === 'movie' ? item.title : item.name}
+                </p>
+              </Carousel.Caption>
+            </div>
+          ))}
+        </div>
+      </Carousel.Item>
+    ));
+  };
 
   return (
     <div className="firstCon">
@@ -28,39 +53,17 @@ function TopRated() {
         <div className="topRated">
           <h1 className="title">Top Rated Movies</h1>
         </div>
-        <Slider {...settings}>
-          {movies.map((movie) => (
-            <div key={movie.id}>
-              <div className="thirdCon">
-                <p>{movie.title}</p>
-                <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
-                     alt={movie.title} 
-                     width="140" 
-                     height="210" 
-                     className="imgBorder"/>
-              </div>  
-            </div>
-          ))}
-        </Slider>
+        <Carousel interval={5000} indicators={true}>
+          {renderCarouselItems(movies, 'movie')}
+        </Carousel>
       </div>
       <div className="carousel">
         <div className="topRated">
           <h1 className="title">Top Rated TV Shows</h1>
         </div>
-        <Slider {...settings}>
-          {shows.map((show) => (
-            <div key={show.id}>
-              <div className="thirdCon">
-                <p>{show.name}</p>
-                <img src={`https://image.tmdb.org/t/p/w500${show.poster_path}`} 
-                     alt={show.name} 
-                     width="140" 
-                     height="210"
-                     className="imgBorder"/>
-              </div>
-            </div>
-          ))}
-        </Slider>
+        <Carousel interval={5000} indicators={true}>
+          {renderCarouselItems(shows, 'show')}
+        </Carousel>
       </div>
     </div>
   );

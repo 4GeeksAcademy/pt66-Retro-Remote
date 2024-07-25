@@ -5,6 +5,8 @@ import { useGlobalReducer } from '../store'; // Adjust the import path as necess
 import TopRated from '../components/TopRated'; // Adjust the import path as necessary
 import FetchInitialData from '../FetchInitialData';
 
+
+
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
 
