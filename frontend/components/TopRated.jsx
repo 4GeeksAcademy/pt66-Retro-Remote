@@ -20,6 +20,7 @@ function TopRated() {
       chunkedItems.push(items.slice(i, i + 4));
     }
 
+
     return chunkedItems.map((group, index) => (
       <Carousel.Item key={`${type}-${index}`}>
         <div className="carousel-group">
@@ -54,7 +55,7 @@ function TopRated() {
           <h1 className="title">Top Rated Movies</h1>
         </div>
         <Carousel interval={5000} indicators={true}>
-          {renderCarouselItems(movies, 'movie')}
+          {console.log(renderCarouselItems(movies, 'movie')), "HERE"}
         </Carousel>
       </div>
       <div className="carousel">

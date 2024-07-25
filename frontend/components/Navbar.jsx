@@ -11,6 +11,7 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
 
   const apiBaseUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/api";
+  const imageBaseUrl = 'https://image.tmdb.org/t/p/w92'; // Smaller image size for suggestions
 
   const fetchSuggestions = async (query) => {
     try {
@@ -94,10 +95,16 @@ const Navbar = () => {
                     {suggestions.map((suggestion) => (
                       <li
                         key={suggestion.id}
-                        className="list-group-item list-group-item-action"
+                        className="list-group-item list-group-item-action d-flex align-items-center"
                         onClick={() => handleSuggestionClick(suggestion)}
                       >
-                        {suggestion.title || suggestion.name}
+                        <img
+                          src={`${imageBaseUrl}${suggestion.poster_path}`}
+                          alt={suggestion.title || suggestion.name}
+                          className="me-2"
+                          style={{ width: '40px', height: '60px', objectFit: 'cover' }}
+                        />
+                        <span>{suggestion.title || suggestion.name}</span>
                       </li>
                     ))}
                   </ul>

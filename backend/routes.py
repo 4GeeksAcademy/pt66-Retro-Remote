@@ -13,7 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 
-TMDB_API_KEY = 'f6baeddacfa89dbde94bc3da34db9694'
+TMDB_API_KEY = 'ef1972bcabdcfd5e6e3b2b9c7b92661d'
 
 api = Blueprint('api', __name__, url_prefix="/api")
 
@@ -45,9 +45,9 @@ def search():
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
 # Register the Blueprint with the Flask app
-app.register_blueprint(api)
+# app.register_blueprint(api)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)
 
 
