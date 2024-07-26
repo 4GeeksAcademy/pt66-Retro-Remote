@@ -89,7 +89,7 @@ function TopRated() {
         <div className="carousel">
           <div className="col-12 text-center topRated">
             <h1 className="title">
-                Top Rated Movies
+                Top 20 Rated Movies
             </h1>
           </div>
           <div>
@@ -103,7 +103,7 @@ function TopRated() {
         <div className="carousel">
           <div className="col-12 text-center topRated">
             <h1 className="title">
-              Top Rated TV Shows
+              Top 20 Rated TV Shows
             </h1> 
           </div>
           <Carousel  ref={carouselRef} interval={3000} indicators={true}>

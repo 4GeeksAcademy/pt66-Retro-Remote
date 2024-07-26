@@ -12,7 +12,7 @@
 }
 
 .carousel-indicators .active {
-  background-color: #fc5537;
+  background-color: #8caad4;
 }
 
 .topRated {
@@ -27,7 +27,7 @@
   line-height: 1.2;
   max-height: 2.4em; 
   font-size: 14px;
-  color: #333; 
+  color: black; 
   margin-top: 5px; 
   max-width: 120px; 
   font-weight: 700;
