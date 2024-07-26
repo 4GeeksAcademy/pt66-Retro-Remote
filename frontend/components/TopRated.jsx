@@ -87,7 +87,7 @@ function TopRated() {
     <div className="containers">
       <div className="conA">
         <div className="carousel">
-          <div className="topRated">
+          <div className="col-12 text-center topRated">
             <h1 className="title">
                 Top Rated Movies
             </h1>
@@ -101,7 +101,7 @@ function TopRated() {
       </div>
       <div className="ConB">
         <div className="carousel">
-          <div className="topRated">
+          <div className="col-12 text-center topRated">
             <h1 className="title">
               Top Rated TV Shows
             </h1> 
