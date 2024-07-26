@@ -12,6 +12,8 @@ export const MovieDetails = () => {
     const [directors,setDirectors] = useState([]);
     const [writers,setWriters] = useState([]);
     const [reviewData,setReviewData] = useState();
+  
+
 
     useEffect(() =>{
         async function handleGetMovieDetails() {
@@ -23,6 +25,7 @@ export const MovieDetails = () => {
                 // Process the data 
                 setMovieDetails(data[0]);
                 var d = new Date(data[0].release_date)
+                console.log(data);
                 setReleaseYear(d.getFullYear());
                 const duration = Duration.fromObject({ minutes: data[0].runtime});
                 const hrs_mins = duration.shiftTo('hours', 'minutes').toObject();
