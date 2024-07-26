@@ -9,7 +9,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const Layout = () => {
   return (
     <ScrollToTop>
-      {/* <Navbar2 /> */}
       <Navbar />
       <main>
         <Outlet />

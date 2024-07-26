@@ -1,17 +1,12 @@
-from flask import Flask, request, jsonify, Blueprint
+"""
+This module takes care of starting the API Server, Loading the DB and Adding the endpoints
+"""
+from flask import Flask, request, jsonify, url_for, Blueprint
+from backend.models import db, User, Reviews
 from flask_cors import CORS
 import requests
-from .models import db, User
-
-app = Flask(__name__)
-CORS(app)
-
-# Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///yourdatabase.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
-db.init_app(app)
 
 TMDB_API_KEY = 'ef1972bcabdcfd5e6e3b2b9c7b92661d'
 
@@ -51,3 +46,20 @@ def search():
 #     app.run(debug=True)
 
 
+
+@api.route("/review", methods=["POST"])
+def add_review():
+    print('method called')
+    body = request.json
+
+    print(body)
+    
+    review = Reviews(
+        review=body["reviewData"],
+        movie_id=body["movieId"]
+    )
+    db.session.add(review)
+    db.session.commit()
+    db.session.refresh(review)
+
+    return jsonify(review.serialize())
