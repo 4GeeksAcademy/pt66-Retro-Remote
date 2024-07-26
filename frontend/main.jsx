@@ -1,4 +1,6 @@
 import React from 'react';
+import '../frontend/assets/css/main.css'
+
 import ReactDOM from 'react-dom/client';
 import './index.css'; // Global styles for your application
 import { RouterProvider } from 'react-router-dom'; // Import RouterProvider to use the router

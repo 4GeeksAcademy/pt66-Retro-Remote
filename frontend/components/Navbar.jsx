@@ -11,7 +11,7 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
 
   const apiBaseUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/api";
-  const imageBaseUrl = 'https://image.tmdb.org/t/p/w92'; // Smaller image size for suggestions
+  const imageBaseUrl = 'https://image.tmdb.org/t/p/w92'; 
 
   const fetchSuggestions = async (query) => {
     try {
@@ -35,11 +35,11 @@ const Navbar = () => {
   };
 
   const handleInputChange = (event) => {
-    const query = event.target.value;
-    setQuery(query);
+    const newQuery = event.target.value;
+    setQuery(newQuery);
 
-    if (query.length > 2) {
-      fetchSuggestions(query);
+    if (newQuery.length > 2) {
+      fetchSuggestions(newQuery);
     } else {
       setSuggestions([]);
     }
@@ -50,6 +50,11 @@ const Navbar = () => {
     setResults([suggestion]);
     setSuggestions([]);
   };
+
+  const clearSearch = () => {
+    setQuery('');
+    setSuggestions([]);
+  }
 
   useEffect(() => {
     const dropdown = dropdownRef.current;
@@ -73,16 +78,23 @@ const Navbar = () => {
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="container-fluid">
-          <a className="navbar-brand" href="#">Welcome to:____________</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <div className="container-fluid ps-5">
+          <a className="navbar-brand" href="#">Welcome to OurMovieAPP</a>
+          <button className="navbar-toggler"
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#navbarNavDropdown" 
+            aria-controls="navbarNavDropdown" 
+            aria-expanded="false" 
+            aria-label="Toggle navigation"
+          >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarNavDropdown">
+          <div className="collapse navbar-collapse ps-5" id="navbarNavDropdown">
             <form className="d-flex me-auto" onSubmit={handleSearch}>
               <div style={{ position: 'relative' }}>
                 <input
-                  className="form-control me-2"
+                  className="form-control me-2 search-bar"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
@@ -90,12 +102,25 @@ const Navbar = () => {
                   onChange={handleInputChange}
                   style={{ width: '400px' }}
                 />
+                {query && (
+                  <button
+                    type="button"
+                    className="brn btn-clear clear"
+                    onClick={clearSearch}
+                  >
+                    &times;
+                  </button>
+                )}
                 {suggestions.length > 0 && (
                   <ul className="list-group position-absolute" style={{ width: '400px', zIndex: 1000 }}>
-                    {suggestions.map((suggestion) => (
+                    {suggestions.slice(0, 10).map((suggestion) => (
                       <li
                         key={suggestion.id}
-                        className="list-group-item list-group-item-action d-flex align-items-center"
+                        className="list-group-item 
+                          list-group-item-action 
+                          d-flex 
+                          align-items-center
+                          suggestion-item"
                         onClick={() => handleSuggestionClick(suggestion)}
                       >
                         <img
@@ -110,11 +135,11 @@ const Navbar = () => {
                   </ul>
                 )}
               </div>
-              <button className="btn btn-outline-primary" type="submit">Search</button>
+              <button className="btn search" type="submit">Search</button>
             </form>
-            <ul className="navbar-nav ms-auto">
+            <ul className="navbar-nav ms-auto menu">
               <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" ref={dropdownRef}>
+                <a className="nav-link dropdown-toggle pe-5" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" ref={dropdownRef}>
                   Menu
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
