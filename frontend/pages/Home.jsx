@@ -1,16 +1,19 @@
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
-import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
+// Home.js
+
+import React from 'react';
+import { useGlobalReducer } from '../store'; 
+import TopRated from '../components/TopRated'; 
+import FetchInitialData from '../FetchInitialData';
+
+
 
 export const Home = () => {
+  const { store, dispatch } = useGlobalReducer();
 
-  const {store, dispatch} =useGlobalReducer()
-
-	return (
-		<div className="text-center mt-5">
-			<h1>Hello Rigo!!</h1>
-			<p>
-				<img src={rigoImageUrl} />
-			</p>
-		</div>
-	);
-}; 
+  return (
+    <div>
+      <FetchInitialData />
+      <TopRated />
+    </div>
+  );
+};
