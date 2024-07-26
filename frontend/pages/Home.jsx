@@ -1,8 +1,8 @@
 // Home.js
 
 import React from 'react';
-import { useGlobalReducer } from '../store'; // Adjust the import path as necessary
-import TopRated from '../components/TopRated'; // Adjust the import path as necessary
+import { useGlobalReducer } from '../store'; 
+import TopRated from '../components/TopRated'; 
 import FetchInitialData from '../FetchInitialData';
 
 

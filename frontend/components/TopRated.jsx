@@ -1,7 +1,9 @@
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
-import '../assets/css/TopRated.css'; 
 import { useGlobalReducer } from '../store';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../assets/css/TopRated.css';
+
 
 function TopRated() {
   const { store } = useGlobalReducer();
@@ -22,8 +24,9 @@ function TopRated() {
 
     return chunkedItems.map((group, index) => (
       <Carousel.Item key={`${type}-${index}`}>
+        <div className="d-flex justify-content-center movieCarousel">
           {group.map(item => (
-            <div key={item.id}>
+            <div key={item.id} className="p-2">
               {item.poster_path ? (
                 <img 
                   src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
@@ -34,36 +37,41 @@ function TopRated() {
               ) : (
                 <div>No image available</div>
               )}
-              {/* <Carousel.Caption>
+              <Carousel.Caption>
                 <p className={type === 'movie' ? "movieTitle" : "showTitle"}>
                   {type === 'movie' ? item.title : item.name}
                 </p>
-              </Carousel.Caption> */}
-            </div>
+              </Carousel.Caption>
+            </div>   
           ))}
+        </div>
       </Carousel.Item>
     ));
   };
 
   return (
-    <div className="firstCon">
-      <div className="carousel">
-        <div className="topRated">
-          <h1 className="title">Top Rated Movies</h1>
+    <div>
+      <div className="conA">
+        <div className="carousel">
+          <div className="topRated">
+            <h1 className="title" style={{ fontSize: "40px", margin: "20px" }}>Top Rated Movies</h1>
+          </div>
+          <div className="indicator">
+            <Carousel  indicators={true} >
+              {renderCarouselItems(movies, 'movie')}
+            </Carousel>
+          </div>
         </div>
-        <Carousel  indicators={true}>
-          {renderCarouselItems(movies, 'movie')}
-        </Carousel>
       </div>
-      <div className="carousel">
-        <div className="topRated">
-          <h1 className="title">Top Rated TV Shows</h1>
+      <div className="ConB">
+        <div className="carousel">
+          <div className="topRated">
+            <h1 className="title">Top Rated TV Shows</h1>
+          </div>
+          <Carousel  indicators={true}>
+            {renderCarouselItems(shows, 'show')}
+          </Carousel>
         </div>
-        <Carousel  indicators={true}>
-          {renderCarouselItems(shows, 'show')}
-        </Carousel>
-        {/* interval={5000}
-interval={5000} */}
       </div>
     </div>
   );
