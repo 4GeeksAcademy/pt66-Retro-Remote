@@ -1,31 +1,34 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client'; // Use react-dom/client for createRoot
+import '../frontend/assets/css/main.css'
+
+import ReactDOM from 'react-dom/client';
 import './index.css'; // Global styles for your application
-import { BrowserRouter as Router,Route,Routes } from 'react-router-dom';
-import { Layout } from './pages/Layout';
-import { FavoritesProvider } from './pages/FavoritesContext'; // Import the FavoritesProvider
-import Home from './pages/Home';
+import { RouterProvider } from 'react-router-dom'; // Import RouterProvider to use the router
+import { router } from './routes'; // Import the router configuration
+import { StoreProvider } from './store'; // Import the StoreProvider for global state management
+import FetchInitialData from './FetchInitialData'; // Import FetchInitialData for initial data fetching
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import PersonalQueue from './pages/PersonalQueue';
 
-const Main = () => {
-  console.log("Main component rendered"); // Add logging
 
-  return (
-    <React.StrictMode>
-      <FavoritesProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="personal-queue" element={<PersonalQueue />} />
-              {/* Add other routes here */}
-            </Route>
-          </Routes>
-        </Router>
-      </FavoritesProvider>
-    </React.StrictMode>
-  );
+
+const Main = () => {
+    return (
+        <React.StrictMode>
+          
+            <StoreProvider>
+            <FavoritesProvider>
+              
+                <FetchInitialData />
+              
+                <RouterProvider router={router} />
+                </FavoritesProvider>
+            </StoreProvider>
+        </React.StrictMode>
+    );
 };
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<Main />);
+// Render the Main component into the root DOM element.
+ReactDOM.createRoot(document.getElementById('root')).render(<Main />);
+

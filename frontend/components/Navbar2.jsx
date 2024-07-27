@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import '../assets/css/Navbar.css';
+import '../assets/css/Navbar2.css';
 
 const Navbar = () => {
   const [query, setQuery] = useState('');
@@ -79,7 +79,7 @@ const Navbar = () => {
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid ps-5">
-          <a className="navbar-brand" href="#">Welcome to OurMovieAPP</a>
+          <a className="navbar-brand" href="#">Welcome User</a>
           <button className="navbar-toggler"
             type="button" 
             data-bs-toggle="collapse" 
@@ -143,8 +143,9 @@ const Navbar = () => {
                   Menu
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a className="dropdown-item" href="#">Sign in</a></li>
-                  <li><a className="dropdown-item" href="#">Sign up</a></li>
+                  <li><a className="dropdown-item" href="#">Favorites</a></li>
+                  <li><a className="dropdown-item" href="#">Profile</a></li>
+                  <li><a className="dropdown-item" href="#">Sign out</a></li>
                 </ul>
               </li>
             </ul>
