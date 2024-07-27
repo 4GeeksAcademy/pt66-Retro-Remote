@@ -10,6 +10,7 @@ import FetchInitialData from './FetchInitialData'; // Import FetchInitialData fo
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import PersonalQueue from './pages/PersonalQueue';
+import { FavoritesProvider } from './pages/FavoritesContext';
 
 
 
