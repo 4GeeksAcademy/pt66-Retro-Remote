@@ -10,6 +10,7 @@ import requests
 
 TMDB_API_KEY = 'ef1972bcabdcfd5e6e3b2b9c7b92661d'
 
+
 api = Blueprint('api', __name__, url_prefix="/api")
 
 @api.route('/top-rated/movies', methods=['GET'])
@@ -63,3 +64,12 @@ def add_review():
     db.session.refresh(review)
 
     return jsonify(review.serialize())
+
+
+
+
+# Demo API forwarding route
+@api.route('/relay', methods=['GET'])
+def relay_http_req():
+    resp = requests.get("https://httpbin.org/anything?apiKey=somesecretapikey")
+    return jsonify(resp.json()), 200
