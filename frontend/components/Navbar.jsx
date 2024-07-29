@@ -1,19 +1,30 @@
 import { Link } from "react-router-dom";
+import { Home } from "../pages/Home";
 
 export const Navbar = () => {
 
 	return (
-		<nav className="navbar navbar-light bg-light">
+		<header>
 			<div className="container">
-				<Link to="/">
-					<span className="navbar-brand mb-0 h1">React Boilerplate</span>
-				</Link>
-				<div className="ml-auto">
-					<Link to="/demo">
-						<button className="btn btn-primary">Check the Context in action</button>
-					</Link>
-				</div>
+				<div className="inner-content">
+					<div className="brand">
+						<Link to="/">MovieList</Link>
+					</div>
+
+					<ul className="nav-links">
+						<li>
+							<Link to="/add" className="btn">Add</Link>
+						</li>
+						<li>
+							<Link to="/watched">Watched</Link>
+						</li>
+						<li>
+							<Link to="/favorites">Favorites</Link>
+						</li>
+					</ul>
+				</div>	
 			</div>
-		</nav>
+		</header>			
 	);
 };
+export default Home;
