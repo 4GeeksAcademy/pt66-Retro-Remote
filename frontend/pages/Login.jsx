@@ -88,7 +88,12 @@ const Login = async () => {
                         <i className="bx bxs-envelope"></i>
                     </div>
                     <div className="input-box animation" style={{ '--i': 20, '--j': 3 }}>
-                        <input type="password" required />
+                        <input 
+                        type="password"
+                        value={password}
+                        onChange={(ev) => setPassword(ev.target.value)}
+                        placeholder='password'
+                        required />
                         <label>Password</label>
                         <i className="bx bxs-lock-alt"></i>
                     </div>
