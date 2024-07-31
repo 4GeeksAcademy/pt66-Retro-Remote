@@ -13,11 +13,11 @@
 
 .search {
   color: #fed8b1;
-  border: #fed8b1 1px solid;
+  border: #262625 1px solid;
 }
 .search:hover {
   color: black;
-  background-color: #fed8b1;
+  background-color: #262625;
 }
 .clear {
   position: absolute;

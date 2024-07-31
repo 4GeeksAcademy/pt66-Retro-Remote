@@ -28,6 +28,9 @@
   color: #888;
 }
 
+body {
+  background-color: #262625 !important;
+}
 .movie-card .btn {
   margin-top: 0.5rem;
 }
@@ -36,16 +39,10 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-body{
-    background-color: black;
-    color:white;
-}
+
 
 .movieDetailsWrapper{
-    background: linear-gradient(217deg, rgba(127, 125, 125, 0.8), rgba(255,0,0,0) 70.71%),
-    linear-gradient(127deg, rgba(97, 101, 97, 0.8), rgba(0,255,0,0) 70.71%),
-    linear-gradient(336deg, rgba(194, 220, 208, 0.8), rgba(0,0,255,0) 70.71%),
-    linear-gradient(336deg, rgba(29, 36, 33, 0.8), rgba(0,0,255,0) 70.71%);
+    background: white;
     height: 50rem;
     width: 71rem;
     margin: auto;
@@ -84,6 +81,10 @@ body{
   .directors span:not(:last-of-type,:first-of-type)::after {
     padding:1rem;
     content: '\00B7';
+  }
+
+  #reviewdata{
+    width:48rem;
   }
 #exampleFormControlTextarea1{
     max-width:40rem;
