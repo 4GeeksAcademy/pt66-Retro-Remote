@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import useGlobalReducer from '../hooks/useGlobalReducer';
 // import './Login.css';
 
-const Login = () => {
+const Login = async () => {
     const [active, setActive] = useState(false);
+    const dispatch = useDispatch();
 
     const handleRegisterClick = () => {
         setActive(true);
@@ -11,6 +14,30 @@ const Login = () => {
     const handleLoginClick = () => {
         setActive(false);
     };
+    const handleLoginSubmit = async (formData) => {
+        const resp = await fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        } )
+        if (resp.ok) {
+        const data = await resp.json();
+        dispatch({ type: 'LOGIN_SUCCESS', payload: data });
+        } else {
+            dispatch({ type: 'LOGIN_FAILURE', payload: 'Login failed' });
+        }
+        
+    }
+
+   
+   
+    
+    
+
+ 
+
 
     return <>
         <div className={`wrapper ${active ? 'active' : ''}`}>
@@ -42,12 +69,21 @@ const Login = () => {
                 <h2 className="animation" style={{ '--i': 17, '--j': 0 }}>Sign Up</h2>
                 <form action="#">
                     <div className="input-box animation" style={{ '--i': 18, '--j': 1 }}>
-                        <input type="text" required />
-                        <label>Username</label>
+                        <input 
+                        type="text" 
+                        value={username}
+                        onChange={(ev) => setUsername(ev.target.value)}
+                        placeholder='username'
+                        />
                         <i className="bx bxs-user"></i>
                     </div>
                     <div className="input-box animation" style={{ '--i': 19, '--j': 2 }}>
-                        <input type="text" required />
+                        <input 
+                        type="text" 
+                        value={email}
+                        onChange={(ev) => setEmail(ev.target.value)}
+                        placeholder='email'
+                        required />
                         <label>Email</label>
                         <i className="bx bxs-envelope"></i>
                     </div>

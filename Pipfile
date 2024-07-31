@@ -12,6 +12,9 @@ sqlalchemy = "*"
 flask-cors = "*"
 flask-admin = "*"
 python-dotenv = "*"
+werkzeug = "*"
+flask-jwt-extended = "*"
+flask-bcrypt = "*"
 
 [dev-packages]
 
