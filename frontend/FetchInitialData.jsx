@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
-import { useGlobalReducer } from './store'; // Adjust the import path as necessary
+import useGlobalReducer from './hooks/useGlobalReducer'; // Adjust the import path as necessary
 
 const FetchInitialData = () => {
   const { dispatch } = useGlobalReducer();
-  const apiBaseUrl = "https://symmetrical-goggles-976jrw75rxr6hpp5p-3001.app.github.dev/api";
+  const apiBaseUrl = import.meta.env.VITE_BACKEND_URL + "/api";
 
   useEffect(() => {
     const fetchData = async () => {
