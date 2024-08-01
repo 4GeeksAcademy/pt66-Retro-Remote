@@ -24,7 +24,8 @@ const FetchInitialData = () => {
     };
 
     fetchData();
-  }, [dispatch]);
+    // Fixed infinite load by removing dispatch dependency.
+  }, []);
 
   return null; // This component does not render anything
 };
