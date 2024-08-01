@@ -20,6 +20,21 @@ const PersonalQueue = () => {
       })
       .catch(error => console.error('Error fetching streaming URL:', error));
   };
+  useEffect(() => {
+    fetch('/api/personal-queue')
+      .then(res => res.json())
+      .then(data => setQueue(data));
+  }, []);
+
+  const handlePlay = (movieId) => {
+    fetch(`/api/play/${movieId}`)
+      .then(res => res.json())
+      .then(data => {
+        // Redirect to the streaming service's player URL
+        window.location.href = data.playUrl;
+      })
+      .catch(error => console.error('Error playing movie:', error));
+  };
 
   return (
     <Container className="mt-5">
