@@ -5,9 +5,11 @@ import {
     createRoutesFromElements,
     Route,
 } from "react-router-dom";
-import { Layout } from "./pages/Layout";
-import { Home } from "./pages/Home";
-
+import Layout from "./pages/Layout";
+import  {Home} from "./pages/Home";
+import FetchInitialData from "./FetchInitialData";
+import { MovieDetails } from "./components/MovieDetails";
+import PersonalQueue from "./pages/PersonalQueue";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -21,10 +23,12 @@ export const router = createBrowserRouter(
       <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>} >
 
         {/* Nested Routes: Defines sub-routes within the BaseHome component. */}
-        <Route path= "/" element={<Home />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/" element={<FetchInitialData />} />
+        <Route path="movie/:id" element={<MovieDetails/>}/>
+        <Route path="personal-queue" element={<PersonalQueue />} />
 
-        
-       
       </Route>
     )
+ 
 );
