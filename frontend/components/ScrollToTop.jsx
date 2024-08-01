@@ -17,9 +17,4 @@ const ScrollToTop = ({ location, children }) => {
     return <>{children}</>; // Ensure children are rendered correctly
 };
 
-ScrollToTop.propTypes = {
-    location: PropTypes.shape({ pathname: PropTypes.string }).isRequired, // Adjust based on location shape
-    children: PropTypes.node.isRequired // Use node to specify any valid React child
-};
-
 export default ScrollToTop;
