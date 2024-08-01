@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Card, Button, Row, Col, Container } from 'react-bootstrap';
 import { FavoritesContext } from './FavoritesContext'; // Import the context
 import { Link } from 'react-router-dom';
-import Login from "./Login.jsx";
+import Login from "./Loginform.jsx";
 import "../style.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import useGlobalReducer from '../hooks/useGlobalReducer';

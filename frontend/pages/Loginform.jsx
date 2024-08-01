@@ -2,6 +2,13 @@ import React, { useState } from 'react';
 import useGlobalReducer from '../hooks/useGlobalReducer';
 // import './Login.css';
 
+// Import necessary hooks and functions from React.
+import { useContext, useReducer, createContext } from "react";
+import storeReducer, { initialStore } from "../store"  // Import the reducer and the initial state.
+
+
+
+
 const Login = async () => {
     const [active, setActive] = useState(false);
     const {dispatch} = useGlobalReducer();
