@@ -1,33 +1,28 @@
-export const initialStore=()=>{
-  return{
+export const initialStore = () => {
+  return {
     token: null,
-    todos: [
-      {
-        id: 1,
-        title: "Make the bed",
-        background: null,
-      },
-      {
-        id: 2,
-        title: "Do my homework",
-        background: null,
-      }
-    ]
+    movies: [],
+    shows: []
   }
-}
+};
 
-export default function storeReducer(store, action = {}) {
-  switch(action.type){
+export default function storeReducer(state, action={}) {
+  switch (action.type) {
     case 'login':
-      
-
-      const { id,  color } = action.payload
-
+      return state;
+    case 'set_movies':
+      console.log('Setting movies:', action.payload); // Log the action payload
       return {
-        ...store,
-        todos: store.todos.map((todo) => (todo.id === id ? { ...todo, background: color } : todo))
+        ...state,
+        movies: action.payload.results || action.payload // Ensure it handles the correct payload structure
+      };
+    case 'set_shows':
+      console.log('Setting shows:', action.payload); // Log the action payload
+      return {
+        ...state,
+        shows: action.payload.results || action.payload // Ensure it handles the correct payload structure
       };
     default:
-      throw Error('Unknown action.');
-  }    
+      return state;
+  }
 }

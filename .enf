@@ -1,7 +1,6 @@
 BASENAME=/
-VITE_BACKEND_URL=""
+BACKEND_URL=""
 
 DATABASE_URI="postgresql://gitpod:postgres@localhost:5432/example"
 
 FLASK_APP="main:app"
-TMDB_API_KEY = c9a11eea3478255a0138cb43380433fc

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import useGlobalReducer from '../hooks/useGlobalReducer';
 // import './Login.css';
 
 const Login = async () => {
     const [active, setActive] = useState(false);
-    const dispatch = useDispatch();
+    const {dispatch} = useGlobalReducer();
 
     const handleRegisterClick = () => {
         setActive(true);
