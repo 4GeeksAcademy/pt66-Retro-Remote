@@ -1,11 +1,40 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { FavoritesContext } from './FavoritesContext';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import axios from 'axios';
+import ReactPlayer from 'react-player';
 
 const PersonalQueue = () => {
   const { personalQueue } = useContext(FavoritesContext);
+  const [currentMovieUrl, setCurrentMovieUrl] = useState('');
 
   console.log("PersonalQueue component - Personal Queue: ", personalQueue);
+
+  const playMovie = (movieId) => {
+    axios.get(`/api/movie/${movieId}/streaming`)
+      .then(response => {
+        const providers = response.data.results;
+        // Assuming you want to use the first available streaming URL
+        const streamingUrl = providers?.US?.link; // Adjust as necessary
+        setCurrentMovieUrl(streamingUrl);
+      })
+      .catch(error => console.error('Error fetching streaming URL:', error));
+  };
+  useEffect(() => {
+    fetch('/api/personal-queue')
+      .then(res => res.json())
+      .then(data => setQueue(data));
+  }, []);
+
+  const handlePlay = (movieId) => {
+    fetch(`/api/play/${movieId}`)
+      .then(res => res.json())
+      .then(data => {
+        // Redirect to the streaming service's player URL
+        window.location.href = data.playUrl;
+      })
+      .catch(error => console.error('Error playing movie:', error));
+  };
 
   return (
     <Container className="mt-5">
@@ -20,22 +49,19 @@ const PersonalQueue = () => {
                 <Card.Text>
                   <strong>Release Year:</strong> {new Date(movie.release_date).getFullYear()}
                 </Card.Text>
+                <Button onClick={() => playMovie(movie.id)} variant="primary">Play</Button>
               </Card.Body>
             </Card>
           </Col>
         ))}
       </Row>
+      {currentMovieUrl && (
+        <div className="mt-4">
+          <ReactPlayer url={currentMovieUrl} controls width="100%" />
+        </div>
+      )}
     </Container>
   );
 };
 
 export default PersonalQueue;
-
-
-
-
-
-
-
-
-
