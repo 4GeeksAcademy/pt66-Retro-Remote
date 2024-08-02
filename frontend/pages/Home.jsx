@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Home = () => {
   const { favorites, toggleFavorite, addToPersonalQueue } = useContext(FavoritesContext); // Use the context
+  console.log("favorites",favorites);
   const [httpbin, setHttpbin] = useState({});
 
   useEffect(() => {
@@ -19,7 +20,7 @@ const Home = () => {
   return (
     <Container className="mt-5">
       <Link to="/personal-queue">personalQueue</Link>
-      <h1>Users Recommended Movies and TV</h1>
+      <h1 className="title">Users Recommended Movies and TV</h1>
       <Row>
         {favorites.map((movie) => (
           <Col key={movie.id} sm={12} md={6} lg={4} xl={3}>
@@ -38,7 +39,7 @@ const Home = () => {
                 >
                   ⭐ {movie.stars}
                 </Button>
-                <Link to={`/details/${movie.id}`}>
+                <Link to={`/movie/${movie.id}`}>
                   <Button
                     variant="dark"
                     style={{ color: 'white' }}

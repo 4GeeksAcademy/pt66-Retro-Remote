@@ -2,7 +2,10 @@ import React, { createContext, useReducer, useContext } from 'react';
 
 export const initialState = {
   movies: [],
-  shows: []
+  shows: [],
+  movie_details:[],
+  movie_cast : [],
+  tvShow_details:[]
 };
 
 export function storeReducer(state = initialState, action) {
@@ -19,6 +22,18 @@ export function storeReducer(state = initialState, action) {
         ...state,
         shows: action.payload.results || action.payload // Ensure it handles the correct payload structure
       };
+    case 'set_movie_details':
+      console.log('setting movie details',action.payload);
+      return {
+        ...state,
+        movie_details: action.payload.results || action.payload
+      }
+    case 'set_movie_cast':
+        console.log('setting movie cast and crew',action.payload);
+        return {
+          ...state,
+          movie_cast: action.payload.results || action.payload
+        }
     default:
       return state;
   }
