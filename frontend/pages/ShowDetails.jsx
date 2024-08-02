@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGlobalReducer } from '../store';
-import { DateTime,Duration } from "luxon";
 
 const ShowDetails = () => {
-    const { store } = useGlobalReducer();
     const {id} = useParams();
-    const { movie_details = []} = store;
     const [showDetails,setShowDetails] = useState({})
     const [airedYear,setAiredYear] = useState();
     const [seasonsEpisodes,setSeasonsEpisodes] = useState({'seasons':'','episodes':''});
@@ -35,7 +31,7 @@ const ShowDetails = () => {
                 const cast = data[1]['cast'];
                 const crew = data[1]['crew'];
                 const cast_crew = cast.concat(crew);
-                cast_crew.map((obj)=>{
+                cast_crew.forEach((obj)=>{
                     if(obj['known_for_department'] == 'Acting'){
                     setActors((prevArray)=>[...prevArray,obj['name']]);
                     } else if(obj['known_for_department'] == 'Directing'){
@@ -52,6 +48,8 @@ const ShowDetails = () => {
      }
          handleGetMovieDetails();
 },[])
+
+
     async function handleSubmitReview(e){
         console.log(id);
          e.preventDefault();

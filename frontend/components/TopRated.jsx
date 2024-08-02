@@ -17,25 +17,25 @@ function TopRated() {
   console.log('Shows in TopRated:', shows); 
   
   useEffect(() => {
-    const carouselElement = carouselRef.current;
+    const carouselElement = carouselRef.current; 
     if (carouselElement) {
       const handleMouseEnter = () => {
-        const carouselInstance = window.bootstrap.Carousel.getInstance(carousel);
+        const carouselInstance = window.bootstrap.Carousel.getInstance(carouselElement);
         carouselInstance.pause();
       };
 
       const handleMouseLeave = () => {
-        const carouselInstance = window.bootstrap.Carousel.getInstance(carousel);
+        const carouselInstance = window.bootstrap.Carousel.getInstance(carouselElement);
         carouselInstance.cycle();
       };
 
-      carousel.addEventListener('mouseenter', handleMouseEnter);
-      carousel.addEventListener('mouseleave', handleMouseLeave);
+      carouselElement.addEventListener('mouseenter', handleMouseEnter);
+      carouselElement.addEventListener('mouseleave', handleMouseLeave);
 
       return () => {
-        if (carousel) {
-          carousel.removeEventListener('mouseenter', handleMouseEnter);
-          carousel.removeEventListener('mouseleave', handleMouseLeave);
+        if (carouselElement) {
+          carouselElement.removeEventListener('mouseenter', handleMouseEnter);
+          carouselElement.removeEventListener('mouseleave', handleMouseLeave);
         }
       };
     }

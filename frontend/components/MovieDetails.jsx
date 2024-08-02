@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import {  useEffect, useState } from "react";
 import { useGlobalReducer } from '../store';
-import { DateTime,Duration } from "luxon";
+import { Duration } from "luxon";
 
 const MovieDetails = () => {
     const { store } = useGlobalReducer();
@@ -9,32 +8,39 @@ const MovieDetails = () => {
     const { movie_details = []} = store;
     const { movie_cast =[]} =store;
 
+
     const [releaseYear,setReleaseYear] = useState();
     const [movieDuration,setMovieDuration] = useState({hours:'',minutes:''});
     const [actors,setActors] = useState([]);
     const [directors,setDirectors] = useState([]);
     const [writers,setWriters] = useState([]);
     const [reviewData,setReviewData] = useState();
-    
-    var d = new Date(movie_details.release_date)
-    setReleaseYear(d.getFullYear());
 
+ useEffect(() => {
+    const d = new Date(movie_details.release_date)
+    setReleaseYear(d.getFullYear());
+        
     const duration = Duration.fromObject({ minutes: movie_details.runtime});
     const hrs_mins = duration.shiftTo('hours', 'minutes').toObject();
     setMovieDuration({'hours' : hrs_mins['hours'],'minutes':hrs_mins['minutes']})
-
+    
     const cast = movie_cast['cast'];
     const crew = movie_cast['crew'];
-    const cast_crew = cast.concat(crew);
-    cast_crew.map((obj)=>{
+    const cast_crew = cast?.concat(crew);
+    cast_crew?.forEach((obj)=>{
         if(obj['known_for_department'] == 'Acting'){
-        setActors((prevArray)=>[...prevArray,obj['name']]);
-        } else if(obj['known_for_department'] == 'Directing'){
-            setDirectors((prevArray)=>[...prevArray,obj['name']]);
-        }else if(obj['known_for_department'] == 'Writing'){
-            setWriters((prevArray)=>[...prevArray,obj['name']]);
-        }
-    })
+            setActors((prevArray)=>[...prevArray,obj['name']]);
+            } else if(obj['known_for_department'] == 'Directing'){
+                setDirectors((prevArray)=>[...prevArray,obj['name']]);
+            }else if(obj['known_for_department'] == 'Writing'){
+                setWriters((prevArray)=>[...prevArray,obj['name']]);
+            }
+        })
+ }, [])
+
+  
+
+
 
 
 async function handleSubmitReview(e){
