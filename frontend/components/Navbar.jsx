@@ -2,16 +2,17 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import '../assets/css/Navbar.css';
+// import { useAuth } from './AuthContext';
 
-const Navbar = () => {
+export const Navbar = () => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const dropdownRef = useRef(null);
+  // const { isAuthenticated } = useAuth();
 
   const apiBaseUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/api";
-  const imageBaseUrl = 'https://image.tmdb.org/t/p/w92'; 
+  const imageBaseUrl = 'https://image.tmdb.org/t/p/w92';
 
   const fetchSuggestions = async (query) => {
     try {
@@ -54,7 +55,7 @@ const Navbar = () => {
   const clearSearch = () => {
     setQuery('');
     setSuggestions([]);
-  }
+  };
 
   useEffect(() => {
     const dropdown = dropdownRef.current;
@@ -75,17 +76,21 @@ const Navbar = () => {
     };
   }, []);
 
+  // if (!isAuthenticated) {
+  //   return null;
+  // }
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid ps-5">
-          <a className="navbar-brand" href="#">Welcome to OurMovieAPP</a>
+          <a className="navbar-brand" href="#">Welcome User</a>
           <button className="navbar-toggler"
-            type="button" 
-            data-bs-toggle="collapse" 
-            data-bs-target="#navbarNavDropdown" 
-            aria-controls="navbarNavDropdown" 
-            aria-expanded="false" 
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="false"
             aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon"></span>
@@ -105,7 +110,7 @@ const Navbar = () => {
                 {query && (
                   <button
                     type="button"
-                    className="brn btn-clear clear"
+                    className="btn btn-clear clear"
                     onClick={clearSearch}
                   >
                     &times;
@@ -116,9 +121,9 @@ const Navbar = () => {
                     {suggestions.slice(0, 10).map((suggestion) => (
                       <li
                         key={suggestion.id}
-                        className="list-group-item 
-                          list-group-item-action 
-                          d-flex 
+                        className="list-group-item
+                          list-group-item-action
+                          d-flex
                           align-items-center
                           suggestion-item"
                         onClick={() => handleSuggestionClick(suggestion)}
@@ -143,8 +148,9 @@ const Navbar = () => {
                   Menu
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a className="dropdown-item" href="#">Sign in</a></li>
-                  <li><a className="dropdown-item" href="#">Sign up</a></li>
+                  <li><a className="dropdown-item" href="#">Favorites</a></li>
+                  <li><a className="dropdown-item" href="#">Profile</a></li>
+                  <li><a className="dropdown-item" href="#">Sign out</a></li>
                 </ul>
               </li>
             </ul>
@@ -171,4 +177,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+

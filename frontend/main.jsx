@@ -1,6 +1,6 @@
 import React from 'react';
-import '../frontend/assets/css/main.css'
-
+import '../frontend/assets/css/main.css';
+// import { AuthProvider } from './components/AuthContext';
 import ReactDOM from 'react-dom/client';
 import './index.css'; // Global styles for your application
 import { RouterProvider } from 'react-router-dom'; // Import RouterProvider to use the router
@@ -10,21 +10,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { FavoritesProvider } from './pages/FavoritesContext';
 
-
-
 const Main = () => {
     return (
         <React.StrictMode>
-          
-          <StoreProvider>
-            <FavoritesProvider>                      
-            <RouterProvider router={router}/>
-            </FavoritesProvider>
-            </StoreProvider>         
+            {/* <AuthProvider> */}
+                <StoreProvider>
+                    <FavoritesProvider>
+                        <RouterProvider router={router} />
+                    </FavoritesProvider>
+                </StoreProvider>
+            {/* </AuthProvider> */}
         </React.StrictMode>
     );
 };
 
-// Render the Main component into the root DOM element.
-ReactDOM.createRoot(document.getElementById('root')).render(<Main />);
-
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Main />);

@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 
 
+
 function TopRated() {
   const { store } = useGlobalReducer();
   const { movies = [], shows = [] } = store;
