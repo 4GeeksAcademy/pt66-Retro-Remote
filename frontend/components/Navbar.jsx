@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import '../assets/css/Navbar.css';
 // import { useAuth } from './AuthContext';
 
 export const Navbar = () => {
@@ -11,7 +12,7 @@ export const Navbar = () => {
   const dropdownRef = useRef(null);
   // const { isAuthenticated } = useAuth();
 
-  const apiBaseUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/api";
+  const apiBaseUrl = "https://curly-pancake-x5rv7x5p74qrhp6w9-3001.app.github.dev/api";
   const imageBaseUrl = 'https://image.tmdb.org/t/p/w92';
 
   const fetchSuggestions = async (query) => {

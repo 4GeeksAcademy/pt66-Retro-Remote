@@ -5,7 +5,7 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-TMDB_API_KEY = 'your_tmdb_api_key'
+TMDB_API_KEY = "c9a11eea3478255a0138cb43380433fc"
 
 def get_streaming_providers(movie_id):
     url = f'https://api.themoviedb.org/3/movie/{movie_id}/watch/providers'
