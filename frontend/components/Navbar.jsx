@@ -1,16 +1,19 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../assets/css/Navbar.css';
-// import { useAuth } from './AuthContext';
+import { useGlobalReducer } from '../store';
 
 export const Navbar = () => {
+  const { store, dispatch } = useGlobalReducer();
+  // const { token } = store;
+  const [token, setToken] = useState("")
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const dropdownRef = useRef(null);
-  // const { isAuthenticated } = useAuth();
 
   const apiBaseUrl = "https://curly-pancake-x5rv7x5p74qrhp6w9-3001.app.github.dev/api";
   const imageBaseUrl = 'https://image.tmdb.org/t/p/w92';
@@ -35,7 +38,6 @@ export const Navbar = () => {
       }
     }
   };
-
   const handleInputChange = (event) => {
     const newQuery = event.target.value;
     setQuery(newQuery);
@@ -77,9 +79,20 @@ export const Navbar = () => {
     };
   }, []);
 
-  // if (!isAuthenticated) {
-  //   return null;
-  // }
+  const setTestToken = () => {
+    // const testToken = 'your_test_token';
+    // dispatch({ type: 'SET_TOKEN', payload: testToken });
+    token == "" ? setToken('your_test_token') : setToken(token = "");
+    console.log(token) 
+  };
+
+  // useEffect(() => {
+    // either when the token is changes the person who is doing the login functionality 
+    //will also get the user info and save it to the store
+    //IF NOT you will need to use that token to get the user right here
+    // then you can have a useState and do setUser()
+    // and the user nav setting have it based on user and not token
+  // }, [store.token])
 
   return (
     <div>
@@ -96,69 +109,81 @@ export const Navbar = () => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse ps-5" id="navbarNavDropdown">
-            <form className="d-flex me-auto" onSubmit={handleSearch}>
-              <div style={{ position: 'relative' }}>
-                <input
-                  className="form-control me-2 search-bar"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                  value={query}
-                  onChange={handleInputChange}
-                  style={{ width: '400px' }}
-                />
-                {query && (
-                  <button
-                    type="button"
-                    className="btn btn-clear clear"
-                    onClick={clearSearch}
-                  >
-                    &times;
-                  </button>
-                )}
-                {suggestions.length > 0 && (
-                  <ul className="list-group position-absolute" style={{ width: '400px', zIndex: 1000 }}>
-                    {suggestions.slice(0, 10).map((suggestion) => (
-                      <li
-                        key={suggestion.id}
-                        className="list-group-item
-                          list-group-item-action
-                          d-flex
-                          align-items-center
-                          suggestion-item"
-                        onClick={() => handleSuggestionClick(suggestion)}
+          <div className="collapse navbar-collapse" id="navbarNavDropdown">
+            {!token ? (
+              <ul className="navbar-nav">
+                <li className="nav-item">
+                  <a className="nav-link" href="/login">Login</a>
+                </li>
+              </ul>
+            ) : (
+              <>
+                <form className="d-flex me-auto" onSubmit={handleSearch}>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      className="form-control me-2 search-bar"
+                      type="search"
+                      placeholder="Search"
+                      aria-label="Search"
+                      value={query}
+                      onChange={handleInputChange}
+                      style={{ width: '400px' }}
+                    />
+                    {query && (
+                      <button
+                        type="button"
+                        className="btn btn-clear clear"
+                        onClick={clearSearch}
                       >
-                        <img
-                          src={`${imageBaseUrl}${suggestion.poster_path}`}
-                          alt={suggestion.title || suggestion.name}
-                          className="me-2"
-                          style={{ width: '40px', height: '60px', objectFit: 'cover' }}
-                        />
-                        <span>{suggestion.title || suggestion.name}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-              <button className="btn search" type="submit">Search</button>
-            </form>
-            <ul className="navbar-nav ms-auto menu">
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle pe-5" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" ref={dropdownRef}>
-                  Menu
-                </a>
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a className="dropdown-item" href="#">Favorites</a></li>
-                  <li><a className="dropdown-item" href="#">Profile</a></li>
-                  <li><a className="dropdown-item" href="#">Sign out</a></li>
+                        &times;
+                      </button>
+                    )}
+                    {suggestions.length > 0 && (
+                      <ul className="list-group position-absolute" style={{ width: '400px', zIndex: 1000 }}>
+                        {suggestions.slice(0, 10).map((suggestion) => (
+                          <li
+                            key={suggestion.id}
+                            className="list-group-item list-group-item-action d-flex align-items-center suggestion-item"
+                            onClick={() => handleSuggestionClick(suggestion)}
+                          >
+                            <img
+                              src={`${imageBaseUrl}${suggestion.poster_path}`}
+                              alt={suggestion.title || suggestion.name}
+                              className="me-2"
+                              style={{ width: '40px', height: '60px', objectFit: 'cover' }}
+                            />
+                            <span>{suggestion.title || suggestion.name}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                  <button className="btn search" type="submit">Search</button>
+                </form>
+                <ul className="navbar-nav ms-auto menu">
+                  <li className="nav-item dropdown">
+                    <a className="nav-link dropdown-toggle pe-5" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" ref={dropdownRef}>
+                      Menu
+                    </a>
+                    <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <li><a className="dropdown-item" href="#">Favorites</a></li>
+                      <li><a className="dropdown-item" href="#">Profile</a></li>
+                      <li><a className="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                  </li>
                 </ul>
-              </li>
-            </ul>
+              </>
+            )}
           </div>
         </div>
       </nav>
-
+      {!token && (
+        <div className="container mt-3">
+          <button className="btn btn-primary" onClick={setTestToken}>
+            Set Test Token
+          </button>
+        </div>
+      )}
       <div className="container mt-4">
         <div className="row">
           {results.map((item) => (
@@ -177,5 +202,3 @@ export const Navbar = () => {
     </div>
   );
 };
-
-

@@ -3,51 +3,58 @@ import React, { createContext, useReducer, useContext } from 'react';
 export const initialState = {
   movies: [],
   shows: [],
-  movie_details:[],
-  movie_cast : [],
-  tvShow_details:[]
+  movie_details: [],
+  movie_cast: [],
+  tvShow_details: [],
+  token: null, // Add token field
 };
 
 export function storeReducer(state = initialState, action) {
   switch (action.type) {
     case 'set_movies':
-      console.log('Setting movies:', action.payload); // Log the action payload
+      console.log('Setting movies:', action.payload);
       return {
         ...state,
-        movies: action.payload.results || action.payload // Ensure it handles the correct payload structure
+        movies: action.payload.results || action.payload,
       };
     case 'set_shows':
-      console.log('Setting shows:', action.payload); // Log the action payload
+      console.log('Setting shows:', action.payload);
       return {
         ...state,
-        shows: action.payload.results || action.payload // Ensure it handles the correct payload structure
+        shows: action.payload.results || action.payload,
       };
     case 'set_movie_details':
-      console.log('setting movie details',action.payload);
+      console.log('setting movie details', action.payload);
       return {
         ...state,
-        movie_details: action.payload.results || action.payload
-      }
+        movie_details: action.payload.results || action.payload,
+      };
     case 'set_movie_cast':
-        console.log('setting movie cast and crew',action.payload);
-        return {
-          ...state,
-          movie_cast: action.payload.results || action.payload
-        }
+      console.log('setting movie cast and crew', action.payload);
+      return {
+        ...state,
+        movie_cast: action.payload.results || action.payload,
+      };
+    case 'set_token':
+      return {
+        ...state,
+        token: action.payload,
+      };
+    case 'clear_token':
+      return {
+        ...state,
+        token: null,
+      };
     default:
       return state;
   }
 }
 
-// Create a context to hold the global state of the application
 export const StoreContext = createContext();
 
-// Define a provider component that encapsulates the store
 export function StoreProvider({ children }) {
-  // Initialize reducer with the initial state
   const [store, dispatch] = useReducer(storeReducer, initialState);
 
-  // Provide the store and dispatch method to all child components
   return (
     <StoreContext.Provider value={{ store, dispatch }}>
       {children}
@@ -55,7 +62,6 @@ export function StoreProvider({ children }) {
   );
 }
 
-// Custom hook to access the global state and dispatch function
 export function useGlobalReducer() {
   const context = useContext(StoreContext);
   if (!context) {
