@@ -64,6 +64,12 @@ export const FavoritesProvider = ({ children }) => {
   const toggleFavorite = (item) => {
     setFavorites((prevFavorites) => {
       const isFavorite = prevFavorites.find((fav) => fav.id === item.id);
+
+      // Prevent multiple favoriting
+      if (isFavorite && isFavorite.stars > 0) {
+        return prevFavorites;
+      }
+
       if (isFavorite) {
         return prevFavorites.map((fav) =>
           fav.id === item.id ? { ...fav, stars: fav.stars + 1 } : fav
