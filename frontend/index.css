@@ -1,3 +1,10 @@
+
+body {
+  background-color: #262625 !important;
+  color:white !important;
+}
+
+
 .movie-card {
   background-color: #1c1c1c; /* Dark background for poster effect */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Deep shadow for depth */
@@ -34,9 +41,8 @@
   color: #bbb; /* Lighter color for the text */
 }
 
-body {
-  background-color: #262625 !important;
-}
+
+
 .movie-card .btn {
   margin-top: 0.5rem;
 }
@@ -54,11 +60,9 @@ body {
     width: 71rem;
     margin: auto;
     margin-top: 4rem;
-  
-body {
-  background-color: black;
-  color: white;
 }
+  
+
 
 .movieDetailsWrapper {
   background: linear-gradient(217deg, rgba(127, 125, 125, 0.8), rgba(255, 0, 0, 0) 70.71%),
@@ -109,14 +113,18 @@ body {
 }
 
 img {
-  width: 100%;
-  height: auto; /* Maintain aspect ratio */
+  width: 30rem;
+  height: 30rem;
 }
 
 .container1 {
-  width: 14rem; /* Adjust width for poster-like appearance */
+  width: 19rem; /* Adjust width for poster-like appearance */
 }
 
+.tvShowNo {
+  color:rgb(234, 98, 98);
+  font-weight: bold;
+}
 /* frontend/src/styles/index.css */
 
 body {
@@ -132,7 +140,7 @@ body {
   }
 
   #reviewdata{
-    width:48rem;
+    width:46rem;
   }
 #exampleFormControlTextarea1{
     max-width:40rem;

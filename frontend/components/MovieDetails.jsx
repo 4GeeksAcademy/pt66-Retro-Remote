@@ -1,6 +1,7 @@
 import {  useEffect, useState } from "react";
 import { useGlobalReducer } from '../store';
 import { Duration } from "luxon";
+import "../index.css"
 
 const MovieDetails = () => {
     const { store } = useGlobalReducer();
@@ -8,6 +9,9 @@ const MovieDetails = () => {
     const { movie_details = []} = store;
     const { movie_cast =[]} =store;
 
+    console.log('in movie details');
+    console.log('movieDetails',movie_details);
+    console.log('movieCast',movie_cast);
 
     const [releaseYear,setReleaseYear] = useState();
     const [movieDuration,setMovieDuration] = useState({hours:'',minutes:''});
@@ -36,7 +40,7 @@ const MovieDetails = () => {
                 setWriters((prevArray)=>[...prevArray,obj['name']]);
             }
         })
- }, [])
+ },[])
 
   
 

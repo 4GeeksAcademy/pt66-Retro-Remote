@@ -5,7 +5,8 @@ export const initialState = {
   shows: [],
   movie_details:[],
   movie_cast : [],
-  tvShow_details:[]
+  tvShow_details:[],
+  tvShow_casr:[]
 };
 
 export function storeReducer(state = initialState, action) {
@@ -33,6 +34,18 @@ export function storeReducer(state = initialState, action) {
         return {
           ...state,
           movie_cast: action.payload.results || action.payload
+        }
+    case 'set_tvShow_details':
+        console.log('setting tvShow details',action.payload);
+        return {
+          ...state,
+          tvShow_details: action.payload.results || action.payload
+        }
+    case 'set_tvShow_cast':
+        console.log('setting tvShow cast and crew',action.payload);
+        return {
+          ...state,
+          tvShow_cast: action.payload.results || action.payload
         }
     default:
       return state;

@@ -5,7 +5,7 @@ import TopRated from '../components/TopRated';
 
 const FetchInitialData = () => {
   const { dispatch } = useGlobalReducer();
-  const apiBaseUrl = "https://didactic-goldfish-pq5wx6vrvrh69q7-3001.app.github.dev/api";
+  const apiBaseUrl = "https://upgraded-goldfish-49pvxr4gx7fp45-3001.app.github.dev/api";
 
   useEffect(() => {
     const fetchData = async () => {
