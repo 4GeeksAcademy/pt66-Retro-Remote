@@ -8,7 +8,7 @@ import Home from "./pages/Home";
 import FetchInitialData from "./FetchInitialData";
 import { MovieDetails } from "./components/MovieDetails";
 import PersonalQueue from "./pages/PersonalQueue";
-import { UserRecommend } from "./pages/UserRecommend";
+import  UserRecommend from "./pages/UserRecommend";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
