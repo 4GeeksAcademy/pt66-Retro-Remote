@@ -1,15 +1,13 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../assets/css/Navbar.css';
 import { useGlobalReducer } from '../store';
+import { Link } from 'react-router-dom';
 
 export const Navbar = () => {
   const { store, dispatch } = useGlobalReducer();
-  // const { token } = store;
-  const [token, setToken] = useState("")
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
@@ -38,6 +36,7 @@ export const Navbar = () => {
       }
     }
   };
+
   const handleInputChange = (event) => {
     const newQuery = event.target.value;
     setQuery(newQuery);
@@ -79,21 +78,6 @@ export const Navbar = () => {
     };
   }, []);
 
-  const setTestToken = () => {
-    // const testToken = 'your_test_token';
-    // dispatch({ type: 'SET_TOKEN', payload: testToken });
-    token == "" ? setToken('your_test_token') : setToken(token = "");
-    console.log(token) 
-  };
-
-  // useEffect(() => {
-    // either when the token is changes the person who is doing the login functionality 
-    //will also get the user info and save it to the store
-    //IF NOT you will need to use that token to get the user right here
-    // then you can have a useState and do setUser()
-    // and the user nav setting have it based on user and not token
-  // }, [store.token])
-
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -110,10 +94,10 @@ export const Navbar = () => {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
-            {!token ? (
+            {!store.token ? (
               <ul className="navbar-nav">
                 <li className="nav-item">
-                  <a className="nav-link" href="/login">Login</a>
+                  <Link className="nav-link" to="/login">Login</Link>
                 </li>
               </ul>
             ) : (
@@ -177,13 +161,6 @@ export const Navbar = () => {
           </div>
         </div>
       </nav>
-      {!token && (
-        <div className="container mt-3">
-          <button className="btn btn-primary" onClick={setTestToken}>
-            Set Test Token
-          </button>
-        </div>
-      )}
       <div className="container mt-4">
         <div className="row">
           {results.map((item) => (
