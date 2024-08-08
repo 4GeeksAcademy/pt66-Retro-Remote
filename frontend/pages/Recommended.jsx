@@ -1,43 +1,27 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Container, Card, Button, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { Card, Button, Row, Col, Container } from 'react-bootstrap';
 import { FavoritesContext } from './FavoritesContext'; // Import the context
+import { Link } from 'react-router-dom';
 
-const Home = () => {
-  const [httpbin, setHttpbin] = useState({});
+
+export const Recommended = () => {
   const { favorites, toggleFavorite, addToPersonalQueue } = useContext(FavoritesContext); // Use the context
+  console.log("favorites",favorites);
   const [httpbin, setHttpbin] = useState({});
 
   useEffect(() => {
-    console.log('Location changed:', location);
-    async function fetchInitialData() {
-      try {
-        console.log('Fetching initial data...');
-        const options = {
-          method: 'GET',
-          headers: {
-            accept: 'application/json',
-          }
-        };
-        const resp = await fetch('https://api.themoviedb.org/3/movie/1022789?language=en-US&api_key=f0d14b30a61125698e4990acdb103e21', options);
-        const data = await resp.json();
-        console.log('Fetched data:', data);
-        setMovieId(data.id);
-        dispatch({ type: 'set_movies', payload: data.results ? data.results : [data] });
-      } catch (error) {
-        console.error('Error fetching initial data:', error);
-      }
-    }
-
-    fetchInitialData();
-  }, [dispatch, location.key]);
+    const getHttpBin = async () => {
+      const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/relay");
+      const data = await resp.json();
+      setHttpbin(data);
+    };
+    getHttpBin();
+  }, []);
 
   return (
     <Container className="mt-5">
       <Link to="/personal-queue">personalQueue</Link>
-      <pre>{JSON.stringify(httpbin, null, 2)}</pre>
-
-      <h1 className="mt-4">Users Recommended Movies and TV</h1>
+      <h1 className="title">Users Recommended Movies and TV</h1>
       <Row>
         {favorites.map((movie) => (
           <Col key={movie.id} sm={12} md={6} lg={4} xl={3}>
@@ -75,6 +59,7 @@ const Home = () => {
           </Col>
         ))}
       </Row>
+      <pre>{JSON.stringify(httpbin, null, 2)}</pre>
     </Container>
   );
 };

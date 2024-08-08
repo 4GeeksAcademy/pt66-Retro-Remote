@@ -12,7 +12,7 @@ const Movie = () => {
   useEffect(() =>{
     console.log('in useeffect')
     async function getMovieDetails() {
-        const apiBaseUrl = "https://didactic-goldfish-pq5wx6vrvrh69q7-3001.app.github.dev/api";
+        const apiBaseUrl = "https://curly-pancake-x5rv7x5p74qrhp6w9-3001.app.github.dev/api";
 
         console.log('before api call');
     const movieDetailsResponse = await axios.get(`${apiBaseUrl}/movieDetails?id=${id}`);

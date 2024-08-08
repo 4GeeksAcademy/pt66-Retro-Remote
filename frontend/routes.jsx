@@ -4,12 +4,13 @@ import {
   Route,
 } from "react-router-dom";
 import Layout from "./pages/Layout";
-import  Home from "./pages/Home";
-import FetchInitialData from "./pages/FetchInitialData";
+import { Home } from "./pages/Home";
+import { FetchInitialData } from "./pages/FetchInitialData";
 import MovieDetails  from "./components/MovieDetails";
 import PersonalQueue from "./pages/PersonalQueue";
 import Movie from "./pages/Movie";
 import ShowDetails from "./pages/ShowDetails";
+import Login from "./components/Login";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
