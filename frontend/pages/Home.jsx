@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Card, Button, Row, Col, Container } from 'react-bootstrap';
-import { FavoritesContext } from './FavoritesContext'; // Import the context
+import React, { useEffect, useState, useContext } from 'react';
+import { Container, Card, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { FavoritesContext } from './FavoritesContext'; // Import the context
 
 const Home = () => {
+  const [httpbin, setHttpbin] = useState({});
   const { favorites, toggleFavorite, addToPersonalQueue } = useContext(FavoritesContext); // Use the context
-  console.log("favorites",favorites);
   const [httpbin, setHttpbin] = useState({});
 
   useEffect(() => {
@@ -20,7 +20,9 @@ const Home = () => {
   return (
     <Container className="mt-5">
       <Link to="/personal-queue">personalQueue</Link>
-      <h1 className="title">Users Recommended Movies and TV</h1>
+      <pre>{JSON.stringify(httpbin, null, 2)}</pre>
+
+      <h1 className="mt-4">Users Recommended Movies and TV</h1>
       <Row>
         {favorites.map((movie) => (
           <Col key={movie.id} sm={12} md={6} lg={4} xl={3}>
@@ -58,7 +60,6 @@ const Home = () => {
           </Col>
         ))}
       </Row>
-      <pre>{JSON.stringify(httpbin, null, 2)}</pre>
     </Container>
   );
 };

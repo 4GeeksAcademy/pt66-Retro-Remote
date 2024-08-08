@@ -12,12 +12,12 @@
 }
 
 .search {
-  color: #fed8b1;
-  border: #262625 1px solid;
+  color: white;
+  border: white 1px solid;
 }
 .search:hover {
   color: black;
-  background-color: #262625;
+  background-color: white;
 }
 .clear {
   position: absolute;
@@ -30,7 +30,7 @@
   color: #aaa;
 }
 .menu {
-  color: #fed8b1;
+  color: white;
 }
 .dropdown-menu {
   box-shadow :
