@@ -3,6 +3,7 @@ import '../assets/css/TopRated.css';
 import { Carousel } from 'react-bootstrap';
 import { useGlobalReducer } from '../store';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom';
 
 
 
@@ -16,25 +17,25 @@ function TopRated() {
   console.log('Shows in TopRated:', shows); 
   
   useEffect(() => {
-    const carouselElement = carouselRef.current;
+    const carouselElement = carouselRef.current; 
     if (carouselElement) {
       const handleMouseEnter = () => {
-        const carouselInstance = window.bootstrap.Carousel.getInstance(carousel);
+        const carouselInstance = window.bootstrap.Carousel.getInstance(carouselElement);
         carouselInstance.pause();
       };
 
       const handleMouseLeave = () => {
-        const carouselInstance = window.bootstrap.Carousel.getInstance(carousel);
+        const carouselInstance = window.bootstrap.Carousel.getInstance(carouselElement);
         carouselInstance.cycle();
       };
 
-      carousel.addEventListener('mouseenter', handleMouseEnter);
-      carousel.addEventListener('mouseleave', handleMouseLeave);
+      carouselElement.addEventListener('mouseenter', handleMouseEnter);
+      carouselElement.addEventListener('mouseleave', handleMouseLeave);
 
       return () => {
-        if (carousel) {
-          carousel.removeEventListener('mouseenter', handleMouseEnter);
-          carousel.removeEventListener('mouseleave', handleMouseLeave);
+        if (carouselElement) {
+          carouselElement.removeEventListener('mouseenter', handleMouseEnter);
+          carouselElement.removeEventListener('mouseleave', handleMouseLeave);
         }
       };
     }
@@ -56,21 +57,28 @@ function TopRated() {
         >
         <div className="d-flex justify-content-center TRated">
           {group.map(item => (
+           
             <div key={item.id} className="p-3">
               {item.poster_path ? (
+               
                 <>
                   <img 
                     src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
                     alt={type === 'movie' ? item.title : item.name} 
                     className="imgBorder"
                     style={{ 
-                      width: "120px", 
-                      height: "180px",
+                      width: "300px", 
+                      height: "350px",
                     }}
                   />
-                  <p className="mt-2 movie-title">
+                  <ul className="d-flex w-100  justify-content-around">
+                  <li className="mt-2 movie-title">
                     {item.title || item.name}
-                  </p>
+                  </li>
+                  
+                  <li><Link to={type == 'movie' ?`movie/${item.id}` : `show/${item.id}`}><button className="btn btn-dark">More Details</button></Link></li>
+                  </ul>
+                
                 </>
               ) : (
                 <div>No image available</div>

@@ -6,6 +6,7 @@ import { FavoritesContext } from './FavoritesContext'; // Import the context
 const Home = () => {
   const [httpbin, setHttpbin] = useState({});
   const { favorites, toggleFavorite, addToPersonalQueue } = useContext(FavoritesContext); // Use the context
+  const [httpbin, setHttpbin] = useState({});
 
   useEffect(() => {
     const getHttpBin = async () => {
@@ -40,7 +41,7 @@ const Home = () => {
                 >
                   ⭐ {movie.stars}
                 </Button>
-                <Link to={`/details/${movie.id}`}>
+                <Link to={`/movie/${movie.id}`}>
                   <Button
                     variant="dark"
                     style={{ color: 'white' }}

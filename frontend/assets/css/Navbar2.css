@@ -12,12 +12,14 @@
   }
   
   .search {
+    
     color: white;
     border: white 1px solid;
   }
   .search:hover {
     color: black;
     background-color: white;
+   
   }
   .clear {
     position: absolute;

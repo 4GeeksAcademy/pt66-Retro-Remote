@@ -128,6 +128,7 @@ const dummyData = [
 export const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useState(dummyData);
   const [personalQueue, setPersonalQueue] = useState([]);
+  console.log('favorites in provider',favorites);
 
   const toggleFavorite = (item) => {
     setFavorites((prevFavorites) => {

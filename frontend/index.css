@@ -34,6 +34,9 @@
   color: #bbb; /* Lighter color for the text */
 }
 
+body {
+  background-color: #262625 !important;
+}
 .movie-card .btn {
   margin-top: 0.5rem;
 }
@@ -44,6 +47,14 @@
   white-space: nowrap;
 }
 
+
+.movieDetailsWrapper{
+    background: white;
+    height: 50rem;
+    width: 71rem;
+    margin: auto;
+    margin-top: 4rem;
+  
 body {
   background-color: black;
   color: white;
@@ -114,6 +125,18 @@ body {
   font-family: Arial, sans-serif;
 }
 
+
+  .directors span:not(:last-of-type,:first-of-type)::after {
+    padding:1rem;
+    content: '\00B7';
+  }
+
+  #reviewdata{
+    width:48rem;
+  }
+#exampleFormControlTextarea1{
+    max-width:40rem;
+  }
 h1 {
   text-align: center;
 }

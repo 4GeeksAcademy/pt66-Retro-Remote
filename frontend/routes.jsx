@@ -4,26 +4,29 @@ import {
   Route,
 } from "react-router-dom";
 import Layout from "./pages/Layout";
-import Home from "./pages/Home";
-import FetchInitialData from "./FetchInitialData";
-import { MovieDetails } from "./components/MovieDetails";
+import  Home from "./pages/Home";
+import FetchInitialData from "./pages/FetchInitialData";
+import MovieDetails  from "./components/MovieDetails";
 import PersonalQueue from "./pages/PersonalQueue";
-import  UserRecommend from "./pages/UserRecommend";
+import Movie from "./pages/Movie";
+import ShowDetails from "./pages/ShowDetails";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
       <Route path="/" element={<Layout />} errorElement={<h1>Not found!</h1>}>
 
           {/* Home Route */}
-          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
 
           {/* Other Routes */}
-          <Route path="movie/:id" element={<MovieDetails />} />
+          <Route path="movie/:id" element={<Movie/>}/>
+        <Route path="show/:id" element={<ShowDetails />} />
           <Route path="personal-queue" element={<PersonalQueue />} />
-          <Route path="user-recommend" element={<UserRecommend />} />
+         
 
           {/* FetchInitialData Component - Only if necessary */}
           <Route path="/fetch-data" element={<FetchInitialData />} />
+
 
       </Route>
   )

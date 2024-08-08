@@ -27,7 +27,7 @@
   line-height: 1.2;
   max-height: 2.4em; 
   font-size: 14px;
-  color: black; 
+  color: white; 
   margin-top: 5px; 
   max-width: 120px; 
   font-weight: 700;
@@ -61,4 +61,5 @@ img {
   font-weight: 700;
   padding-top: 50px;
   text-align: center; 
+  color:white;
 }
