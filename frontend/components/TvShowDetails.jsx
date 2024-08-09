@@ -2,14 +2,14 @@ import {  useEffect, useState } from "react";
 import { useGlobalReducer } from '../store';
 import { Duration } from "luxon";
 import "../index.css"
+import { object } from "prop-types";
 
 const TvShow_details = () => {
     const { store } = useGlobalReducer();
 
     const { tvShow_details = []} = store;
     const { tvShow_cast =[]} =store;
-    console.log('tvshow_details',tvShow_details)
-    console.log('tvshow_cast',tvShow_cast);
+
 
     const [airedYear,setAiredYear] = useState();
     const [seasonsEpisodes,setSeasonsEpisodes] = useState({'seasons':'','episodes':''});
@@ -19,27 +19,15 @@ const TvShow_details = () => {
     const [reviewData,setReviewData] = useState();
 
  useEffect(() => {
-   
+    //get year
     var d = new Date(tvShow_details.first_air_date)
     setAiredYear(d.getFullYear());
+
     setSeasonsEpisodes({
         'seasons' : tvShow_details.number_of_seasons,
         'episodes': tvShow_details.number_of_episodes
     })
-    
-    const cast = tvShow_cast['cast'];
-    const crew = tvShow_cast['crew'];
-    const cast_crew = cast?.concat(crew);
-    cast_crew?.forEach((obj)=>{
-        if(obj['known_for_department'] == 'Acting'){
-            setActors((prevArray)=>[...prevArray,obj['name']]);
-            } else if(obj['known_for_department'] == 'Directing'){
-                setDirectors((prevArray)=>[...prevArray,obj['name']]);
-            }else if(obj['known_for_department'] == 'Writing'){
-                setWriters((prevArray)=>[...prevArray,obj['name']]);
-            }
-        })
- }, [])
+ }, [tvShow_details])
 
   
 
@@ -69,23 +57,20 @@ const TvShow_details = () => {
                     <p className="actors">
                         <span className="type">Actors : </span>
                     {
-                            actors.length>4?actors.slice(0, 4).map((actor)=> <span className="names">{actor}</span>): 
-                            actors.map((actor)=> <span className="names" key={actor}>{actor}</span>)
+                            tvShow_cast['actors']?.map((actor)=> <span className="names" key={actor}>{actor}</span>)
                         }
                     </p>
                     <p className="directors">
                         <span className="type">Directors :  </span>
                         {
-                            directors.length>4?directors.slice(0, 4).map((director)=> <span className="names">{director}</span>): 
-                            directors.map((director)=> <span className="names" key={director}>{director}</span>)
+                            tvShow_cast['directors']?.map((director)=> <span className="names" key={director}>{director}</span>)
                         }
                     </p>
                  
                     <p className="writers">
                         <span className="type">Writers : </span>
                         {
-                            writers.length>4?writers.slice(0, 4).map((writer)=> <span className="names">{writer}</span>): 
-                            writers.map((writer)=> <span className="names" key={writer}>{writer}</span>)
+                            tvShow_cast['writers']?.map((writer)=> <span className="names" key={writer}>{writer}</span>)
                         }
                     </p>
                     <div className="mb-3">

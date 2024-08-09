@@ -8,21 +8,25 @@ const Movie = () => {
   const { dispatch } = useGlobalReducer();
   const {id} = useParams();
 
+
   useEffect(() =>{
     async function getMovieDetails() {
+
         const apiBaseUrl = "https://upgraded-goldfish-49pvxr4gx7fp45-3001.app.github.dev/api";
 
-        const movieDetailsResponse = await axios.get(`${apiBaseUrl}/tvShowDetails?id=${id}`);
+        const movieDetailsResponse = await axios.get(`${apiBaseUrl}/movieDetails?id=${id}`);
         dispatch({ type: 'set_movie_details', payload: movieDetailsResponse.data });
 
-        const movieCastCrewResponse = await axios.get(`${apiBaseUrl}/tvShowCast?id=${id}`);
+        const movieCastCrewResponse = await axios.get(`${apiBaseUrl}/movieCast?id=${id}`);
         dispatch({ type: 'set_movie_cast', payload: movieCastCrewResponse.data });
      }
        getMovieDetails();
-    },[dispatch])
+
+
+    },[])
 
   return (
-    <div>
+    <div> 
         <MovieDetails></MovieDetails>
     </div>
   )
