@@ -1,17 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import '../assets/css/TopRated.css';
 import { Carousel } from 'react-bootstrap';
-import { useGlobalReducer } from '../store';
+import { useGlobalReducer } from '../hooks/useGlobalReducer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
-
-
-
 
 function TopRated() {
   const { store } = useGlobalReducer();
   const { movies = [], shows = [] } = store;
-  const carouselRef = useRef();
+  const carouselRef = useRef(null);
 
   
   useEffect(() => {
@@ -36,6 +33,7 @@ function TopRated() {
         }
       };
     }
+    // Any additional setup if necessary
   }, []);
 
   if (!movies.length && !shows.length) {
@@ -49,16 +47,12 @@ function TopRated() {
     }
 
     return chunkedItems.map((group, index) => (
-      <Carousel.Item 
-        key={`${type}-${index}`}
-        >
+      <Carousel.Item key={`${type}-${index}`}>
         <div className="d-flex justify-content-center TRated">
           {group.map(item => (
-           
             <div key={item.id} className="p-3">
               {item.poster_path ? (
-               
-                <>
+                <Link to={type === 'movie' ? `movie/${item.id}` : `show/${item.id}`}>
                   <img 
                     src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
                     alt={type === 'movie' ? item.title : item.name} 
@@ -66,22 +60,17 @@ function TopRated() {
                     style={{ 
                       width: "300px", 
                       height: "350px",
+                      cursor: "pointer"
                     }}
                   />
-                  <ul className="d-flex w-100  justify-content-around">
-                  <li className="mt-2 movie-title">
-                    {item.title || item.name}
-                  </li>
-                  
-                  <li><Link to={type == 'movie' ?`movie/${item.id}` : `show/${item.id}`}><button className="btn btn-dark">More Details</button></Link></li>
-                  </ul>
-                
-                </>
+                </Link>
               ) : (
                 <div>No image available</div>
               )}
-            
-            </div>   
+              <div className="mt-2 movie-title text-center">
+                {item.title || item.name}
+              </div>
+            </div>
           ))}
         </div>
       </Carousel.Item>
@@ -98,7 +87,18 @@ function TopRated() {
             </h1>
           </div>
           <div>
-            <Carousel ref={carouselRef} interval={3000} indicators={true}>
+            <Carousel 
+              interval={3000} 
+              indicators={true}
+              onMouseEnter={() => {
+                const carouselInstance = window.bootstrap.Carousel.getInstance(movieCarouselRef.current);
+                if (carouselInstance) carouselInstance.pause();
+              }}
+              onMouseLeave={() => {
+                const carouselInstance = window.bootstrap.Carousel.getInstance(movieCarouselRef.current);
+                if (carouselInstance) carouselInstance.cycle();
+              }}
+            >
               {renderCarouselItems(movies, 'movie')}
             </Carousel>
           </div>
@@ -111,7 +111,18 @@ function TopRated() {
               Top 20 Rated TV Shows
             </h1> 
           </div>
-          <Carousel  ref={carouselRef} interval={3000} indicators={true}>
+          <Carousel 
+            interval={3000} 
+            indicators={true}
+            onMouseEnter={() => {
+              const carouselInstance = window.bootstrap.Carousel.getInstance(showCarouselRef.current);
+              if (carouselInstance) carouselInstance.pause();
+            }}
+            onMouseLeave={() => {
+              const carouselInstance = window.bootstrap.Carousel.getInstance(showCarouselRef.current);
+              if (carouselInstance) carouselInstance.cycle();
+            }}
+          >
             {renderCarouselItems(shows, 'show')}
           </Carousel>
         </div>
@@ -121,3 +132,7 @@ function TopRated() {
 }
 
 export default TopRated;
+
+
+
+

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useGlobalReducer } from '../store'; // Adjust the import path as necessary
 import TopRated from '../components/TopRated';
 
-const FetchInitialData = () => {
+export const FetchInitialData = () => {
   const { dispatch } = useGlobalReducer();
   const apiBaseUrl = "https://upgraded-goldfish-49pvxr4gx7fp45-3001.app.github.dev/api";
 
@@ -31,4 +31,3 @@ const FetchInitialData = () => {
   )
 };
 
-export default FetchInitialData;

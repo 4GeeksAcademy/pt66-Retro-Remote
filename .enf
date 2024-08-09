@@ -1,5 +1,5 @@
 BASENAME=/
-BACKEND_URL=""
+BACKEND_URL="https://curly-pancake-x5rv7x5p74qrhp6w9-3001.app.github.dev"
 
 DATABASE_URI="postgresql://gitpod:postgres@localhost:5432/example"
 

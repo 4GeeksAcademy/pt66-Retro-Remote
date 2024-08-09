@@ -8,6 +8,7 @@ from flask import (
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager
 
 from backend.admin import setup_admin
 from backend.commands import setup_commands
@@ -26,10 +27,12 @@ app = Flask(__name__,
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
     "DATABASE_URI", 'sqlite:///app.db')
+app.config["JWT_SECRET_KEY"] = "This secret can be anything, really."
 
 db.init_app(app)
 migrate = Migrate(app, db)
 cors = CORS(app)
+jwt = JWTManager(app)
 
 setup_admin(app)
 setup_commands(app)
