@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/css/Login.css';
+import { useGlobalReducer } from '../store';
 
 const Login = () => {
+  const { store, dispatch } = useGlobalReducer();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -10,21 +12,28 @@ const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    
     if (!/\S+@\S+\.\S+/.test(email)) {
       setError('Please enter a valid email address.');
       return;
     }
 
-   
     if (!password) {
       setError('Please enter your password.');
       return;
     }
 
     setError('');
-    
+    // Implement your actual login logic here
+    // On success, dispatch the token
+    const fakeToken = 'your_real_token_from_api';
+    dispatch({ type: 'set_token', payload: fakeToken });
     console.log('Form submitted:', { email, password });
+  };
+
+  const setTestToken = () => {
+    const newToken = store.token === null ? 'your_test_token' : null;
+    dispatch({ type: 'set_token', payload: newToken });
+    console.log('Token set to:', newToken);
   };
 
   return (
@@ -58,6 +67,11 @@ const Login = () => {
             </div>
             <button type="submit" className="btn btn-primary w-100">Login</button>
           </form>
+          <div className="text-center mt-3">
+            <button className="btn btn-primary" onClick={setTestToken}>
+              {store.token ? 'Clear Test Token' : 'Set Test Token'}
+            </button>
+          </div>
         </div>
       </div>
     </div>

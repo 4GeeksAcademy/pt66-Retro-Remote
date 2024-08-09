@@ -5,7 +5,7 @@ import requests
 
 
 
-TMDB_API_KEY = 'ef1972bcabdcfd5e6e3b2b9c7b92661d'
+TMDB_API_KEY = 'f0d14b30a61125698e4990acdb103e21'
 
 from werkzeug.security import (
     generate_password_hash, check_password_hash
@@ -23,7 +23,7 @@ bcrypt = Bcrypt()
 @api.route('/top-rated/movies', methods=['GET'])
 def get_top_rated_movies():
     try:
-        response = requests.get(f'https://api.themoviedb.org/3/movie/top_rated?api_key={TMDB_API_KEY}')
+        response = requests.get(f'https://api.themoviedb.org/3/movie/top_rated?language=en-US&api_key={TMDB_API_KEY}')
         response.raise_for_status()
         return jsonify(response.json().get('results', []))
     except requests.exceptions.RequestException as e:
@@ -32,11 +32,36 @@ def get_top_rated_movies():
 @api.route('/top-rated/shows', methods=['GET'])
 def get_top_rated_shows():
     try:
-        response = requests.get(f'https://api.themoviedb.org/3/tv/top_rated?api_key={TMDB_API_KEY}')
+        response = requests.get(f'https://api.themoviedb.org/3/tv/top_rated?language=en-US&api_key={TMDB_API_KEY}')
         response.raise_for_status()
         return jsonify(response.json().get('results', []))
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
+    
+@api.route('/movieDetails', methods=['GET'])
+def get_movie_details():
+    print('get movie details route')
+    id = request.args.get('id')
+    try:
+        response = requests.get(f'https://api.themoviedb.org/3/movie/{id}?language=en-US&api_key={TMDB_API_KEY}')
+        response.raise_for_status()
+        return jsonify(response.json())
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
+    
+@api.route('/movieCast', methods=['GET'])
+def get_movie_cast():
+    print('get movie cast route')
+    id = request.args.get('id')
+    try:
+        response = requests.get(f'https://api.themoviedb.org/3/movie/{id}/credits?language=en-US&api_key={TMDB_API_KEY}')
+        response.raise_for_status()
+        return jsonify(response.json())
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
 
 @api.route('/search', methods=['GET'])
 def search():
@@ -47,6 +72,10 @@ def search():
         return jsonify(response.json())
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
+
+
+
+
 # Register the Blueprint with the Flask app
 # app.register_blueprint(api)
 

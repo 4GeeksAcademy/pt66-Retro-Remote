@@ -1,12 +1,12 @@
 import requests
 
 class OAuthClient:
-    def __init__(self, service_name):
+    def __init__(self, service_name, client_id, client_secret, redirect_uri, scope):
         self.service_name = service_name
-        self.client_id = 'YOUR_CLIENT_ID'
-        self.client_secret = 'YOUR_CLIENT_SECRET'
-        self.redirect_uri = 'YOUR_REDIRECT_URI'
-        self.scope = 'YOUR_SCOPE'  # Define the scope you need
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.redirect_uri = redirect_uri
+        self.scope = scope
 
     def get_authorize_url(self):
         auth_url = f"https://{self.service_name}.com/oauth/authorize"
@@ -26,7 +26,7 @@ class OAuthClient:
             'code': code,
             'redirect_uri': self.redirect_uri,
         })
-        
+
         if response.status_code != 200:
             raise Exception(f"Error {response.status_code}: {response.text}")
 
