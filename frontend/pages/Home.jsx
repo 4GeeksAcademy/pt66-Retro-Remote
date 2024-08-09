@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FavoritesContext } from './FavoritesContext'; // Import the context
 
 const Home = () => {
   const [httpbin, setHttpbin] = useState({});
   const { favorites, toggleFavorite, addToPersonalQueue } = useContext(FavoritesContext); // Use the context
-  const [httpbin, setHttpbin] = useState({});
+  const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
     const getHttpBin = async () => {
@@ -16,6 +16,11 @@ const Home = () => {
     };
     getHttpBin();
   }, []);
+
+  const handleDoubleClick = (movie) => {
+    addToPersonalQueue(movie);
+    navigate('/personal-queue'); // Redirect to the personal queue page
+  };
 
   return (
     <Container className="mt-5">
@@ -52,6 +57,7 @@ const Home = () => {
                 <Button
                   variant="secondary"
                   onClick={() => addToPersonalQueue(movie)}
+                  onDoubleClick={() => handleDoubleClick(movie)} // Handle double-click
                 >
                   👁️
                 </Button>

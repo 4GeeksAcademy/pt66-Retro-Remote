@@ -1,23 +1,41 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { FavoritesContext } from './FavoritesContext';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
 
 const PersonalQueue = () => {
   const { personalQueue } = useContext(FavoritesContext);
-  
-  // Function to handle playing a movie
+  const [showModal, setShowModal] = useState(false);
+  const [streamingOptions, setStreamingOptions] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null);
+
   const handlePlay = (movieId) => {
+    console.log('Requesting play for movie ID:', movieId);
     fetch(`/api/play/${movieId}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.playUrl) {
-          // Redirect to the streaming service's player URL
-          window.location.href = data.playUrl;
+      .then(response => {
+        if (response.ok) {
+          return response.json();
         } else {
-          console.error('Error: playUrl not found');
+          throw new Error('Network response was not ok.');
         }
       })
-      .catch(error => console.error('Error playing movie:', error));
+      .then(data => {
+        console.log('Streaming services data:', data);
+        if (data.streamingServices && data.streamingServices.length > 0) {
+          setStreamingOptions(data.streamingServices);
+          setSelectedMovie(movieId);
+          setShowModal(true);
+        } else {
+          console.error('Error: No streaming services found');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching streaming services:', error);
+      });
+  };
+
+  const handleServiceSelect = (url) => {
+    console.log('Redirecting to streaming service URL:', url);
+    window.location.href = url; // Redirects the user to the selected streaming service URL
   };
 
   return (
@@ -39,6 +57,28 @@ const PersonalQueue = () => {
           </Col>
         ))}
       </Row>
+
+      {/* Modal to show streaming service options */}
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Select a Streaming Service</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {streamingOptions.map((service, index) => (
+            <Button
+              key={index}
+              onClick={() => handleServiceSelect(service.url)}
+              className="mb-2"
+              block
+            >
+              {service.name}
+            </Button>
+          ))}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>Close</Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };

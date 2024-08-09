@@ -1,55 +1,50 @@
-from flask import Blueprint, jsonify, redirect, request, session
-from oauth_client import OAuthClient
+from flask import Blueprint, jsonify, redirect
+from config import STREAMING_SERVICES
 
 service_bp = Blueprint('service', __name__)
 
-# Define credentials for each service
-STREAMING_SERVICES = {
-    'netflix': {
-        'client_id': 'YOUR_NETFLIX_CLIENT_ID',
-        'client_secret': 'YOUR_NETFLIX_CLIENT_SECRET',
-        'redirect_uri': 'YOUR_NETFLIX_REDIRECT_URI',
-        'scope': 'YOUR_NETFLIX_SCOPE',
-    },
-    'hulu': {
-        'client_id': 'YOUR_HULU_CLIENT_ID',
-        'client_secret': 'YOUR_HULU_CLIENT_SECRET',
-        'redirect_uri': 'YOUR_HULU_REDIRECT_URI',
-        'scope': 'YOUR_HULU_SCOPE',
-    },
-    # Add other services here
+# This dictionary maps movie IDs to streaming services for demonstration purposes.
+# Replace with dynamic mapping as needed.
+MOVIE_STREAMING_SERVICE_MAPPING = {
+    1: 'netflix',
+    2: 'hulu',
+    3: 'prime',
+    4: 'peacock',
+    5: 'zeus',
+    6: 'hbo_max',
+    7: 'starz',
+    8: 'ifc',
+    # Add more mappings based on your needs
 }
+
+@service_bp.route('/api/play/<int:movie_id>', methods=['GET'])
+def get_streaming_services(movie_id):
+    # Find the streaming service for the given movie_id
+    service_name = MOVIE_STREAMING_SERVICE_MAPPING.get(movie_id)
+    
+    if not service_name or service_name not in STREAMING_SERVICES:
+        # Return an error if the streaming service is not found
+        return jsonify({'error': 'Streaming service not found'}), 404
+    
+    # Redirect to the appropriate streaming service URL
+    streaming_service_url = STREAMING_SERVICES[service_name]['url']
+    return jsonify({'streamingServices': [{'name': service_name, 'url': streaming_service_url}]})
 
 @service_bp.route('/api/oauth/authorize/<service_name>', methods=['GET'])
 def oauth_authorize(service_name):
-    credentials = STREAMING_SERVICES.get(service_name)
-    if not credentials:
+    service = STREAMING_SERVICES.get(service_name)
+    if not service:
         return jsonify({'error': 'Service not supported'}), 400
 
-    oauth_client = OAuthClient(service_name, **credentials)
-    authorize_url = oauth_client.get_authorize_url()
-    return redirect(authorize_url)
+    # Redirect to the service's home page or sign-in page
+    return redirect(service['url'])
 
 @service_bp.route('/api/oauth/callback/<service_name>', methods=['GET'])
 def oauth_callback(service_name):
-    code = request.args.get('code')
-    if not code:
-        return jsonify({'error': 'Authorization code not provided'}), 400
-
-    credentials = STREAMING_SERVICES.get(service_name)
-    if not credentials:
-        return jsonify({'error': 'Service not supported'}), 400
-
-    oauth_client = OAuthClient(service_name, **credentials)
-    try:
-        access_token = oauth_client.get_access_token(code)
-        # Store access_token in session or database
-        session[f'{service_name}_access_token'] = access_token
-        return redirect('/profile')  # Redirect to a profile page or another route
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    # Handle OAuth callback if needed, otherwise this can be a placeholder
+    return jsonify({'message': 'Callback URL, handle as needed'}), 200
 
 @service_bp.route('/api/linked-services')
 def linked_services():
-    services = ['hulu', 'netflix']  # Example
+    services = list(STREAMING_SERVICES.keys())
     return jsonify(services)
