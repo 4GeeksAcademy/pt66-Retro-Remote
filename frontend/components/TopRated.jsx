@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import '../assets/css/TopRated.css';
 import { Carousel } from 'react-bootstrap';
-import { useGlobalReducer } from '../store';
+import { useGlobalReducer } from '../hooks/useGlobalReducer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 

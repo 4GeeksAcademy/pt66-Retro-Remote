@@ -8,9 +8,10 @@ import { Home } from "./pages/Home";
 import { FetchInitialData } from "./pages/FetchInitialData";
 import MovieDetails  from "./components/MovieDetails";
 import PersonalQueue from "./pages/PersonalQueue";
+import Login from "./pages/Loginform";
+
 import Movie from "./pages/Movie";
 import ShowDetails from "./pages/ShowDetails";
-import Login from "./components/Login";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +24,7 @@ export const router = createBrowserRouter(
           <Route path="movie/:id" element={<Movie/>}/>
         <Route path="show/:id" element={<ShowDetails />} />
           <Route path="personal-queue" element={<PersonalQueue />} />
+        <Route path="/login" element={<Login />} />
          
 
           {/* FetchInitialData Component - Only if necessary */}
