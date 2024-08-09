@@ -172,3 +172,8 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+
+.footerImage{
+  height:4rem;
+  width:4rem;
+}

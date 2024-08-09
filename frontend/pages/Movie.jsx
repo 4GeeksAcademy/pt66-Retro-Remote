@@ -21,9 +21,8 @@ const Movie = () => {
         dispatch({ type: 'set_movie_cast', payload: movieCastCrewResponse.data });
      }
        getMovieDetails();
-
-
-    },[])
+    });
+ 
 
   return (
     <div> 
