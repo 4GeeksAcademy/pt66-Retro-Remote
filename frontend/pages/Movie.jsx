@@ -7,25 +7,25 @@ import MovieDetails from '../components/MovieDetails';
 const Movie = () => {
   const { dispatch } = useGlobalReducer();
   const {id} = useParams();
-  console.log("movie page",id);
+
 
   useEffect(() =>{
-    console.log('in useeffect')
     async function getMovieDetails() {
-        const apiBaseUrl = "https://curly-pancake-x5rv7x5p74qrhp6w9-3001.app.github.dev/api";
 
-        console.log('before api call');
-    const movieDetailsResponse = await axios.get(`${apiBaseUrl}/movieDetails?id=${id}`);
-    dispatch({ type: 'set_movie_details', payload: movieDetailsResponse.data });
+        const apiBaseUrl = "https://upgraded-goldfish-49pvxr4gx7fp45-3001.app.github.dev/api";
 
-    const movieCastCrewResponse = await axios.get(`${apiBaseUrl}/movieCast?id=${id}`);
-    dispatch({ type: 'set_movie_cast', payload: movieCastCrewResponse.data });
- }
-    getMovieDetails();
-},[dispatch])
+        const movieDetailsResponse = await axios.get(`${apiBaseUrl}/movieDetails?id=${id}`);
+        dispatch({ type: 'set_movie_details', payload: movieDetailsResponse.data });
+
+        const movieCastCrewResponse = await axios.get(`${apiBaseUrl}/movieCast?id=${id}`);
+        dispatch({ type: 'set_movie_cast', payload: movieCastCrewResponse.data });
+     }
+       getMovieDetails();
+    });
+ 
 
   return (
-    <div>
+    <div> 
         <MovieDetails></MovieDetails>
     </div>
   )

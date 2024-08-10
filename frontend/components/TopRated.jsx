@@ -8,11 +8,31 @@ import { Link } from 'react-router-dom';
 function TopRated() {
   const { store } = useGlobalReducer();
   const { movies = [], shows = [] } = store;
+  const carouselRef = useRef(null);
 
-  console.log('Movies in TopRated:', movies); 
-  console.log('Shows in TopRated:', shows); 
-
+  
   useEffect(() => {
+    const carouselElement = carouselRef.current; 
+    if (carouselElement) {
+      const handleMouseEnter = () => {
+        const carouselInstance = window.bootstrap.Carousel.getInstance(carouselElement.element);
+        carouselInstance.pause();
+      };
+
+      const handleMouseLeave = () => {
+        const carouselInstance = window.bootstrap.Carousel.getInstance(carouselElement.element);
+        carouselInstance.cycle();
+      };
+      carouselElement.element.addEventListener('mouseenter', handleMouseEnter);
+      carouselElement.element.addEventListener('mouseleave', handleMouseLeave);
+
+      return () => {
+        if (carouselElement) {
+          carouselElement.element.removeEventListener('mouseenter', handleMouseEnter);
+          carouselElement.element.removeEventListener('mouseleave', handleMouseLeave);
+        }
+      };
+    }
     // Any additional setup if necessary
   }, []);
 

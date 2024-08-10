@@ -1,13 +1,13 @@
 import {  useEffect, useState } from "react";
 import { useGlobalReducer } from '../store';
 import { Duration } from "luxon";
+import "../index.css"
 
 const MovieDetails = () => {
     const { store } = useGlobalReducer();
 
-    const { movie_details = []} = store;
+    const { movie_details=[]} = store;
     const { movie_cast =[]} =store;
-
 
     const [releaseYear,setReleaseYear] = useState();
     const [movieDuration,setMovieDuration] = useState({hours:'',minutes:''});
@@ -23,20 +23,7 @@ const MovieDetails = () => {
     const duration = Duration.fromObject({ minutes: movie_details.runtime});
     const hrs_mins = duration.shiftTo('hours', 'minutes').toObject();
     setMovieDuration({'hours' : hrs_mins['hours'],'minutes':hrs_mins['minutes']})
-    
-    const cast = movie_cast['cast'];
-    const crew = movie_cast['crew'];
-    const cast_crew = cast?.concat(crew);
-    cast_crew?.forEach((obj)=>{
-        if(obj['known_for_department'] == 'Acting'){
-            setActors((prevArray)=>[...prevArray,obj['name']]);
-            } else if(obj['known_for_department'] == 'Directing'){
-                setDirectors((prevArray)=>[...prevArray,obj['name']]);
-            }else if(obj['known_for_department'] == 'Writing'){
-                setWriters((prevArray)=>[...prevArray,obj['name']]);
-            }
-        })
- }, [])
+ }, [movie_details])
 
   
 
@@ -44,9 +31,7 @@ const MovieDetails = () => {
 
 
 async function handleSubmitReview(e){
-    console.log(id);
      e.preventDefault();
-     console.log(reviewData);
      const review_data = {
         reviewData : reviewData,
         movieId : id
@@ -62,11 +47,9 @@ async function handleSubmitReview(e){
             {
                 const response_data = await resp.json();
                 setReviewData()
-                console.log(response_data)
                                         
             }else{
                 const error = await resp.json();
-                console.log(error);
             }
 
 }
@@ -96,24 +79,25 @@ return(
                </p>
                <p className="actors">
                    <span className="type">Actors : </span>
+                   {actors}
                {
-                       actors.length>4?actors.slice(0, 4).map((actor)=> <span className="names">{actor}</span>): 
-                       actors.map((actor)=> <span className="names" key={actor}>{actor}</span>)
+                       movie_cast['actors']?.map((actor)=> <span className="names" key={actor}>{actor}</span>)
                    }
                </p>
                <p className="directors">
                    <span className="type">Directors :  </span>
+                   {directors}
                    {
-                       directors.length>4?directors.slice(0, 4).map((director)=> <span className="names">{director}</span>): 
-                       directors.map((director)=> <span className="names" key={director}>{director}</span>)
+                       movie_cast['directors']?.map((director)=> <span className="names" key={director}>{director}</span>)
                    }
                </p>
             
                <p className="writers">
                    <span className="type">Writers : </span>
+                   {writers}
                    {
-                       writers.length>4?writers.slice(0, 4).map((writer)=> <span className="names">{writer}</span>): 
-                       writers.map((writer)=> <span className="names" key={writer}>{writer}</span>)
+                  
+                       movie_cast['writers']?.map((writer)=> <span className="names" key={writer}>{writer}</span>)
                    }
                </p>
                <div className="mb-3">

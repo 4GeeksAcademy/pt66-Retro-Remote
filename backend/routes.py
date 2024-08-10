@@ -60,6 +60,25 @@ def get_movie_cast():
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
 
+@api.route('/tvShowDetails', methods=['GET'])
+def get_tvShow_details():
+    id = request.args.get('id')
+    try:
+        response = requests.get(f'https://api.themoviedb.org/3/tv/{id}?language=en-US&api_key={TMDB_API_KEY}')
+        response.raise_for_status()
+        return jsonify(response.json())
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
+    
+@api.route('/tvShowCast', methods=['GET'])
+def get_tvShow_cast():
+    id = request.args.get('id')
+    try:
+        response = requests.get(f'https://api.themoviedb.org/3/tv/{id}/credits?language=en-US&api_key={TMDB_API_KEY}')
+        response.raise_for_status()
+        return jsonify(response.json())
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
 
 
 
