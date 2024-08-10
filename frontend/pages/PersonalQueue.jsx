@@ -10,7 +10,7 @@ const PersonalQueue = () => {
 
   const handlePlay = (movieId) => {
     console.log('Requesting play for movie ID:', movieId);
-    fetch(`/api/play/${movieId}`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/play/${movieId}`)
       .then(response => {
         if (response.ok) {
           return response.json();

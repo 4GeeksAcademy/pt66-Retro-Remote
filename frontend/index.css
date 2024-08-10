@@ -1,3 +1,4 @@
+Css before carousels
 .movie-card {
   background-color: #1c1c1c; /* Dark background for poster effect */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Deep shadow for depth */
@@ -164,3 +165,4 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+
