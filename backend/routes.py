@@ -42,9 +42,11 @@ def get_top_rated_shows():
 def get_movie_details():
     print('get movie details route')
     id = request.args.get('id')
+    print(id);
     try:
         response = requests.get(f'https://api.themoviedb.org/3/movie/{id}?language=en-US&api_key={TMDB_API_KEY}')
         response.raise_for_status()
+        print(response)
         return jsonify(response.json())
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
@@ -112,7 +114,8 @@ def add_review():
     
     review = Reviews(
         review=body["reviewData"],
-        movie_id=body["movieId"]
+        movie_id=body["movieId"],
+        username=body["username"]
     )
     db.session.add(review)
     db.session.commit()
@@ -135,29 +138,39 @@ CORS(api)
 @api.route("/signup", methods=['POST'])
 def create_user():
     request_body = request.get_json()
+    username = request_body.get('username')
+    email=request_body.get('email')
+    print(username)
     print(bcrypt.generate_password_hash(
         request_body.get("password")
     ).decode('utf-8'))
     # Check the database to see if a user exists w/ that email.
     # https://github.com/4GeeksAcademy/pt66-full-stack-demo/blob/next/backend/routes.py#L54
-    user = User(
-        username=request_body.get('username'),
-        email=request_body.get('email'),
-        password=generate_password_hash(
+    user = User.query.filter_by(username=username).first()
+    email = User.query.filter_by(email=email).first()
+
+    if not user and not email:
+        new_user = User(
+            username=request_body.get('username'),
+            email=request_body.get('email'),
+            password=generate_password_hash(
             request_body.get("password")
+            )
         )
-    )
     
-    # print(user)
-    # user = User()
-    # username=request_body.get('username')
-    db.session.add(user)
+    if user:
+        return jsonify(msg="User already exists"), 401
+    
+    if email:
+        return jsonify(msg="Email already exists"), 401
+   
+    db.session.add(new_user)
     db.session.commit()
-    db.session.refresh(user)
-    access_token = create_access_token(identity=user.username)
+    db.session.refresh(new_user)
+    access_token = create_access_token(identity=new_user.username)
     return jsonify(
         msg="User created",
-        user=user.serialize(),
+        user=new_user.serialize(),
         token=access_token
     ), 200
 
@@ -181,7 +194,7 @@ def create_token():
         identity=username,
         expires_delta=expiration
     )
-    return jsonify(msg="Login successful",access_token=access_token), 200
+    return jsonify(msg="Login successful",access_token=access_token,id=user.id,username=user.username), 200
     # else:
     return jsonify(msg="Wrong username or password"), 401
 

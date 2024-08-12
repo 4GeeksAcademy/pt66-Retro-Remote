@@ -177,3 +177,7 @@ button:hover {
   height:4rem;
   width:4rem;
 }
+
+.nav-link{
+  font-size: 1.3rem;
+}

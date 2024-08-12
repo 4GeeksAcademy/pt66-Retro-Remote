@@ -22,8 +22,8 @@ body {
     width: 750px;
     height: 450px;
     background: transparent;
-    border: 2px solid #0ef;
-    box-shadow: 0 0 25px #0ef;
+    border: 2px solid #a1aeaf;
+    box-shadow: 0 0 25px #8a9798;
     overflow: hidden;
 }
 
@@ -111,7 +111,7 @@ body {
 
 .input-box input:focus,
 .input-box input:valid {
-    border-bottom-color: #0ef;
+    border-bottom-color: rgb(160, 169, 170);
 }
 
 .input-box label {
@@ -146,7 +146,7 @@ body {
     color: #0ef;
 }
 
-.btn {
+.loginButton {
     position: relative;
     width: 100%;
     height: 45px;
@@ -162,7 +162,7 @@ body {
     overflow: hidden;
 }
 
-.btn::before {
+.loginButton::before {
     content: '';
     position: absolute;
     top: -100%;
@@ -174,7 +174,7 @@ body {
     transition: .5s;
 }
 
-.btn:hover::before {
+.loginButton:hover::before {
     top: 0;
 }
 
@@ -300,4 +300,8 @@ body {
 .wrapper.active .bg-animate2 {
     transform: rotate(-11deg) skewY(-41deg);
     transition-delay: 1.2s;
+}
+
+.login-alert {
+    width:18rem;
 }
