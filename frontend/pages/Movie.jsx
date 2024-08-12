@@ -15,6 +15,7 @@ const Movie = () => {
 
 
   useEffect(() =>{
+    console.log('in movie page')
     async function getMovieDetails() {
         const movieDetailsResponse = await axios.get(`${apiBaseUrl}/api/movieDetails?id=${id}`);
         dispatch({ type: 'set_movie_details', payload: movieDetailsResponse.data });

@@ -3,6 +3,7 @@ import useGlobalReducer from '../hooks/useGlobalReducer';
 import { Duration } from "luxon";
 import "../index.css"
 import { object } from "prop-types";
+import { Link } from "react-router-dom";
 
 const TvShow_details = () => {
     const { store } = useGlobalReducer();
