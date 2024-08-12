@@ -1,31 +1,40 @@
 import React, { useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
-import { useGlobalReducer } from '../store'; // Adjust the import path as necessary
+import useGlobalReducer from '../hooks/useGlobalReducer'; // Adjust the import path as necessary
 import TvShowDetails from '../components/TvShowDetails';
 
 const TvShow = () => {
-  const { dispatch } = useGlobalReducer();
+  const { dispatch,store } = useGlobalReducer();
   const {id} = useParams();
+  const {token} = store;
+  const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
+  const isAuthenticated = localStorage.getItem('isAuthenticated');
+  const navigate = useNavigate();
+
 
   useEffect(() =>{
       async function getTvShowDetails() {
-        const apiBaseUrl = "https://upgraded-goldfish-49pvxr4gx7fp45-3001.app.github.dev/api";
 
-        const tvShowDetailsResponse = await axios.get(`${apiBaseUrl}/tvShowDetails?id=${id}`);
+        const tvShowDetailsResponse = await axios.get(`${apiBaseUrl}/api/tvShowDetails?id=${id}`);
         dispatch({ type: 'set_tvShow_details', payload: tvShowDetailsResponse.data });
 
-        const tvShowCastCrewResponse = await axios.get(`${apiBaseUrl}/tvShowCast?id=${id}`);
+        const tvShowCastCrewResponse = await axios.get(`${apiBaseUrl}/api/tvShowCast?id=${id}`);
         dispatch({ type: 'set_tvShow_cast', payload: tvShowCastCrewResponse.data });
       }
         getTvShowDetails();
-    },[dispatch])
+    },[])
 
-  return (
-    <div>
-       <TvShowDetails></TvShowDetails>
-    </div>
-  )
+    if(isAuthenticated && token){
+      return (
+        <div>
+           <TvShowDetails></TvShowDetails>
+        </div>
+      )
+    } else {
+      navigate('/login')
+    }
+
 };
 
 export default TvShow;

@@ -6,95 +6,89 @@ import Login from "./Loginform.jsx";
 import "../style.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
+import Navbar from "../components/Navbar.jsx";
 
 const Home = () => {
-  const [httpbin, setHttpbin] = useState({});
+  //  const [httpbin, setHttpbin] = useState({});
   const { store, dispatch } = useGlobalReducer();
+  const {token} = store;
+  const {id} = store;
+  
+  console.log('id',id)
   const navigate = useNavigate();
-
-  // Commented for bugfixing.
-  // useEffect(() => {
-  //   if (!store.token) {
-  //     navigate("/Login");
-  //   }
-  // }, []);
-
-  useEffect(() => {
-    if (store.token && store.token != "" && store.token != undefined)
-      history("/");
-  });
-  const { favorites, toggleFavorite, addToPersonalQueue } =
-    useContext(FavoritesContext); // Use the context
+  const { favorites, toggleFavorite, addToWatchList } = useContext(FavoritesContext); // Use the context
   const [httpbin, setHttpbin] = useState({});
+  const isAuthenticated= localStorage.getItem('isAuthenticated')
+  console.log(id);
+
 
   useEffect(() => {
-    console.log('Location changed:', location);
-    async function fetchInitialData() {
-      try {
-        console.log('Fetching initial data...');
-        const options = {
-          method: 'GET',
-          headers: {
-            accept: 'application/json',
-          }
-        };
-        const resp = await fetch('https://api.themoviedb.org/3/movie/1022789?language=en-US&api_key=f0d14b30a61125698e4990acdb103e21', options);
-        const data = await resp.json();
-        console.log('Fetched data:', data);
-        setMovieId(data.id);
-        dispatch({ type: 'set_movies', payload: data.results ? data.results : [data] });
-      } catch (error) {
-        console.error('Error fetching initial data:', error);
-      }
-    }
+    const getHttpBin = async () => {
+      const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/relay");
+      const data = await resp.json();
+      setHttpbin(data);
+    };
 
-    fetchInitialData();
-  }, [dispatch, location.key]);
+    getHttpBin();
+  }, []);
 
-  return (
-    <Container className="mt-5">
-      <Link to="/personal-queue">personalQueue</Link>
-      <pre>{JSON.stringify(httpbin, null, 2)}</pre>
-
-      <h1 className="mt-4">Users Recommended Movies and TV</h1>
-      <Row>
-        {favorites.map((movie) => (
-          <Col key={movie.id} sm={12} md={6} lg={4} xl={3}>
-            <Card className="mb-4 movie-card">
-              <Card.Img
-                variant="top"
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-              />
-              <Card.Body>
-                <Card.Title>{movie.title}</Card.Title>
-                <Card.Text>
-                  <strong>Release Year:</strong>{" "}
-                  {new Date(movie.release_date).getFullYear()}
-                </Card.Text>
-              </Card.Body>
-              <Card.Footer className="d-flex justify-content-between align-items-center">
-                <Button variant="primary" onClick={() => toggleFavorite(movie)}>
-                  ⭐ {movie.stars}
-                </Button>
-                <Link to={`/movie/${movie.id}`}>
-                  <Button
-                    variant="dark"
-                    style={{ color: 'white' }}
-                  >
-                    Details
+  if(isAuthenticated && token){
+    return ( 
+      <>
+      <Navbar></Navbar>
+      <Container className="mt-5">
+        <Link to="/personal-queue">My Watchlist</Link>
+        <h1 className="mt-4">Users Recommended Movies and TV</h1>
+        <Row>
+          {favorites.map((movie) => (
+            <Col key={movie.id} sm={12} md={6} lg={4} xl={3}>
+              <Card className="mb-4 movie-card">
+                <Card.Img
+                  variant="top"
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                />
+                <Card.Body>
+                  <Card.Title>{movie.title}</Card.Title>
+                  <Card.Text>
+                    <strong>Release Year:</strong>{" "}
+                    {new Date(movie.release_date).getFullYear()}
+                  </Card.Text>
+                </Card.Body>
+                <Card.Footer className="d-flex justify-content-between align-items-center">
+                  <Button variant="primary" onClick={() => toggleFavorite(movie)}>
+                    ⭐ {movie.stars}
                   </Button>
-                </Link>
-                <Button
-                  variant="secondary"
-                  onClick={() => addToPersonalQueue(movie)}
-                >
-                  👁️
-                </Button>
-              </Card.Footer>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Container>
-  );
+                  <Link to={`/movie/${movie.id}`}>
+                    <Button
+                      variant="dark"
+                      style={{ color: 'white' }}
+                    >
+                      Details
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="secondary"
+                    onClick={() => addToWatchList(movie)}
+                  >
+                    👁️
+                  </Button>
+                </Card.Footer>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </Container>
+
+      </>
+
+    );
+   
+  }
+  else {
+    navigate('/login')  
+  }
+   
+
 };
+
+export default Home;

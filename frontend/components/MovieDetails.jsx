@@ -1,13 +1,16 @@
 import {  useEffect, useState } from "react";
-import { useGlobalReducer } from '../store';
+import useGlobalReducer from '../hooks/useGlobalReducer';
 import { Duration } from "luxon";
 import "../index.css"
+import { Link } from "react-router-dom";
 
 const MovieDetails = () => {
     const { store } = useGlobalReducer();
 
-    const { movie_details=[]} = store;
-    const { movie_cast =[]} =store;
+    const { movie_details=[],movie_cast=[],id,username} = store;
+    console.log('movieDetaile',movie_details);
+    console.log('id',id)
+    console.log('username',username)
 
     const [releaseYear,setReleaseYear] = useState();
     const [movieDuration,setMovieDuration] = useState({hours:'',minutes:''});
@@ -34,9 +37,12 @@ async function handleSubmitReview(e){
      e.preventDefault();
      const review_data = {
         reviewData : reviewData,
-        movieId : id
+        movieId : movie_details.id,
+        username:username
+
      }
-    const resp = await fetch("https://studious-cod-qg54wxr99gfx9pq-3001.app.github.dev/api/review", {
+     console.log(review_data);
+    const resp = await fetch(import.meta.env.VITE_BACKEND_URL  + '/api/review', {
         method: "POST",
         body: JSON.stringify(review_data),
         headers: {
@@ -46,10 +52,12 @@ async function handleSubmitReview(e){
         if(resp.ok)
             {
                 const response_data = await resp.json();
-                setReviewData()
+                console.log(response_data);
+                setReviewData('')
                                         
             }else{
                 const error = await resp.json();
+                console.log('error',error)
             }
 
 }
@@ -110,6 +118,7 @@ return(
        
        </div> 
     </div> 
+    <div><Link to="/home">Go to Home Page</Link></div>
 </div>
 )
 

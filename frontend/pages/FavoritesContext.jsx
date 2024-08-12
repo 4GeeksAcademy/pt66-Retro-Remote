@@ -19,7 +19,8 @@ const dummyData = [
     video: false,
     vote_average: 7.277,
     vote_count: 3937,
-    stars: 0, // Add star count property
+    stars: 1, // Add star count property
+    isFav:true
   },
   {
     adult: false,
@@ -36,7 +37,8 @@ const dummyData = [
     video: false,
     vote_average: 8.338,
     vote_count: 7779,
-    stars: 0, // Add star count property
+    stars: 1, // Add star count property
+    isFav:false
   },
   {
     adult: false,
@@ -53,7 +55,8 @@ const dummyData = [
     video: false,
     vote_average: 6.001,
     vote_count: 407,
-    stars: 0, // Add star count property
+    stars: 1, // Add star count property
+    isFav:true
   },
   {
     adult: false,
@@ -70,7 +73,8 @@ const dummyData = [
     video: false,
     vote_average: 7,
     vote_count: 2129,
-    stars: 0,
+    stars: 1,
+    isFav: false
   },
   {
     adult: false,
@@ -87,7 +91,8 @@ const dummyData = [
     video: false,
     vote_average: 7.166,
     vote_count: 3469,
-    stars: 0,
+    stars: 1,
+    isFav:true
   },
   {
     adult: false,
@@ -104,7 +109,8 @@ const dummyData = [
     video: false,
     vote_average: 7.192,
     vote_count: 38,
-    stars: 0, // Add star count property
+    stars: 1, // Add star count property
+    isFav: true
   },
   {
     adult: false,
@@ -121,7 +127,8 @@ const dummyData = [
     name: "Behind Her Eyes",
     vote_average: 7.414,
     vote_count: 503,
-    stars: 0,
+    stars: 1,
+    isFav:true
   },
 ];
 
@@ -132,6 +139,7 @@ export const FavoritesProvider = ({ children }) => {
 
   const toggleFavorite = (item) => {
     setFavorites((prevFavorites) => {
+      console.log("prevFavorites",prevFavorites);
       const isFavorite = prevFavorites.find((fav) => fav.id === item.id);
 
       // Prevent multiple favoriting
@@ -149,7 +157,7 @@ export const FavoritesProvider = ({ children }) => {
     });
   };
 
-  const addToPersonalQueue = (item) => {
+  const addToWatchList = (item) => {
     setPersonalQueue((prevQueue) => {
       if (!prevQueue.some((queueItem) => queueItem.id === item.id)) {
         const newQueue = [...prevQueue, item];
@@ -162,7 +170,7 @@ export const FavoritesProvider = ({ children }) => {
   console.log("Current Personal Queue: ", personalQueue);
 
   return (
-    <FavoritesContext.Provider value={{ favorites, personalQueue, toggleFavorite, addToPersonalQueue }}>
+    <FavoritesContext.Provider value={{ favorites, personalQueue, toggleFavorite, addToWatchList }}>
       {children}
     </FavoritesContext.Provider>
   );

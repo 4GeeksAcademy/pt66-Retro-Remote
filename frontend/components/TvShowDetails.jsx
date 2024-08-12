@@ -1,8 +1,9 @@
 import {  useEffect, useState } from "react";
-import { useGlobalReducer } from '../store';
+import useGlobalReducer from '../hooks/useGlobalReducer';
 import { Duration } from "luxon";
 import "../index.css"
 import { object } from "prop-types";
+import { Link } from "react-router-dom";
 
 const TvShow_details = () => {
     const { store } = useGlobalReducer();
@@ -83,6 +84,7 @@ const TvShow_details = () => {
             
             </div> 
          </div> 
+         <div><Link to="/home">Go to Home Page</Link></div>
     </div>
 )
 

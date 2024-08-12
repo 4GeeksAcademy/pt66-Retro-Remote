@@ -1,16 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 import '../assets/css/TopRated.css';
-import { Carousel } from 'react-bootstrap';
-import { useGlobalReducer } from '../hooks/useGlobalReducer';
+import { Carousel, Navbar } from 'react-bootstrap';
+import useGlobalReducer from '../hooks/useGlobalReducer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 
 function TopRated() {
   const { store } = useGlobalReducer();
-  const { movies = [], shows = [] } = store;
+  const { movies = [], shows = [] ,token } = store;
   const carouselRef = useRef(null);
+  const isAuthenticated = localStorage.getItem('isAuthenticated')
 
-  
+  console.log(isAuthenticated);
   useEffect(() => {
     const carouselElement = carouselRef.current; 
     if (carouselElement) {
@@ -50,23 +51,36 @@ function TopRated() {
       <Carousel.Item key={`${type}-${index}`}>
         <div className="d-flex justify-content-center TRated">
           {group.map(item => (
-            <div key={item.id} className="p-3">
-              {item.poster_path ? (
+            <div key={item.id} className="p-3 topRated-item">
+              {
+                isAuthenticated && item.poster_path && token ?  
                 <Link to={type === 'movie' ? `movie/${item.id}` : `show/${item.id}`}>
-                  <img 
-                    src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
-                    alt={type === 'movie' ? item.title : item.name} 
-                    className="imgBorder"
-                    style={{ 
-                      width: "300px", 
-                      height: "350px",
-                      cursor: "pointer"
-                    }}
-                  />
-                </Link>
-              ) : (
-                <div>No image available</div>
-              )}
+                <img 
+                  src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
+                  alt={type === 'movie' ? item.title : item.name} 
+                  className="imgBorder"
+                  style={{ 
+                    width: "300px", 
+                    height: "350px",
+                    cursor: "pointer"
+                  }}
+                />
+              </Link>
+              :
+              <Link to="/login">
+              <img 
+                src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} 
+                alt={type === 'movie' ? item.title : item.name} 
+                className="imgBorder"
+                style={{ 
+                  width: "300px", 
+                  height: "350px",
+                  cursor: "pointer"
+                }}
+              />
+            </Link>
+
+              }
               <div className="mt-2 movie-title text-center">
                 {item.title || item.name}
               </div>
@@ -91,11 +105,11 @@ function TopRated() {
               interval={3000} 
               indicators={true}
               onMouseEnter={() => {
-                const carouselInstance = window.bootstrap.Carousel.getInstance(movieCarouselRef.current);
+                const carouselInstance = window.bootstrap.Carousel.getInstance(carouselRef.current.element);
                 if (carouselInstance) carouselInstance.pause();
               }}
               onMouseLeave={() => {
-                const carouselInstance = window.bootstrap.Carousel.getInstance(movieCarouselRef.current);
+                const carouselInstance = window.bootstrap.Carousel.getInstance(carouselRef.current.element);
                 if (carouselInstance) carouselInstance.cycle();
               }}
             >

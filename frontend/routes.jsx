@@ -21,6 +21,9 @@ export const router = createBrowserRouter(
           
           {/* Home Route */}
           <Route path="/home" element={<Home />} />
+            <Route path="home/movie/:id" element={<Movie/>}/>
+            <Route path="home/show/:id" element={<TvShow />} />
+          
 
           {/* Other Routes */}
           <Route path="movie/:id" element={<Movie/>}/>
