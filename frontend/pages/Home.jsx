@@ -1,99 +1,161 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Card, Button, Row, Col, Container } from "react-bootstrap";
+import { Carousel, Card, Button, Container } from "react-bootstrap";
 import { FavoritesContext } from "./FavoritesContext"; // Import the context
-import { Link, useNavigate } from "react-router-dom";
-import Login from "./Loginform.jsx";
-import "../style.css";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import Navbar from "../components/Navbar.jsx";
+import axios from 'axios';
 
 const Home = () => {
-  //  const [httpbin, setHttpbin] = useState({});
-  const { store, dispatch } = useGlobalReducer();
-  const {token} = store;
-  const {id} = store;
-  
-  console.log('id',id)
-
-  const [httpbin, setHttpbin] = useState({});
-  const { favorites, toggleFavorite, addToPersonalQueue,addToWatchList } = useContext(FavoritesContext); // Use the context
-  const navigate = useNavigate(); // Hook for navigation
-  const isAuthenticated= localStorage.getItem('isAuthenticated')
-  console.log(id);
-
+  const { store } = useGlobalReducer();
+  const { token } = store;
+  const [favMovies, setFavMovies] = useState([]);
+  const [favTVShows, setFavTVShows] = useState([]);
+  const navigate = useNavigate();
+  const { favorites, toggleFavorite, addToWatchList } = useContext(FavoritesContext); // Use the context
+  const isAuthenticated = localStorage.getItem('isAuthenticated');
 
   useEffect(() => {
-    const getHttpBin = async () => {
-      const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/relay");
-      const data = await resp.json();
-      setHttpbin(data);
+    const getFavorites = async () => {
+      try {
+        const movieResponse = await axios.get('/api/favorites/movies');
+        setFavMovies(movieResponse.data);
+
+        const tvShowResponse = await axios.get('/api/favorites/tv-shows');
+        setFavTVShows(tvShowResponse.data);
+      } catch (error) {
+        console.error('Error fetching favored movies or TV shows:', error);
+      }
     };
 
-    getHttpBin();
+    getFavorites();
   }, []);
 
-  const handleDoubleClick = (movie) => {
-    addToPersonalQueue(movie);
-    navigate('/personal-queue'); // Redirect to the personal queue page
+  const handleToggleFavorite = async (item, type) => {
+    try {
+      // Toggle favorite
+      toggleFavorite(item);
+
+      // Update the count on the backend
+      const response = await axios.post(`/api/favorites/toggle`, {
+        id: item.id,
+        type: type, // "movie" or "tv-show"
+      });
+
+      // Update the state with the new count
+      if (type === "movie") {
+        setFavMovies(favMovies.map(movie => 
+          movie.id === item.id ? { ...movie, favCount: response.data.favCount } : movie
+        ));
+      } else {
+        setFavTVShows(favTVShows.map(show => 
+          show.id === item.id ? { ...show, favCount: response.data.favCount } : show
+        ));
+      }
+
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
   };
 
-  if(isAuthenticated && token){
-    return ( 
+  if (isAuthenticated && token) {
+    return (
       <>
-      <Navbar></Navbar>
-      <Container className="mt-5">
-        <Link to="/personal-queue">My Watchlist</Link>
-        <h1 className="mt-4">Users Recommended Movies and TV</h1>
-        <Row>
-          {favorites.map((movie) => (
-            <Col key={movie.id} sm={12} md={6} lg={4} xl={3}>
-              <Card className="mb-4 movie-card">
-                <Card.Img
-                  variant="top"
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                />
-                <Card.Body>
-                  <Card.Title>{movie.title}</Card.Title>
-                  <Card.Text>
-                    <strong>Release Year:</strong>{" "}
-                    {new Date(movie.release_date).getFullYear()}
-                  </Card.Text>
-                </Card.Body>
-                <Card.Footer className="d-flex justify-content-between align-items-center">
-                  <Button variant="primary" onClick={() => toggleFavorite(movie)}>
-                    ⭐ {movie.stars}
-                  </Button>
-                  <Link to={`/movie/${movie.id}`}>
-                    <Button
-                      variant="dark"
-                      style={{ color: 'white' }}
+        <Navbar />
+        <Container className="mt-5">
+          <Link to="/personal-queue">My Watchlist</Link>
+          <h1 className="mt-4">Users Recommended Movies and TV</h1>
+
+          <h2 className="mt-4">Top 10 Favored Movies</h2>
+          <Carousel>
+            {favMovies.map((movie, index) => (
+              <Carousel.Item key={movie.id}>
+                <Card className="movie-card">
+                  <Card.Img
+                    variant="top"
+                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  />
+                  <Card.Body>
+                    <Card.Title>{index + 1}. {movie.title}</Card.Title>
+                    <Card.Text>
+                      <strong>Release Year:</strong> {new Date(movie.release_date).getFullYear()}
+                    </Card.Text>
+                  </Card.Body>
+                  <Card.Footer className="d-flex justify-content-between align-items-center">
+                    <div>
+                      <span role="img" aria-label="favorites">⭐</span> {movie.favCount}
+                    </div>
+                    <Button 
+                      variant="primary" 
+                      onClick={() => handleToggleFavorite(movie, "movie")}
                     >
-                      Details
+                      {favorites.includes(movie.id) ? "Unfavorite" : "Favorite"}
                     </Button>
-                  </Link>
-                  <Button
-                    variant="secondary"
-                    onClick={() => addToWatchList(movie)}
-                  >
-                    👁️
-                  </Button>
-                </Card.Footer>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </Container>
+                    <Link to={`/movie/${movie.id}`}>
+                      <Button variant="dark" style={{ color: 'white' }}>
+                        Details
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="secondary"
+                      onClick={() => addToWatchList(movie)}
+                    >
+                      👁️
+                    </Button>
+                  </Card.Footer>
+                </Card>
+              </Carousel.Item>
+            ))}
+          </Carousel>
 
+          <h2 className="mt-4">Top 10 Favored TV Shows</h2>
+          <Carousel>
+            {favTVShows.map((show, index) => (
+              <Carousel.Item key={show.id}>
+                <Card className="tvshow-card">
+                  <Card.Img
+                    variant="top"
+                    src={`https://image.tmdb.org/t/p/w500${show.poster_path}`}
+                  />
+                  <Card.Body>
+                    <Card.Title>{index + 1}. {show.title}</Card.Title>
+                    <Card.Text>
+                      <strong>Release Year:</strong> {new Date(show.release_date).getFullYear()}
+                    </Card.Text>
+                  </Card.Body>
+                  <Card.Footer className="d-flex justify-content-between align-items-center">
+                    <div>
+                      <span role="img" aria-label="favorites">⭐</span> {show.favCount}
+                    </div>
+                    <Button 
+                      variant="primary" 
+                      onClick={() => handleToggleFavorite(show, "tv-show")}
+                    >
+                      {favorites.includes(show.id) ? "Unfavorite" : "Favorite"}
+                    </Button>
+                    <Link to={`/tv-show/${show.id}`}>
+                      <Button variant="dark" style={{ color: 'white' }}>
+                        Details
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="secondary"
+                      onClick={() => addToWatchList(show)}
+                    >
+                      👁️
+                    </Button>
+                  </Card.Footer>
+                </Card>
+              </Carousel.Item>
+            ))}
+          </Carousel>
+        </Container>
       </>
-
     );
-   
+  } else {
+    navigate('/login');
   }
-  else {
-    navigate('/login')  
-  }
-   
-
 };
 
 export default Home;

@@ -46,5 +46,48 @@ def get_movie_streaming_reelgood(movie_id):
     providers = get_streaming_providers_reelgood(movie_id)
     return jsonify(providers)
 
+from flask import request, jsonify
+from backend.models import db, User, MovieFavorites, TvShowFavorites, Movie, TvShow
+
+@app.route('/api/favorites/toggle', methods=['POST'])
+def toggle_favorite():
+    data = request.json
+    item_id = data['id']
+    item_type = data['type']  # "movie" or "tv-show"
+    user_id = data['user_id']
+
+    if item_type == 'movie':
+        favorite = MovieFavorites.query.filter_by(user_id=user_id, movie_id=item_id).first()
+        movie = Movie.query.get(item_id)
+
+        if favorite:
+            db.session.delete(favorite)
+            movie.fav_count -= 1
+        else:
+            new_favorite = MovieFavorites(user_id=user_id, movie_id=item_id)
+            db.session.add(new_favorite)
+            movie.fav_count += 1
+        
+        db.session.commit()
+        return jsonify({"favCount": movie.fav_count})
+
+    elif item_type == 'tv-show':
+        favorite = TvShowFavorites.query.filter_by(user_id=user_id, tvShow_id=item_id).first()
+        tv_show = TvShow.query.get(item_id)
+
+        if favorite:
+            db.session.delete(favorite)
+            tv_show.fav_count -= 1
+        else:
+            new_favorite = TvShowFavorites(user_id=user_id, tvShow_id=item_id)
+            db.session.add(new_favorite)
+            tv_show.fav_count += 1
+        
+        db.session.commit()
+        return jsonify({"favCount": tv_show.fav_count})
+
+    return jsonify({"error": "Invalid type"}), 400
+
+
 if __name__ == '__main__':
     app.run(debug=True)
