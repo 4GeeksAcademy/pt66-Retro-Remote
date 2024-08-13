@@ -1,34 +1,42 @@
 import React, { useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
-import { useGlobalReducer } from '../store'; // Adjust the import path as necessary
+import useGlobalReducer from '../hooks/useGlobalReducer'; // Adjust the import path as necessary
 import MovieDetails from '../components/MovieDetails';
 
 const Movie = () => {
-  const { dispatch } = useGlobalReducer();
+  const { dispatch,store} = useGlobalReducer();
   const {id} = useParams();
-  console.log("movie page",id);
+  const {token} = store;
+  const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
+  const isAuthenticated = localStorage.getItem('isAuthenticated')
+  const navigate = useNavigate();
+
+
 
   useEffect(() =>{
-    console.log('in useeffect')
+    console.log('in movie page')
     async function getMovieDetails() {
-        const apiBaseUrl = "https://didactic-goldfish-pq5wx6vrvrh69q7-3001.app.github.dev/api";
+        const movieDetailsResponse = await axios.get(`${apiBaseUrl}/api/movieDetails?id=${id}`);
+        dispatch({ type: 'set_movie_details', payload: movieDetailsResponse.data });
 
-        console.log('before api call');
-    const movieDetailsResponse = await axios.get(`${apiBaseUrl}/movieDetails?id=${id}`);
-    dispatch({ type: 'set_movie_details', payload: movieDetailsResponse.data });
+        const movieCastCrewResponse = await axios.get(`${apiBaseUrl}/api/movieCast?id=${id}`);
+        dispatch({ type: 'set_movie_cast', payload: movieCastCrewResponse.data });
 
-    const movieCastCrewResponse = await axios.get(`${apiBaseUrl}/movieCast?id=${id}`);
-    dispatch({ type: 'set_movie_cast', payload: movieCastCrewResponse.data });
- }
-    getMovieDetails();
-},[dispatch])
+     }
+       getMovieDetails();
+    },[]);
+ 
+    if(isAuthenticated && token){
+      return (
+        <div> 
+            <MovieDetails></MovieDetails>
+        </div>
+      )
+    } else {
+      navigate('/login')
+    }
 
-  return (
-    <div>
-        <MovieDetails></MovieDetails>
-    </div>
-  )
 };
 
 export default Movie;

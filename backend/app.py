@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 import requests
 
 app = Flask(__name__)
+CORS(app)
 
 TMDB_API_KEY = 'c2fbec3b6737ac039d19ec2bc0281187'
-REELGOOD_API_KEY = 'YOUR_REELGOOD_API_KEY'
+
 
 def get_streaming_providers_tmdb(movie_id):
     url = f'https://api.themoviedb.org/3/movie/{movie_id}/watch/providers'

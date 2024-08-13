@@ -3,19 +3,27 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../assets/css/Navbar.css';
+import useGlobalReducer from '../hooks/useGlobalReducer';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
+  const { store, dispatch } = useGlobalReducer();
+  const {username} = store;
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const dropdownRef = useRef(null);
 
-  const apiBaseUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/api";
-  const imageBaseUrl = 'https://image.tmdb.org/t/p/w92'; 
+  const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
+  const imageBaseUrl = 'https://image.tmdb.org/t/p/w92';
 
   const fetchSuggestions = async (query) => {
     try {
-      const response = await axios.get(`${apiBaseUrl}/search`, { params: { query } });
+      console.log('fetch suggestions');
+      console.log(query);
+      const response = await axios.get(`${apiBaseUrl}/api/search`, { params: { query } });
+     
+
       setSuggestions(response.data.results || []);
     } catch (error) {
       console.error('Error fetching suggestions:', error);
@@ -24,8 +32,10 @@ const Navbar = () => {
 
   const handleSearch = async (event) => {
     event.preventDefault();
+    console.log('in handle Search');
     if (query.length > 2) {
       try {
+
         const response = await axios.get(`${apiBaseUrl}/search`, { params: { query } });
         setResults(response.data.results || []);
       } catch (error) {
@@ -47,6 +57,7 @@ const Navbar = () => {
 
   const handleSuggestionClick = (suggestion) => {
     setQuery(suggestion.title || suggestion.name);
+    console.log(suggestion);
     setResults([suggestion]);
     setSuggestions([]);
   };
@@ -54,7 +65,7 @@ const Navbar = () => {
   const clearSearch = () => {
     setQuery('');
     setSuggestions([]);
-  }
+  };
 
   useEffect(() => {
     const dropdown = dropdownRef.current;
@@ -77,98 +88,99 @@ const Navbar = () => {
 
   return (
     <div>
+      {
+        !store.token ?
+        (<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div className="container-fluid ps-5">
+               <ul className="navbar-nav d-flex w-100 justify-content-between">
+                  <li className="nav-item">
+                  <p className="navbar-brand" href="#">Welcome To Retro Remote</p>
+
+                  </li>
+                  <li className="nav-item m-4">
+                    <Link className="nav-link nav-login-link" to="/login">Login</Link>
+                  </li>
+                </ul>         
+          </div>
+        </nav> )
+        :
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid ps-5">
-          <a className="navbar-brand" href="#">Welcome to OurMovieAPP</a>
+          <a className="navbar-brand" href="#">Welcome {username}</a>
           <button className="navbar-toggler"
-            type="button" 
-            data-bs-toggle="collapse" 
-            data-bs-target="#navbarNavDropdown" 
-            aria-controls="navbarNavDropdown" 
-            aria-expanded="false" 
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="false"
             aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse ps-5" id="navbarNavDropdown">
-            <form className="d-flex me-auto" onSubmit={handleSearch}>
-              <div style={{ position: 'relative' }}>
-                <input
-                  className="form-control me-2 search-bar"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                  value={query}
-                  onChange={handleInputChange}
-                  style={{ width: '400px' }}
-                />
-                {query && (
-                  <button
-                    type="button"
-                    className="brn btn-clear clear"
-                    onClick={clearSearch}
-                  >
-                    &times;
-                  </button>
-                )}
-                {suggestions.length > 0 && (
-                  <ul className="list-group position-absolute" style={{ width: '400px', zIndex: 1000 }}>
-                    {suggestions.slice(0, 10).map((suggestion) => (
+          <div className="collapse navbar-collapse" id="navbarNavDropdown">
+              <form className="d-flex me-auto" onSubmit={handleSearch}>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    className="form-control me-2 search-bar"
+                    type="search"
+                    placeholder="Search"
+                    aria-label="Search"
+                    value={query}
+                    onChange={handleInputChange}
+                    style={{ width: '400px' }}
+                  />
+                  {query && (
+                    <button
+                      type="button"
+                      className="btn btn-clear clear"
+                      onClick={clearSearch}
+                    >
+                      &times;
+                    </button>
+                  )}
+                  {suggestions.length > 0 && (
+                    <ul className="list-group position-absolute" style={{ width: '400px', zIndex: 1000 }}>
+                      {suggestions.slice(0, 10).map((suggestion) => (
+                      <Link to={suggestion.media_type === 'movie' ? `movie/${suggestion.id}` : `show/${suggestion.id}`}>
                       <li
-                        key={suggestion.id}
-                        className="list-group-item 
-                          list-group-item-action 
-                          d-flex 
-                          align-items-center
-                          suggestion-item"
-                        onClick={() => handleSuggestionClick(suggestion)}
-                      >
-                        <img
-                          src={`${imageBaseUrl}${suggestion.poster_path}`}
-                          alt={suggestion.title || suggestion.name}
-                          className="me-2"
-                          style={{ width: '40px', height: '60px', objectFit: 'cover' }}
-                        />
-                        <span>{suggestion.title || suggestion.name}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-              <button className="btn search" type="submit">Search</button>
-            </form>
-            <ul className="navbar-nav ms-auto menu">
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle pe-5" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" ref={dropdownRef}>
-                  Menu
-                </a>
-                <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a className="dropdown-item" href="#">Sign in</a></li>
-                  <li><a className="dropdown-item" href="#">Sign up</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-      <div className="container mt-4">
-        <div className="row">
-          {results.map((item) => (
-            <div className="col-md-3 mb-4" key={item.id}>
-              <div className="card">
-                <img src={`https://image.tmdb.org/t/p/w500${item.poster_path}`} className="card-img-top" alt={item.title || item.name} />
-                <div className="card-body">
-                  <h5 className="card-title">{item.title || item.name}</h5>
-                  <p className="card-text">{item.release_date || item.first_air_date}</p>
+                          key={suggestion.id}
+                          className="list-group-item list-group-item-action d-flex align-items-center suggestion-item"
+                          onClick={() => handleSuggestionClick(suggestion)}
+                        >
+                          <img
+                            src={`${imageBaseUrl}${suggestion.poster_path}`}
+                            alt={suggestion.title || suggestion.name}
+                            className="me-2"
+                            style={{ width: '40px', height: '60px', objectFit: 'cover' }}
+                          />
+                          <span>{suggestion.title || suggestion.name}</span>
+                        </li>
+                        </Link>
+                      ))}
+                    </ul>
+                  )}
                 </div>
-              </div>
-            </div>
-          ))}
+                <button className="btn search" type="submit">Search</button>
+              </form>
+              <ul className="navbar-nav ms-auto menu">
+                <li className="nav-item dropdown">
+                  <a className="nav-link dropdown-toggle pe-5" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" ref={dropdownRef}>
+                    Menu
+                  </a>
+                  <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li><a className="dropdown-item" href="#">Favorites</a></li>
+                    <li><a className="dropdown-item" href="#">Profile</a></li>
+                    <li><a className="dropdown-item" href="#">Sign out</a></li>
+                  </ul>
+                </li>
+              </ul>
         </div>
       </div>
+    </nav>
+      }
     </div>
   );
 };
+
 
 export default Navbar;

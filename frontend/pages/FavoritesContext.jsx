@@ -19,7 +19,8 @@ const dummyData = [
     video: false,
     vote_average: 7.277,
     vote_count: 3937,
-    stars: 0, // Add star count property
+    stars: 1, // Add star count property
+    isFav:true,
     streamingLinks: {
       'Netflix': 'https://www.netflix.com/watch/2270',
       'Hulu': 'https://www.hulu.com/watch/2270',
@@ -42,13 +43,14 @@ const dummyData = [
     video: false,
     vote_average: 8.338,
     vote_count: 7779,
-    stars: 0, // Add star count property
+    stars: 1, // Add star count property
     streamingLinks: {
       'Netflix': 'https://www.netflix.com/watch/128',
       'Hulu': 'https://www.hulu.com/watch/128',
       'Prime Video': 'https://www.amazon.com/dp/B01M7TE0ON',
       // Add other services...
     },
+    isFav:false
   },
   {
     adult: false,
@@ -65,7 +67,8 @@ const dummyData = [
     video: false,
     vote_average: 6.001,
     vote_count: 407,
-    stars: 0, // Add star count property
+    stars: 1, // Add star count property
+    isFav:true,
     streamingLinks: {
       'Netflix': 'https://www.netflix.com/watch/11379',
       'Hulu': 'https://www.hulu.com/watch/11379',
@@ -88,7 +91,8 @@ const dummyData = [
     video: false,
     vote_average: 7,
     vote_count: 2129,
-    stars: 0,
+    stars: 1,
+    isFav: false,
     streamingLinks: {
       'Netflix': 'https://www.netflix.com/watch/930564',
       'Hulu': 'https://www.hulu.com/watch/930564',
@@ -111,7 +115,8 @@ const dummyData = [
     video: false,
     vote_average: 7.166,
     vote_count: 3469,
-    stars: 0,
+    stars: 1,
+    isFav:true,
     streamingLinks: {
       'Netflix': 'https://www.netflix.com/watch/4538',
       'Hulu': 'https://www.hulu.com/watch/4538',
@@ -134,13 +139,14 @@ const dummyData = [
     video: false,
     vote_average: 7.192,
     vote_count: 38,
-    stars: 0, // Add star count property
+    stars: 1, // Add star count property
     streamingLinks: {
       'Netflix': 'https://www.netflix.com/watch/1214488',
       'Hulu': 'https://www.hulu.com/watch/1214488',
       'Prime Video': 'https://www.amazon.com/dp/B0BFH6N9BN',
       // Add other services...
     },
+    isFav: true
   },
   {
     adult: false,
@@ -157,7 +163,8 @@ const dummyData = [
     name: "Behind Her Eyes",
     vote_average: 7.414,
     vote_count: 503,
-    stars: 0,
+    stars: 1,
+    isFav:true,
     streamingLinks: {
       'Netflix': 'https://www.netflix.com/watch/97173',
       'Hulu': 'https://www.hulu.com/watch/97173',
@@ -190,6 +197,7 @@ export const FavoritesProvider = ({ children }) => {
 
   const toggleFavorite = (item) => {
     setFavorites((prevFavorites) => {
+      console.log("prevFavorites",prevFavorites);
       const isFavorite = prevFavorites.find((fav) => fav.id === item.id);
 
       // Prevent multiple favoriting
@@ -207,7 +215,7 @@ export const FavoritesProvider = ({ children }) => {
     });
   };
 
-  const addToPersonalQueue = (item) => {
+  const addToWatchList = (item) => {
     setPersonalQueue((prevQueue) => {
       if (!prevQueue.some((queueItem) => queueItem.id === item.id)) {
         const newQueue = [...prevQueue, item];
@@ -219,7 +227,7 @@ export const FavoritesProvider = ({ children }) => {
   };
 
   return (
-    <FavoritesContext.Provider value={{ favorites, personalQueue, toggleFavorite, addToPersonalQueue }}>
+    <FavoritesContext.Provider value={{ favorites, personalQueue, toggleFavorite, addToWatchList }}>
       {children}
     </FavoritesContext.Provider>
   );
