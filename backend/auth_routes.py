@@ -1,8 +1,17 @@
-from flask import Blueprint, redirect, request, session, url_for, jsonify
+from flask import Blueprint, redirect, request, session, url_for, jsonify,Flask
 from oauth_client import OAuthClient
+from backend.routes import api
+from flask_cors import CORS
+
+
+app = Flask(__name__,
+            static_url_path='',
+            static_folder='./public'
+            )
 
 auth_bp = Blueprint('auth', __name__)
-
+app.register_blueprint(api)
+cors = CORS(app)
 # Example credentials for services
 STREAMING_SERVICES = {
     'netflix': {

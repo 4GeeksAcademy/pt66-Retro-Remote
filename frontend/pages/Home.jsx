@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Card, Button, Row, Col, Container } from "react-bootstrap";
 import { FavoritesContext } from "./FavoritesContext"; // Import the context
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Login from "./Loginform.jsx";
 import "../style.css";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -15,9 +15,10 @@ const Home = () => {
   const {id} = store;
   
   console.log('id',id)
-  const navigate = useNavigate();
-  const { favorites, toggleFavorite, addToWatchList } = useContext(FavoritesContext); // Use the context
+
   const [httpbin, setHttpbin] = useState({});
+  const { favorites, toggleFavorite, addToPersonalQueue,addToWatchList } = useContext(FavoritesContext); // Use the context
+  const navigate = useNavigate(); // Hook for navigation
   const isAuthenticated= localStorage.getItem('isAuthenticated')
   console.log(id);
 
@@ -31,6 +32,11 @@ const Home = () => {
 
     getHttpBin();
   }, []);
+
+  const handleDoubleClick = (movie) => {
+    addToPersonalQueue(movie);
+    navigate('/personal-queue'); // Redirect to the personal queue page
+  };
 
   if(isAuthenticated && token){
     return ( 
@@ -92,3 +98,4 @@ const Home = () => {
 };
 
 export default Home;
+

@@ -1,8 +1,8 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 export const FavoritesContext = createContext();
 
-// Dummy data from TMDB
+// Updated Dummy data with streaming links
 const dummyData = [
   {
     adult: false,
@@ -19,8 +19,13 @@ const dummyData = [
     video: false,
     vote_average: 7.277,
     vote_count: 3937,
-    stars: 1, // Add star count property
-    isFav:true
+    stars: 0, // Add star count property
+    streamingLinks: {
+      'Netflix': 'https://www.netflix.com/watch/2270',
+      'Hulu': 'https://www.hulu.com/watch/2270',
+      'Prime Video': 'https://www.amazon.com/dp/B07Q8G6JP9',
+      // Add other services...
+    },
   },
   {
     adult: false,
@@ -37,8 +42,13 @@ const dummyData = [
     video: false,
     vote_average: 8.338,
     vote_count: 7779,
-    stars: 1, // Add star count property
-    isFav:false
+    stars: 0, // Add star count property
+    streamingLinks: {
+      'Netflix': 'https://www.netflix.com/watch/128',
+      'Hulu': 'https://www.hulu.com/watch/128',
+      'Prime Video': 'https://www.amazon.com/dp/B01M7TE0ON',
+      // Add other services...
+    },
   },
   {
     adult: false,
@@ -55,8 +65,13 @@ const dummyData = [
     video: false,
     vote_average: 6.001,
     vote_count: 407,
-    stars: 1, // Add star count property
-    isFav:true
+    stars: 0, // Add star count property
+    streamingLinks: {
+      'Netflix': 'https://www.netflix.com/watch/11379',
+      'Hulu': 'https://www.hulu.com/watch/11379',
+      'Prime Video': 'https://www.amazon.com/dp/B00JAGK7UI',
+      // Add other services...
+    },
   },
   {
     adult: false,
@@ -73,8 +88,13 @@ const dummyData = [
     video: false,
     vote_average: 7,
     vote_count: 2129,
-    stars: 1,
-    isFav: false
+    stars: 0,
+    streamingLinks: {
+      'Netflix': 'https://www.netflix.com/watch/930564',
+      'Hulu': 'https://www.hulu.com/watch/930564',
+      'Prime Video': 'https://www.amazon.com/dp/B0BFH94K47',
+      // Add other services...
+    },
   },
   {
     adult: false,
@@ -91,8 +111,13 @@ const dummyData = [
     video: false,
     vote_average: 7.166,
     vote_count: 3469,
-    stars: 1,
-    isFav:true
+    stars: 0,
+    streamingLinks: {
+      'Netflix': 'https://www.netflix.com/watch/4538',
+      'Hulu': 'https://www.hulu.com/watch/4538',
+      'Prime Video': 'https://www.amazon.com/dp/B000J2I3P2',
+      // Add other services...
+    },
   },
   {
     adult: false,
@@ -109,8 +134,13 @@ const dummyData = [
     video: false,
     vote_average: 7.192,
     vote_count: 38,
-    stars: 1, // Add star count property
-    isFav: true
+    stars: 0, // Add star count property
+    streamingLinks: {
+      'Netflix': 'https://www.netflix.com/watch/1214488',
+      'Hulu': 'https://www.hulu.com/watch/1214488',
+      'Prime Video': 'https://www.amazon.com/dp/B0BFH6N9BN',
+      // Add other services...
+    },
   },
   {
     adult: false,
@@ -127,19 +157,39 @@ const dummyData = [
     name: "Behind Her Eyes",
     vote_average: 7.414,
     vote_count: 503,
-    stars: 1,
-    isFav:true
+    stars: 0,
+    streamingLinks: {
+      'Netflix': 'https://www.netflix.com/watch/97173',
+      'Hulu': 'https://www.hulu.com/watch/97173',
+      'Prime Video': 'https://www.amazon.com/dp/B08W9BN1K6',
+      // Add other services...
+    },
   },
 ];
 
 export const FavoritesProvider = ({ children }) => {
   const [favorites, setFavorites] = useState(dummyData);
   const [personalQueue, setPersonalQueue] = useState([]);
-  console.log('favorites in provider',favorites);
+
+  // Effect to fetch data if needed (uncomment if you need to fetch actual data)
+  /*
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const response = await fetch('/api/favorites'); // Example API endpoint
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        setFavorites(data);
+      } catch (error) {
+        console.error('Failed to fetch favorites:', error);
+      }
+    };
+    fetchFavorites();
+  }, []);
+  */
 
   const toggleFavorite = (item) => {
     setFavorites((prevFavorites) => {
-      console.log("prevFavorites",prevFavorites);
       const isFavorite = prevFavorites.find((fav) => fav.id === item.id);
 
       // Prevent multiple favoriting
@@ -157,7 +207,7 @@ export const FavoritesProvider = ({ children }) => {
     });
   };
 
-  const addToWatchList = (item) => {
+  const addToPersonalQueue = (item) => {
     setPersonalQueue((prevQueue) => {
       if (!prevQueue.some((queueItem) => queueItem.id === item.id)) {
         const newQueue = [...prevQueue, item];
@@ -167,10 +217,9 @@ export const FavoritesProvider = ({ children }) => {
       return prevQueue;
     });
   };
-  console.log("Current Personal Queue: ", personalQueue);
 
   return (
-    <FavoritesContext.Provider value={{ favorites, personalQueue, toggleFavorite, addToWatchList }}>
+    <FavoritesContext.Provider value={{ favorites, personalQueue, toggleFavorite, addToPersonalQueue }}>
       {children}
     </FavoritesContext.Provider>
   );

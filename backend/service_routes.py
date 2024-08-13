@@ -1,55 +1,60 @@
-from flask import Blueprint, jsonify, redirect, request, session
-from oauth_client import OAuthClient
+import requests
+from flask import Blueprint, jsonify, redirect
 
 service_bp = Blueprint('service', __name__)
 
-# Define credentials for each service
+# Define streaming services and their URLs
 STREAMING_SERVICES = {
-    'netflix': {
-        'client_id': 'YOUR_NETFLIX_CLIENT_ID',
-        'client_secret': 'YOUR_NETFLIX_CLIENT_SECRET',
-        'redirect_uri': 'YOUR_NETFLIX_REDIRECT_URI',
-        'scope': 'YOUR_NETFLIX_SCOPE',
-    },
-    'hulu': {
-        'client_id': 'YOUR_HULU_CLIENT_ID',
-        'client_secret': 'YOUR_HULU_CLIENT_SECRET',
-        'redirect_uri': 'YOUR_HULU_REDIRECT_URI',
-        'scope': 'YOUR_HULU_SCOPE',
-    },
-    # Add other services here
+    'netflix': {'url': 'https://www.netflix.com'},
+    'hulu': {'url': 'https://www.hulu.com'},
+    'prime': {'url': 'https://www.primevideo.com'},
+    'peacock': {'url': 'https://www.peacocktv.com'},
+    'zeus': {'url': 'https://www.thezeusnetwork.com'},
+    'hbo_max': {'url': 'https://www.hbomax.com'},
+    'starz': {'url': 'https://www.starz.com'},
+    'ifc': {'url': 'https://www.ifc.com'}
 }
 
-@service_bp.route('/api/oauth/authorize/<service_name>', methods=['GET'])
-def oauth_authorize(service_name):
-    credentials = STREAMING_SERVICES.get(service_name)
-    if not credentials:
-        return jsonify({'error': 'Service not supported'}), 400
+@service_bp.route('/api/play/movie/<int:movie_id>', methods=['GET'])
+def get_movie_streaming_services(movie_id):
+    service_id = 'your_service_id'
+    platform_id = 'your_platform_id'
+    api_key = 'your_api_key'
+    
+    url = f"https://api.example.com/v1.0/deeplink/tv/services/{service_id}/platforms/{platform_id}/movie/{movie_id}"
+    headers = {
+        'Authorization': f'Bearer {api_key}'
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        data = response.json()
+        return jsonify({
+            "streamingServices": data.get('platforms', [])
+        })
+    else:
+        return jsonify({"error": "Unable to fetch streaming services"}), response.status_code
 
-    oauth_client = OAuthClient(service_name, **credentials)
-    authorize_url = oauth_client.get_authorize_url()
-    return redirect(authorize_url)
+@service_bp.route('/api/play/tv/<int:episode_id>', methods=['GET'])
+def get_tv_show_streaming_services(episode_id):
+    service_id = 'your_service_id'
+    platform_id = 'your_platform_id'
+    api_key = 'your_api_key'
+    
+    url = f"https://api.example.com/v1.0/deeplink/tv/services/{service_id}/platforms/{platform_id}/episode/{episode_id}"
+    headers = {
+        'Authorization': f'Bearer {api_key}'
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        data = response.json()
+        return jsonify({
+            "streamingServices": data.get('platforms', [])
+        })
+    else:
+        return jsonify({"error": "Unable to fetch streaming services"}), response.status_code
 
-@service_bp.route('/api/oauth/callback/<service_name>', methods=['GET'])
-def oauth_callback(service_name):
-    code = request.args.get('code')
-    if not code:
-        return jsonify({'error': 'Authorization code not provided'}), 400
-
-    credentials = STREAMING_SERVICES.get(service_name)
-    if not credentials:
-        return jsonify({'error': 'Service not supported'}), 400
-
-    oauth_client = OAuthClient(service_name, **credentials)
-    try:
-        access_token = oauth_client.get_access_token(code)
-        # Store access_token in session or database
-        session[f'{service_name}_access_token'] = access_token
-        return redirect('/profile')  # Redirect to a profile page or another route
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-@service_bp.route('/api/linked-services')
-def linked_services():
-    services = ['hulu', 'netflix']  # Example
-    return jsonify(services)
+# Other routes (e.g., OAuth) remain unchanged

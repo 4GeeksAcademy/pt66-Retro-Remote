@@ -10,6 +10,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { FavoritesProvider } from './pages/FavoritesContext';
 
+// Define Main component before using it
+
 const Main = () => {
     return (
         <React.StrictMode>
@@ -24,5 +26,14 @@ const Main = () => {
     );
 };
 
+// Render the Main component into the root DOM element
+const rootElement = document.getElementById('root');
+if (rootElement.hasChildNodes()) {
+  // Hydrate the existing root
+  ReactDOM.hydrateRoot(rootElement, <Main />);
+} else {
+  // Create a new root
+  ReactDOM.createRoot(rootElement).render(<Main />);
+}
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<Main />);
