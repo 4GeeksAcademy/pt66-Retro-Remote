@@ -162,6 +162,7 @@ const Navbar = () => {
                 </div>
                 <button className="btn search" type="submit">Search</button>
               </form>
+                  <div><Link to="/home">Home</Link></div>
               <ul className="navbar-nav ms-auto menu">
                 <li className="nav-item dropdown">
                   <a className="nav-link dropdown-toggle pe-5" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" ref={dropdownRef}>

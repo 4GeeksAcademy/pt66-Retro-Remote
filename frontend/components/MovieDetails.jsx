@@ -8,16 +8,13 @@ const MovieDetails = () => {
     const { store } = useGlobalReducer();
 
     const { movie_details=[],movie_cast=[],id,username} = store;
-    console.log('movieDetaile',movie_details);
-    console.log('id',id)
-    console.log('username',username)
-
     const [releaseYear,setReleaseYear] = useState();
     const [movieDuration,setMovieDuration] = useState({hours:'',minutes:''});
     const [actors,setActors] = useState([]);
     const [directors,setDirectors] = useState([]);
     const [writers,setWriters] = useState([]);
     const [reviewData,setReviewData] = useState();
+    const [reviews,setReviews] = useState([]);
 
  useEffect(() => {
     const d = new Date(movie_details.release_date)
@@ -26,7 +23,7 @@ const MovieDetails = () => {
     const duration = Duration.fromObject({ minutes: movie_details.runtime});
     const hrs_mins = duration.shiftTo('hours', 'minutes').toObject();
     setMovieDuration({'hours' : hrs_mins['hours'],'minutes':hrs_mins['minutes']})
- }, [movie_details])
+ }, [movie_details,reviews])
 
   
 
@@ -37,7 +34,7 @@ async function handleSubmitReview(e){
      e.preventDefault();
      const review_data = {
         reviewData : reviewData,
-        movieId : movie_details.id,
+        id : movie_details.id,
         username:username
 
      }
@@ -52,8 +49,12 @@ async function handleSubmitReview(e){
         if(resp.ok)
             {
                 const response_data = await resp.json();
+                console.log('after db call');
                 console.log(response_data);
                 setReviewData('')
+                setReviews((prevReviews)=>{
+                    return [...prevReviews,response_data]
+                });
                                         
             }else{
                 const error = await resp.json();
@@ -118,7 +119,21 @@ return(
        
        </div> 
     </div> 
-    <div><Link to="/home">Go to Home Page</Link></div>
+    <div>
+    <ol class="list-group list-group-numbered">
+                   {
+                    
+                    reviews?.map((review)=>{
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                          <div class="fw-bold">{review.username}</div>
+                          {review.reviewData}
+                        </div>
+                      </li>
+                    })
+                   }
+                   </ol>
+    </div>
 </div>
 )
 

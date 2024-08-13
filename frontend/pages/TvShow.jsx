@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 import useGlobalReducer from '../hooks/useGlobalReducer'; // Adjust the import path as necessary
 import TvShowDetails from '../components/TvShowDetails';
+import Navbar from '../components/Navbar';
 
 const TvShow = () => {
   const { dispatch,store } = useGlobalReducer();
@@ -14,6 +15,7 @@ const TvShow = () => {
 
 
   useEffect(() =>{
+
       async function getTvShowDetails() {
 
         const tvShowDetailsResponse = await axios.get(`${apiBaseUrl}/api/tvShowDetails?id=${id}`);
@@ -28,11 +30,12 @@ const TvShow = () => {
     if(isAuthenticated && token){
       return (
         <div>
+          <Navbar></Navbar>
            <TvShowDetails></TvShowDetails>
         </div>
       )
-    } else {
-      navigate('/login')
+    }else {
+      return <Login></Login>
     }
 
 };

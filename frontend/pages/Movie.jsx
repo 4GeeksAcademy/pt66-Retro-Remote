@@ -3,40 +3,49 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 import useGlobalReducer from '../hooks/useGlobalReducer'; // Adjust the import path as necessary
 import MovieDetails from '../components/MovieDetails';
+import Navbar from '../components/Navbar';
+import Login from './Loginform';
 
 const Movie = () => {
   const { dispatch,store} = useGlobalReducer();
   const {id} = useParams();
   const {token} = store;
   const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
+
   const isAuthenticated = localStorage.getItem('isAuthenticated')
+  console.log(isAuthenticated)
+  console.log(token);
   const navigate = useNavigate();
 
 
 
   useEffect(() =>{
-    console.log('in movie page')
+
     async function getMovieDetails() {
-        const movieDetailsResponse = await axios.get(`${apiBaseUrl}/api/movieDetails?id=${id}`);
+        const movieDetailsResponse = await axios.get(`${apiBaseUrl}api/movieDetails?id=${id}`);
         dispatch({ type: 'set_movie_details', payload: movieDetailsResponse.data });
 
-        const movieCastCrewResponse = await axios.get(`${apiBaseUrl}/api/movieCast?id=${id}`);
+        const movieCastCrewResponse = await axios.get(`${apiBaseUrl}api/movieCast?id=${id}`);
         dispatch({ type: 'set_movie_cast', payload: movieCastCrewResponse.data });
+
+        const reviews = await axios.get(`${apiBaseUrl}/api/review?id=${id}`);
+        console.log(reviews);
 
      }
        getMovieDetails();
     },[]);
  
     if(isAuthenticated && token){
+      console.log('inside if')
       return (
         <div> 
+          <Navbar></Navbar>
             <MovieDetails></MovieDetails>
         </div>
       )
-    } else {
-      navigate('/login')
+    }else {
+      return <Login></Login>
     }
-
 };
 
 export default Movie;

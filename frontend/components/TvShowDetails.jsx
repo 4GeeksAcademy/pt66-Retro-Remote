@@ -84,7 +84,6 @@ const TvShow_details = () => {
             
             </div> 
          </div> 
-         <div><Link to="/home">Go to Home Page</Link></div>
     </div>
 )
 

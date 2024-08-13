@@ -147,7 +147,7 @@ def add_review():
     body = request.json
     review = Reviews(
         review=body["reviewData"],
-        movie_id=body["movieId"],
+        movie_tvshow_id=body["id"],
         username=body["username"]
     )
     db.session.add(review)
@@ -155,6 +155,15 @@ def add_review():
     db.session.refresh(review)
     return jsonify(review.serialize())
 
+@api.route("/review", methods=["GET"])
+def get_review():
+    """Get reviews from the database."""
+    id = request.args.get('id')
+    reviews = list(Reviews.query.filter_by(movie_tvshow_id=id).all())
+    if not reviews:
+        return jsonify(msg="No reviews available")
+    if reviews:
+        return jsonify(reviews)
 
 @api.route('/relay', methods=['GET'])
 def relay_http_req():
@@ -319,17 +328,3 @@ def create_user():
 
 
 
-
-@api.route("/user", methods=['GET'])
-@jwt_required()
-def get_user():
-    current_user = get_jwt_identity()
-    user = User.query.filter_by(username=current_user).first()
-    return jsonify(user.serialize()), 200
-
-@api.route("/home")
-def home():
-    # Check if user is authenticated
-    # If not, redirect to login page
-    # Otherwise, return the home page
-    return jsonify("Welcome to the home page"), 200

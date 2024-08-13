@@ -33,14 +33,15 @@ class User(db.Model):
 class Reviews(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     review=db.Column(db.Text,nullable=False)
-    movie_id=db.Column(db.Integer,nullable=False)
+    movie_tvshow_id=db.Column(db.Integer,nullable=False)
     username=db.Column(db.String(80), db.ForeignKey('user.username'), nullable=False)
 
     def serialize(self):
         return {
             "id": self.id,
-            "movie_id": self.movie_id,
+            "movie_tvshow_id": self.movie_tvshow_id,
             "username": self.username,
+            "reviews":self.review
         }
 
 

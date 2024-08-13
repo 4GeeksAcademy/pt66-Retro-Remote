@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Card, Button, Row, Col, Container } from "react-bootstrap";
 import { FavoritesContext } from "./FavoritesContext"; // Import the context
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import Login from "./Loginform.jsx";
 import "../style.css";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -24,6 +24,7 @@ const Home = () => {
 
 
   useEffect(() => {
+
     const getHttpBin = async () => {
       const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/relay");
       const data = await resp.json();
@@ -89,11 +90,9 @@ const Home = () => {
 
     );
    
+  }else {
+    return <Login></Login>
   }
-  else {
-    navigate('/login')  
-  }
-   
 
 };
 
