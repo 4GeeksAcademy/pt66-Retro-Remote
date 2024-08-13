@@ -4,7 +4,6 @@ import { FavoritesContext } from "./FavoritesContext"; // Import the context
 import { Link, useNavigate } from "react-router-dom";
 import Login from "./Loginform.jsx";
 import "../style.css";
-import { Navigate, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import Navbar from "../components/Navbar.jsx";
 
