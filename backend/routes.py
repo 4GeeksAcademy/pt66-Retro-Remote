@@ -160,10 +160,13 @@ def get_review():
     """Get reviews from the database."""
     id = request.args.get('id')
     reviews = list(Reviews.query.filter_by(movie_tvshow_id=id).all())
+    serialized_reviews = []
     if not reviews:
         return jsonify(msg="No reviews available")
     if reviews:
-        return jsonify(reviews)
+        for review in reviews:
+            serialized_reviews.append(review.serialize())
+        return jsonify(serialized_reviews)
 
 @api.route('/relay', methods=['GET'])
 def relay_http_req():

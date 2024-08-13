@@ -8,7 +8,8 @@ export const initialStore = () => {
     movie_details:[],
     movie_cast : [],
     tvShow_details:[],
-    tvShow_cast:[]
+    tvShow_cast:[],
+    reviews:[]
   }
 };
 
@@ -103,6 +104,12 @@ export default function storeReducer(state, action={}) {
           ...state,
           tvShow_cast: tvShow_cast_data
         }
+    case 'set_reviews':
+      console.log('setting reviews')
+      return{
+        ...state,
+        reviews: action.payload
+      }
     default:
       return state;
   }

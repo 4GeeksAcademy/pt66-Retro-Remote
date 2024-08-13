@@ -41,7 +41,7 @@ class Reviews(db.Model):
             "id": self.id,
             "movie_tvshow_id": self.movie_tvshow_id,
             "username": self.username,
-            "reviews":self.review
+            "review":self.review
         }
 
 

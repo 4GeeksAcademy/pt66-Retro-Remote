@@ -3,18 +3,22 @@ import useGlobalReducer from '../hooks/useGlobalReducer';
 import { Duration } from "luxon";
 import "../index.css"
 import { Link } from "react-router-dom";
+import { object } from "prop-types";
+
 
 const MovieDetails = () => {
     const { store } = useGlobalReducer();
 
-    const { movie_details=[],movie_cast=[],id,username} = store;
+    const { movie_details=[],movie_cast=[],id,username,reviews} = store;
+    console.log('movie details page',reviews);
     const [releaseYear,setReleaseYear] = useState();
     const [movieDuration,setMovieDuration] = useState({hours:'',minutes:''});
     const [actors,setActors] = useState([]);
     const [directors,setDirectors] = useState([]);
     const [writers,setWriters] = useState([]);
     const [reviewData,setReviewData] = useState();
-    const [reviews,setReviews] = useState([]);
+    const [pageReviews,setpageReviews] = useState();
+  
 
  useEffect(() => {
     const d = new Date(movie_details.release_date)
@@ -23,6 +27,7 @@ const MovieDetails = () => {
     const duration = Duration.fromObject({ minutes: movie_details.runtime});
     const hrs_mins = duration.shiftTo('hours', 'minutes').toObject();
     setMovieDuration({'hours' : hrs_mins['hours'],'minutes':hrs_mins['minutes']})
+    setpageReviews(reviews);
  }, [movie_details,reviews])
 
   
@@ -52,7 +57,7 @@ async function handleSubmitReview(e){
                 console.log('after db call');
                 console.log(response_data);
                 setReviewData('')
-                setReviews((prevReviews)=>{
+                setpageReviews((prevReviews)=>{
                     return [...prevReviews,response_data]
                 });
                                         
@@ -118,22 +123,25 @@ return(
            </div>
        
        </div> 
-    </div> 
-    <div>
-    <ol class="list-group list-group-numbered">
-                   {
-                    
-                    reviews?.map((review)=>{
+       <div className="reviews-container">
+        <ul class="list-group">
+                   {                   
+                    reviews.map((review)=>{
+                       return (
                         <li class="list-group-item d-flex justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                          <div class="fw-bold">{review.username}</div>
-                          {review.reviewData}
+                         <div class="fw-bold">{review.username}</div>
+                          {review.review}
                         </div>
                       </li>
+                       ) 
+                       
                     })
-                   }
-                   </ol>
+                }
+        </ul>
     </div>
+    </div> 
+
 </div>
 )
 
