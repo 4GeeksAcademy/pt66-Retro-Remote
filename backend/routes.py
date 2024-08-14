@@ -320,16 +320,3 @@ def create_user():
 
 
 
-@api.route("/user", methods=['GET'])
-@jwt_required()
-def get_user():
-    current_user = get_jwt_identity()
-    user = User.query.filter_by(username=current_user).first()
-    return jsonify(user.serialize()), 200
-
-@api.route("/home")
-def home():
-    # Check if user is authenticated
-    # If not, redirect to login page
-    # Otherwise, return the home page
-    return jsonify("Welcome to the home page"), 200

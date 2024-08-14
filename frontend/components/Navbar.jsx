@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const { store, dispatch } = useGlobalReducer();
-  const {username} = store;
+  const {username,token} = store;
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
@@ -89,7 +89,7 @@ const Navbar = () => {
   return (
     <div>
       {
-        !store.token ?
+        token ==null ?
         (<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid ps-5">
                <ul className="navbar-nav d-flex w-100 justify-content-between">
