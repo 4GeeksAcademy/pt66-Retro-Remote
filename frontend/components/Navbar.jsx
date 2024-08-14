@@ -8,11 +8,12 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const { store, dispatch } = useGlobalReducer();
-  const {username} = store;
+  const {username,token} = store;
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const dropdownRef = useRef(null);
+  console.log('token',token);
 
   const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
   const imageBaseUrl = 'https://image.tmdb.org/t/p/w92';

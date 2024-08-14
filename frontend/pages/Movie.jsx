@@ -27,7 +27,7 @@ const Movie = () => {
        getMovieDetails();
     },[]);
  
-    if(isAuthenticated && token){
+    if(token !== null){
       return (
         <div> 
             <MovieDetails></MovieDetails>

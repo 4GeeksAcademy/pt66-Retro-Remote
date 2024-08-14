@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import Navbar from "../components/Navbar.jsx";
 import axios from 'axios';
+import Login from "./Loginform.jsx";
 
 const Home = () => {
   const { store } = useGlobalReducer();
@@ -15,14 +16,17 @@ const Home = () => {
   const navigate = useNavigate();
   const { favorites, toggleFavorite, addToWatchList } = useContext(FavoritesContext); // Use the context
   const isAuthenticated = localStorage.getItem('isAuthenticated');
+  
 
   useEffect(() => {
     const getFavorites = async () => {
       try {
         const movieResponse = await axios.get('/api/favorites/movies');
+        console.log("movieResponse",movieResponse);
         setFavMovies(movieResponse.data);
 
         const tvShowResponse = await axios.get('/api/favorites/tv-shows');
+        console.log('tvShowResponse',tvShowResponse);
         setFavTVShows(tvShowResponse.data);
       } catch (error) {
         console.error('Error fetching favored movies or TV shows:', error);
@@ -154,7 +158,7 @@ const Home = () => {
       </>
     );
   } else {
-    navigate('/login');
+   <Login></Login>
   }
 };
 

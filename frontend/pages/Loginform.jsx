@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { useNavigate } from "react-router-dom";
-// import './Login.css';
+import '../style.css';
 
 // Import necessary hooks and functions from React.
-import storeReducer, { initialStore } from "../store"; // Import the reducer and the initial state.
 
 const Login = () => {
   const [active, setActive] = useState(false);
