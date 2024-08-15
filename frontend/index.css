@@ -181,3 +181,8 @@ button:hover {
 .nav-link{
   font-size: 1.3rem;
 }
+/* Ensure consistent button size and appearance */
+.btn-custom {
+  flex: 1;
+  margin: 0 5px; /* Adjust spacing if needed */
+}

@@ -16,14 +16,6 @@ def get_streaming_providers_tmdb(movie_id):
     response = requests.get(url, headers=headers)
     return response.json()
 
-def get_streaming_providers_reelgood(movie_id):
-    # Replace with actual Reelgood API URL and headers if needed
-    url = f'https://api.reelgood.com/v1.0/deeplink/movie/{movie_id}'
-    headers = {
-        'Authorization': f'Bearer {REELGOOD_API_KEY}',
-    }
-    response = requests.get(url, headers=headers)
-    return response.json()
 
 @app.route('/api/personal-queue', methods=['GET'])
 def get_personal_queue():
@@ -40,11 +32,5 @@ def get_movie_streaming(movie_id):
     providers = get_streaming_providers_tmdb(movie_id)
     return jsonify(providers)
 
-@app.route('/api/reelgood/movie/<int:movie_id>/streaming', methods=['GET'])
-def get_movie_streaming_reelgood(movie_id):
-    # For Reelgood streaming providers
-    providers = get_streaming_providers_reelgood(movie_id)
-    return jsonify(providers)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
