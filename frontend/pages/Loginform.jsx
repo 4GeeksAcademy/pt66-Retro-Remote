@@ -29,7 +29,7 @@ const Login = () => {
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
-    const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "api/login", {
+    const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +57,7 @@ const Login = () => {
   
   const handleRegisterSubmit = async (event) => {
     event.preventDefault();
-    const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "api/signup", {
+    const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
