@@ -1,81 +1,33 @@
-import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../assets/css/Login.css';
-import { useGlobalReducer } from '../store';
+const handleSubmit = async (event) => {
+  event.preventDefault();
 
-const Login = () => {
-  const { store, dispatch } = useGlobalReducer();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  if (!/\S+@\S+\.\S+/.test(email)) {
+    setError('Please enter a valid email address.');
+    return;
+  }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  if (!password) {
+    setError('Please enter your password.');
+    return;
+  }
 
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError('Please enter a valid email address.');
-      return;
+  setError('');
+  try {
+    // Replace this with your actual login API endpoint
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Login failed');
     }
 
-    if (!password) {
-      setError('Please enter your password.');
-      return;
-    }
-
-    setError('');
-    // Implement your actual login logic here
-    // On success, dispatch the token
-    const fakeToken = 'your_real_token_from_api';
-    dispatch({ type: 'set_token', payload: fakeToken });
-    console.log('Form submitted:', { email, password });
-  };
-
-  const setTestToken = () => {
-    const newToken = store.token === null ? 'your_test_token' : null;
-    dispatch({ type: 'set_token', payload: newToken });
-    console.log('Token set to:', newToken);
-  };
-
-  return (
-    <div className="container">
-      <div className="row justify-content-center mt-5">
-        <div className="col-md-6">
-          <h2 className="text-center">Login</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">Email</label>
-              <input
-                type="email"
-                className="form-control"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">Password</label>
-              <input
-                type="password"
-                className="form-control"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              {error && <div className="text-danger mt-2">{error}</div>}
-            </div>
-            <button type="submit" className="btn btn-primary w-100">Login</button>
-          </form>
-          <div className="text-center mt-3">
-            <button className="btn btn-primary" onClick={setTestToken}>
-              {store.token ? 'Clear Test Token' : 'Set Test Token'}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+    const data = await response.json();
+    dispatch({ type: 'set_token', payload: data.token }); // Adjust based on actual API response
+  } catch (error) {
+    setError('Login failed. Please try again.');
+  }
 };
 
-export default Login;

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import Navbar from "../components/Navbar.jsx";
 import axios from 'axios';
+import Login from "./Loginform.jsx"
 
 const Home = () => {
   const { store } = useGlobalReducer();
@@ -32,34 +33,7 @@ const Home = () => {
     getFavorites();
   }, []);
 
-  const handleToggleFavorite = async (item, type) => {
-    try {
-      // Toggle favorite
-      toggleFavorite(item);
-
-      // Update the count on the backend
-      const response = await axios.post(`/api/favorites/toggle`, {
-        id: item.id,
-        type: type, // "movie" or "tv-show"
-      });
-
-      // Update the state with the new count
-      if (type === "movie") {
-        setFavMovies(favMovies.map(movie => 
-          movie.id === item.id ? { ...movie, favCount: response.data.favCount } : movie
-        ));
-      } else {
-        setFavTVShows(favTVShows.map(show => 
-          show.id === item.id ? { ...show, favCount: response.data.favCount } : show
-        ));
-      }
-
-    } catch (error) {
-      console.error('Error toggling favorite:', error);
-    }
-  };
-
-  if (isAuthenticated && token) {
+  if (token !==null ) {
     return (
       <>
         <Navbar />
@@ -83,14 +57,8 @@ const Home = () => {
                     </Card.Text>
                   </Card.Body>
                   <Card.Footer className="d-flex justify-content-between align-items-center">
-                    <div>
-                      <span role="img" aria-label="favorites">⭐</span> {movie.favCount}
-                    </div>
-                    <Button 
-                      variant="primary" 
-                      onClick={() => handleToggleFavorite(movie, "movie")}
-                    >
-                      {favorites.includes(movie.id) ? "Unfavorite" : "Favorite"}
+                    <Button variant="primary" onClick={() => toggleFavorite(movie)}>
+                      ⭐ {movie.stars}
                     </Button>
                     <Link to={`/movie/${movie.id}`}>
                       <Button variant="dark" style={{ color: 'white' }}>
@@ -125,14 +93,8 @@ const Home = () => {
                     </Card.Text>
                   </Card.Body>
                   <Card.Footer className="d-flex justify-content-between align-items-center">
-                    <div>
-                      <span role="img" aria-label="favorites">⭐</span> {show.favCount}
-                    </div>
-                    <Button 
-                      variant="primary" 
-                      onClick={() => handleToggleFavorite(show, "tv-show")}
-                    >
-                      {favorites.includes(show.id) ? "Unfavorite" : "Favorite"}
+                    <Button variant="primary" onClick={() => toggleFavorite(show)}>
+                      ⭐ {show.stars}
                     </Button>
                     <Link to={`/tv-show/${show.id}`}>
                       <Button variant="dark" style={{ color: 'white' }}>
@@ -154,9 +116,12 @@ const Home = () => {
       </>
     );
   } else {
-    navigate('/login');
+    <Login></Login>
   }
 };
 
 export default Home;
+
+
+
 

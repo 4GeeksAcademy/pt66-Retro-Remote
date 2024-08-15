@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 import useGlobalReducer from '../hooks/useGlobalReducer'; // Adjust the import path as necessary
 import TvShowDetails from '../components/TvShowDetails';
+import Login from "./Loginform.jsx"
 
 const TvShow = () => {
   const { dispatch,store } = useGlobalReducer();
@@ -25,14 +26,14 @@ const TvShow = () => {
         getTvShowDetails();
     },[])
 
-    if(isAuthenticated && token){
+    if(token!== null){
       return (
         <div>
            <TvShowDetails></TvShowDetails>
         </div>
       )
     } else {
-      navigate('/login')
+      <Login></Login>
     }
 
 };

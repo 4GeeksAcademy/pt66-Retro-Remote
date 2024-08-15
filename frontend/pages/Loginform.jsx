@@ -1,19 +1,16 @@
 import React, { useState } from "react";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { useNavigate } from "react-router-dom";
-// import './Login.css';
-
-// Import necessary hooks and functions from React.
-import storeReducer, { initialStore } from "../store"; // Import the reducer and the initial state.
+import '../style.css';
 
 const Login = () => {
   const [active, setActive] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error,setError] =useState('');
-  const [sigupError,setSignUpError] = useState('');
-  const [signupSuccess,setSignupSuccess] = useState('');
+  const [error, setError] = useState('');
+  const [signupError, setSignUpError] = useState('');
+  const [signupSuccess, setSignupSuccess] = useState('');
   const navigate = useNavigate();
 
   const { dispatch } = useGlobalReducer();
@@ -29,7 +26,7 @@ const Login = () => {
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
-    const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "api/login", {
+    const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,23 +38,29 @@ const Login = () => {
     });
     if (resp.ok) {
       const data = await resp.json();
-      dispatch({ type: "LOGIN_SUCCESS", payload: data });
-      console.log('logindata',data)
-      localStorage.setItem("isAuthenticated", true);
-      navigate("/home");
+      const token = data.access_token;
 
+      console.log("Login successful. Token received:", token);
+
+      // Store the token in localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("isAuthenticated", true);
+      
+      // Dispatch the login success action
+      dispatch({ type: "LOGIN_SUCCESS", payload: data });
+
+      navigate("/home");
     } else {
       const error = await resp.json();
-      console.log('error',error);
-      setError(error.msg)
+      console.log('error', error);
+      setError(error.msg);
       dispatch({ type: "LOGIN_FAILURE", payload: "Login failed" });
-      
     }
   };
   
   const handleRegisterSubmit = async (event) => {
     event.preventDefault();
-    const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "api/signup", {
+    const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -70,15 +73,23 @@ const Login = () => {
     });
     if (resp.ok) {
       const data = await resp.json();
-      console.log('signup resp',data);
+      const token = data.token;
+
+      // Store the token in localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("isAuthenticated", true);
+
+      // Dispatch the login success action
       dispatch({ type: "LOGIN_SUCCESS", payload: data });
+
       setSignUpError('');
-      setSignupSuccess('User created successfully!')
+      setSignupSuccess('User created successfully!');
+     
     } else {
       const error = await resp.json();
-      console.log('error',error);
-      setSignUpError(error.msg)
-      dispatch({ type: "LOGIN_FAILURE", payload: "Login failed" });
+      console.log('error', error);
+      setSignUpError(error.msg);
+      dispatch({ type: "LOGIN_FAILURE", payload: "Signup failed" });
     }
   };
 
@@ -139,7 +150,7 @@ const Login = () => {
               </p>
             </div>
           </form>
-          <div className={` alert alert-danger login-alert ${error ? '' : 'd-none'}`}>
+          <div className={`alert alert-danger login-alert ${error ? '' : 'd-none'}`}>
               {error}
           </div>
         </div>
@@ -213,13 +224,12 @@ const Login = () => {
                   Login
                 </a>
               </p>
-              <div className={` alert alert-danger login-alert ${sigupError ? '' : 'd-none'}`}>
-              {sigupError}
-          </div>
-          <div className={` alert alert-success login-alert ${signupSuccess? '' : 'd-none'}`}>
-              {signupSuccess}
-          </div>
-          
+              <div className={`alert alert-danger login-alert ${signupError ? '' : 'd-none'}`}>
+              {signupError}
+              </div>
+              <div className={`alert alert-success login-alert ${signupSuccess ? '' : 'd-none'}`}>
+                  {signupSuccess}
+              </div>
             </div>
           </form>
         </div>

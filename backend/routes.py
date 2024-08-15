@@ -20,9 +20,6 @@ bcrypt = Bcrypt()
 TMDB_API_KEY = 'f0d14b30a61125698e4990acdb103e21'
 
 
-api = Blueprint('api', __name__, url_prefix="/api")
-bcrypt = Bcrypt()
-
 CORS(api)
 
 
@@ -163,10 +160,6 @@ def relay_http_req():
     return jsonify(resp.json()), 200
 
 
-# Allow CORS requests to this API
-CORS(api)
-
-
 @api.route('/play/movie/<int:movie_id>', methods=['GET'])
 def get_movie_streaming_services(movie_id):
     url = "https://api.themoviedb.org/3/watch/providers/movie?language=en-US"
@@ -207,11 +200,6 @@ def get_tv_show_streaming_services(episode_id):
 
 # Other routes (e.g., OAuth) remain unchanged
 
-
-# Allow CORS requests to this API
-CORS(api)
-
-
 @api.route("/user", methods=['GET'])
 @jwt_required()
 def get_user():
@@ -219,6 +207,15 @@ def get_user():
     current_user = get_jwt_identity()
     user = User.query.filter_by(username=current_user).first()
     return jsonify(user.serialize()), 200
+
+# making fav routes here
+# @api.route("/favorites/movies", methods=['POST'])
+# @jwt_required()
+# def get_favorite_movies():
+#     current_user = get_jwt_identity()
+#     user = User.query.filter_by(username=current_user).first()
+
+#     return jsonify(user.serialize()), 200
 
 
 @api.route("/home")
@@ -270,13 +267,6 @@ def play_movie(movie_id):
 
 # Other routes (e.g., OAuth) remain unchanged
 
-
-# Allow CORS requests to this API
-
-200
-
-# Allow CORS requests to this API
-CORS(api)
 
 @api.route("/signup", methods=['POST'])
 def create_user():

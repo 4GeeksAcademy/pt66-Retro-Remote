@@ -56,7 +56,8 @@ export default function storeReducer(state, action={}) {
         shows: action.payload.results || action.payload // Ensure it handles the correct payload structure
       };
     case 'LOGIN_SUCCESS':
-
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('token', action.payload.access_token);
       return {
         ...state,
         token: action.payload.access_token,
