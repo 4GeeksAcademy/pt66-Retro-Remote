@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Carousel } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons'; // Import the trash icon
 import "../style.css";
 
 const TMDB_API_KEY = 'c2fbec3b6737ac039d19ec2bc0281187'; 
@@ -22,7 +24,6 @@ const PersonalQueue = () => {
       window.removeEventListener('storage', loadedQueueItems);
     };
   }, []);
-
 
   const fetchStreamingInfo = async (id, type) => {
     try {
@@ -70,6 +71,7 @@ const PersonalQueue = () => {
                 <Card.Img
                   variant="top"
                   src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                  style={{ height: '300px', objectFit: 'cover' }} // Fit the image within the carousel
                 />
                 <Card.Body>
                   <Card.Title>{item.title}</Card.Title>
@@ -79,16 +81,14 @@ const PersonalQueue = () => {
                 </Card.Body>
                 <Card.Footer className="d-flex justify-content-between align-items-center">
                   <Button
-                    variant="warning" // Yellow button
+                    style={{ backgroundColor: 'grey', color: 'white', border: '1px solid white' }}
                     onClick={() => removeItemFromQueue(item.id)}
-                    className="btn-custom"
                   >
-                    Remove
+                    <FontAwesomeIcon icon={faTrash} /> {/* Trash icon */}
                   </Button>
                   <Button
-                    variant="success" // Green button
+                    style={{ backgroundColor: 'black', color: 'white', border: '1px solid white' }}
                     onClick={() => fetchStreamingInfo(item.id, item.type)}
-                    className="btn-custom"
                   >
                     Streaming Info
                   </Button>

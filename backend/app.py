@@ -1,21 +1,24 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import requests
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-TMDB_API_KEY = 'c2fbec3b6737ac039d19ec2bc0281187'
-
+# Load the TMDB API Key from environment variable
+TMDB_API_KEY = os.getenv('TMDB_API_KEY', 'your_api_key_here')
 
 def get_streaming_providers_tmdb(movie_id):
     url = f'https://api.themoviedb.org/3/movie/{movie_id}/watch/providers'
-    headers = {
-        'Authorization': f'Bearer {TMDB_API_KEY}',
+    params = {
+        'api_key': TMDB_API_KEY
     }
-    response = requests.get(url, headers=headers)
-    return response.json()
-
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        response.raise_for_status()
 
 @app.route('/api/personal-queue', methods=['GET'])
 def get_personal_queue():
@@ -28,9 +31,11 @@ def get_personal_queue():
 
 @app.route('/api/movie/<int:movie_id>/streaming', methods=['GET'])
 def get_movie_streaming(movie_id):
-    # For TMDB streaming providers
-    providers = get_streaming_providers_tmdb(movie_id)
-    return jsonify(providers)
+    try:
+        providers = get_streaming_providers_tmdb(movie_id)
+        return jsonify(providers)
+    except requests.HTTPError as e:
+        return jsonify({'error': str(e)}), e.response.status_code
 
-
-
+if __name__ == '__main__':
+    app.run(debug=True)
