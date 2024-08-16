@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 import useGlobalReducer from '../hooks/useGlobalReducer'; // Adjust the import path as necessary
 import MovieDetails from '../components/MovieDetails';
+import Login from './Loginform';
 
 const Movie = () => {
   const { dispatch,store} = useGlobalReducer();
@@ -27,14 +28,14 @@ const Movie = () => {
        getMovieDetails();
     },[]);
  
-    if(isAuthenticated && token){
+    if(token !== null){
       return (
         <div> 
             <MovieDetails></MovieDetails>
         </div>
       )
     } else {
-      navigate('/login')
+      <Login></Login>
     }
 
 };

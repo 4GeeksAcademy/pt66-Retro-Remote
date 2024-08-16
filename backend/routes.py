@@ -227,47 +227,41 @@ def home():
     return jsonify("Welcome to the home page"), 200
 
 
-@api.route('/play/<movie_id>', methods=['GET'])
-def play_movie(movie_id):
-    """Provide links to streaming services for a specific movie."""
-    streaming_services = [
-        {'name': 'Netflix', 'url': 'https://www.netflix.com'},
-        {'name': 'Hulu', 'url': 'https://www.hulu.com'},
-        {'name': 'Peacock', 'url': 'https://www.peacocktv.com'},
-        {'name': 'Prime Video', 'url': 'https://www.amazon.com/PrimeVideo'},
-        # Add more streaming services here
-    ]
-    return jsonify({'streamingServices': streaming_services}), 200
+TMDB_API_KEY = 'c2fbec3b6737ac039d19ec2bc0281187'
 
+def get_tv_streaming_providers_tmdb(tv_id):
+    """Fetch streaming providers from TMDB for a specific TV show."""
+    url = f'https://api.themoviedb.org/3/tv/{tv_id}/watch/providers?api_key={TMDB_API_KEY}'
+    
     headers = {
-        "accept": "application/json",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjMmZiZWMzYjY3MzdhYzAzOWQxOWVjMmJjMDI4MTE4NyIsIm5iZiI6MTcyMzI1MTA5OS42MjcyOTcsInN1YiI6IjY2OTg2ODcwZjVmMjdkY2U5ZDcyMGRjNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1_J6G9Ukogyrbu_vX35TVNQ4bplfPn9pPH1qp-DXAkg"
+        "accept": "application/json"
     }
 
     response = requests.get(url, headers=headers)
 
     if response.status_code == 200:
         data = response.json()
-        return jsonify({
-            "streamingService": data.provider_name,
-            "logo": data.logo_path
-        })
+        # Assuming you want to check for US providers
+        if 'results' in data and 'US' in data['results'] and 'flatrate' in data['results']['US']:
+            providers = data['results']['US']['flatrate']
+            return {
+                'streamingServices': [
+                    {'name': provider['provider_name'], 'logo': provider['logo_path']}
+                    for provider in providers
+                ]
+            }
+        else:
+            return {"error": "No streaming providers found for this TV show"}, 404
+    elif response.status_code == 404:
+        return {"error": "TV show not found in TMDB"}, 404
     else:
-        return jsonify({"error": "Unable to fetch streaming services"}), response.status_code
+        return {"error": "Unable to fetch streaming services"}, response.status_code
 
-    headers = {
-        "accept": "application/json",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjMmZiZWMzYjY3MzdhYzAzOWQxOWVjMmJjMDI4MTE4NyIsIm5iZiI6MTcyMzI1MTA5OS42MjcyOTcsInN1YiI6IjY2OTg2ODcwZjVmMjdkY2U5ZDcyMGRjNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.1_J6G9Ukogyrbu_vX35TVNQ4bplfPn9pPH1qp-DXAkg"
-    }
-
-    response = requests.get(url, headers=headers)
-
-    if response.status_code == 200:
-        data = response.json()
-        return data, 200
-    else:
-        return jsonify({"error": "Unable to fetch streaming services"}), response.status_code
-
+@api.route('/play/tv/<int:tv_id>', methods=['GET'])
+def play_tv_show(tv_id):
+    """Fetch and provide links to streaming services for a specific TV show."""
+    providers = get_tv_streaming_providers_tmdb(tv_id)
+    return jsonify(providers)
 # Other routes (e.g., OAuth) remain unchanged
 
 
