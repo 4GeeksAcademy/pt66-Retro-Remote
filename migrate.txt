@@ -1,0 +1,5 @@
+Loading .env environment variables...
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.ddl.postgresql] Detected sequence named 'reviews_id_seq' as owned by integer column 'reviews(id)', assuming SERIAL and omitting
+INFO  [alembic.env] No changes in schema detected.

@@ -41,7 +41,7 @@ const MovieDetails = () => {
         fetchFavoriteStatus();
     }, [movie_details]);
 
-    const toggleFavorite = async () => {
+    const handleFavorite = async () => {
         const token = store.token || localStorage.getItem('token');
         const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/api/favorites/${movie_details.id}/toggle`, {
             method: "POST",
@@ -53,8 +53,29 @@ const MovieDetails = () => {
 
         if (response.ok) {
             const result = await response.json();
-            setIsFavored(result.isFavored);
-            setFavCount(result.favCount);
+
+            if (result.warn) {
+                const userConfirmed = window.confirm(result.warn);
+                if (userConfirmed) {
+                    const confirmResponse = await fetch(import.meta.env.VITE_BACKEND_URL + `/api/favorites/${movie_details.id}/toggle`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ confirm_removal: true })
+                    });
+
+                    if (confirmResponse.ok) {
+                        const confirmResult = await confirmResponse.json();
+                        setIsFavored(confirmResult.isFavored);
+                        setFavCount(confirmResult.favCount);
+                    }
+                }
+            } else {
+                setIsFavored(result.isFavored);
+                setFavCount(result.favCount);
+            }
         }
     };
 
@@ -121,7 +142,7 @@ const MovieDetails = () => {
                             {movie_cast['writers']?.map((writer) => <span className="names" key={writer}>{writer}</span>)}
                         </p>
                         <div className="favorites-section">
-                            <button className={`btn ${isFavored ? 'btn-warning' : 'btn-outline-warning'}`} onClick={toggleFavorite}>
+                            <button className={`btn ${isFavored ? 'btn-warning' : 'btn-outline-warning'}`} onClick={handleFavorite}>
                                 ⭐ {favCount}
                             </button>
                         </div>

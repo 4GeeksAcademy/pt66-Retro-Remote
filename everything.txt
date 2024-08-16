@@ -1,0 +1,53 @@
+Loading .env environment variables...
+CREATE EXTENSION
+Loading .env environment variables...
+Error: While importing 'main', an ImportError was raised:
+
+Traceback (most recent call last):
+  File "/workspaces/pt66-Retro-Remote/.venv/lib/python3.11/site-packages/flask/cli.py", line 245, in locate_app
+    __import__(module_name)
+  File "/workspaces/pt66-Retro-Remote/main.py", line 16, in <module>
+    from backend.routes import api
+  File "/workspaces/pt66-Retro-Remote/backend/routes.py", line 4, in <module>
+    from backend.models import db, User, Reviews, MovieFavorites, TvShowsFavorite
+ImportError: cannot import name 'TvShowsFavorite' from 'backend.models' (/workspaces/pt66-Retro-Remote/backend/models.py)
+
+
+Usage: flask [OPTIONS] COMMAND [ARGS]...
+Try 'flask --help' for help.
+
+Error: No such command 'db'.
+Loading .env environment variables...
+Error: While importing 'main', an ImportError was raised:
+
+Traceback (most recent call last):
+  File "/workspaces/pt66-Retro-Remote/.venv/lib/python3.11/site-packages/flask/cli.py", line 245, in locate_app
+    __import__(module_name)
+  File "/workspaces/pt66-Retro-Remote/main.py", line 16, in <module>
+    from backend.routes import api
+  File "/workspaces/pt66-Retro-Remote/backend/routes.py", line 4, in <module>
+    from backend.models import db, User, Reviews, MovieFavorites, TvShowsFavorite
+ImportError: cannot import name 'TvShowsFavorite' from 'backend.models' (/workspaces/pt66-Retro-Remote/backend/models.py)
+
+
+Usage: flask [OPTIONS] COMMAND [ARGS]...
+Try 'flask --help' for help.
+
+Error: No such command 'db'.
+Loading .env environment variables...
+Error: While importing 'main', an ImportError was raised:
+
+Traceback (most recent call last):
+  File "/workspaces/pt66-Retro-Remote/.venv/lib/python3.11/site-packages/flask/cli.py", line 245, in locate_app
+    __import__(module_name)
+  File "/workspaces/pt66-Retro-Remote/main.py", line 16, in <module>
+    from backend.routes import api
+  File "/workspaces/pt66-Retro-Remote/backend/routes.py", line 4, in <module>
+    from backend.models import db, User, Reviews, MovieFavorites, TvShowsFavorite
+ImportError: cannot import name 'TvShowsFavorite' from 'backend.models' (/workspaces/pt66-Retro-Remote/backend/models.py)
+
+
+Usage: flask [OPTIONS] COMMAND [ARGS]...
+Try 'flask --help' for help.
+
+Error: No such command 'db'.

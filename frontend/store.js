@@ -1,7 +1,7 @@
 export const initialStore = () => {
   return {
     token: null,
-    id:null,
+    user_id:null,
     username:'',
     movies: [],
     shows: [],
