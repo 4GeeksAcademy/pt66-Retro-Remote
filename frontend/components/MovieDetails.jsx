@@ -1,12 +1,12 @@
 import {  useEffect, useState } from "react";
 import useGlobalReducer from '../hooks/useGlobalReducer';
 import { Duration } from "luxon";
-import "../index.css"
+import "../assets/css/details.css"
 import { Link } from "react-router-dom";
 import { object } from "prop-types";
 
 
-const MovieDetails = () => {
+const MovieDetails = (type) => {
     const { store } = useGlobalReducer();
 
     const { movie_details=[],movie_cast=[],id,username,reviews} = store;
@@ -17,7 +17,7 @@ const MovieDetails = () => {
     const [directors,setDirectors] = useState([]);
     const [writers,setWriters] = useState([]);
     const [reviewData,setReviewData] = useState();
-    const [pageReviews,setpageReviews] = useState();
+    const [pageReviews,setpageReviews] = useState([]);
   
 
  useEffect(() => {
@@ -28,7 +28,7 @@ const MovieDetails = () => {
     const hrs_mins = duration.shiftTo('hours', 'minutes').toObject();
     setMovieDuration({'hours' : hrs_mins['hours'],'minutes':hrs_mins['minutes']})
     setpageReviews(reviews);
- }, [movie_details,reviews])
+ }, [movie_details])
 
   
 
@@ -37,13 +37,13 @@ const MovieDetails = () => {
 
 async function handleSubmitReview(e){
      e.preventDefault();
+
      const review_data = {
         reviewData : reviewData,
         id : movie_details.id,
         username:username
 
      }
-     console.log(review_data);
     const resp = await fetch(import.meta.env.VITE_BACKEND_URL  + '/api/review', {
         method: "POST",
         body: JSON.stringify(review_data),
@@ -54,18 +54,17 @@ async function handleSubmitReview(e){
         if(resp.ok)
             {
                 const response_data = await resp.json();
-                console.log('after db call');
-                console.log(response_data);
                 setReviewData('')
+                console.log('pageReviews',pageReviews);
                 setpageReviews((prevReviews)=>{
                     return [...prevReviews,response_data]
                 });
-                                        
+                     
+              
             }else{
                 const error = await resp.json();
                 console.log('error',error)
             }
-
 }
 
 
@@ -123,12 +122,13 @@ return(
            </div>
        
        </div> 
-       <div className="reviews-container">
-        <ul class="list-group">
+       <div className="reviewsContainer">
+       <span className="reviewTitle">Reviews : </span>
+        <ul class="list-group d-flex justify-content-between align-items-center me-3 ms-3">
                    {                   
-                    reviews.map((review)=>{
+                    reviews && reviews.length >0 ? reviews.map((review)=>{
                        return (
-                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <li class="list-group-item w-100">
                         <div class="ms-2 me-auto">
                          <div class="fw-bold">{review.username}</div>
                           {review.review}
@@ -136,7 +136,17 @@ return(
                       </li>
                        ) 
                        
-                    })
+                    }) 
+                    :
+                    <li class="list-group-item w-100">
+                        <div class="ms-2 me-auto">
+                         {
+                            reviews.msg ? reviews.msg : ''
+                         }
+                        
+                        </div>
+                      </li>
+                   
                 }
         </ul>
     </div>

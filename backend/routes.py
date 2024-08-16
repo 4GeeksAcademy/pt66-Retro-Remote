@@ -160,6 +160,8 @@ def get_review():
     """Get reviews from the database."""
     id = request.args.get('id')
     reviews = list(Reviews.query.filter_by(movie_tvshow_id=id).all())
+    print('in get reviews')
+    print(reviews)
     serialized_reviews = []
     if not reviews:
         return jsonify(msg="No reviews available")
