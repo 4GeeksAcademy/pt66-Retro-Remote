@@ -1,7 +1,12 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Container, Card, Button, Row, Col } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
-import { FavoritesContext } from './FavoritesContext'; // Import the context
+import React, { useContext, useEffect, useState } from "react";
+import { Card, Button, Row, Col, Container } from "react-bootstrap";
+import { FavoritesContext } from "./FavoritesContext"; // Import the context
+import { Link, useNavigate } from "react-router-dom";
+import Login from "./Loginform.jsx";
+import "../style.css";
+import useGlobalReducer from "../hooks/useGlobalReducer";
+import Navbar from "../components/Navbar.jsx";
+
 
 const Home = () => {
   const [httpbin, setHttpbin] = useState({});
