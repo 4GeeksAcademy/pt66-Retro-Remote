@@ -10,7 +10,6 @@ const MovieDetails = (type) => {
     const { store } = useGlobalReducer();
 
     const { movie_details=[],movie_cast=[],id,username,reviews} = store;
-    console.log('movie details page',reviews);
     const [releaseYear,setReleaseYear] = useState();
     const [movieDuration,setMovieDuration] = useState({hours:'',minutes:''});
     const [actors,setActors] = useState([]);
@@ -27,7 +26,11 @@ const MovieDetails = (type) => {
     const duration = Duration.fromObject({ minutes: movie_details.runtime});
     const hrs_mins = duration.shiftTo('hours', 'minutes').toObject();
     setMovieDuration({'hours' : hrs_mins['hours'],'minutes':hrs_mins['minutes']})
-    setpageReviews(reviews);
+    console.log('reviews',reviews);
+    if(reviews && reviews.length>0){
+        console.log(reviews);
+        setpageReviews(reviews);
+    }
  }, [movie_details])
 
   
@@ -55,8 +58,9 @@ async function handleSubmitReview(e){
             {
                 const response_data = await resp.json();
                 setReviewData('')
-                console.log('pageReviews',pageReviews);
+                console.log("responseData",response_data);
                 setpageReviews((prevReviews)=>{
+                    console.log('prevReviews',prevReviews)
                     return [...prevReviews,response_data]
                 });
                      
@@ -126,9 +130,9 @@ return(
        <span className="reviewTitle">Reviews : </span>
         <ul class="list-group d-flex justify-content-between align-items-center me-3 ms-3">
                    {                   
-                    reviews && reviews.length >0 ? reviews.map((review)=>{
+                    pageReviews && pageReviews.length >0 ? pageReviews.map((review)=>{
                        return (
-                        <li class="list-group-item w-100">
+                        <li class="list-group-item w-100" key={review.id}>
                         <div class="ms-2 me-auto">
                          <div class="fw-bold">{review.username}</div>
                           {review.review}
@@ -141,7 +145,7 @@ return(
                     <li class="list-group-item w-100">
                         <div class="ms-2 me-auto">
                          {
-                            reviews.msg ? reviews.msg : ''
+                            reviews?.msg ? reviews.msg : ''
                          }
                         
                         </div>

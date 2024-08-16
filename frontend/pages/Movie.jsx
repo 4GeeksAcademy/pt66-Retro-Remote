@@ -29,7 +29,6 @@ const Movie = () => {
         dispatch({ type: 'set_movie_cast', payload: movieCastCrewResponse.data });
 
         const reviews = await axios.get(`${apiBaseUrl}/api/review?id=${id}`);
-        console.log("reviews",reviews)
         dispatch({type:'set_reviews',payload:reviews.data})
 
      }
@@ -37,7 +36,6 @@ const Movie = () => {
     },[]);
  
     if(isAuthenticated && token){
-      console.log('inside if')
       return (
         <div> 
           <Navbar></Navbar>
