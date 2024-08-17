@@ -26,9 +26,7 @@ const MovieDetails = (type) => {
     const duration = Duration.fromObject({ minutes: movie_details.runtime});
     const hrs_mins = duration.shiftTo('hours', 'minutes').toObject();
     setMovieDuration({'hours' : hrs_mins['hours'],'minutes':hrs_mins['minutes']})
-    console.log('reviews',reviews);
     if(reviews && reviews.length>0){
-        console.log(reviews);
         setpageReviews(reviews);
     }
  }, [movie_details])
@@ -58,9 +56,7 @@ async function handleSubmitReview(e){
             {
                 const response_data = await resp.json();
                 setReviewData('')
-                console.log("responseData",response_data);
                 setpageReviews((prevReviews)=>{
-                    console.log('prevReviews',prevReviews)
                     return [...prevReviews,response_data]
                 });
                      

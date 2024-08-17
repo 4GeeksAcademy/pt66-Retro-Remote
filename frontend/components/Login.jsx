@@ -27,13 +27,11 @@ const Login = () => {
     // On success, dispatch the token
     const fakeToken = 'your_real_token_from_api';
     dispatch({ type: 'set_token', payload: fakeToken });
-    console.log('Form submitted:', { email, password });
   };
 
   const setTestToken = () => {
     const newToken = store.token === null ? 'your_test_token' : null;
     dispatch({ type: 'set_token', payload: newToken });
-    console.log('Token set to:', newToken);
   };
 
   return (

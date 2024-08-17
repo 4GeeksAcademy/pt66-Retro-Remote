@@ -99,7 +99,6 @@ export default function storeReducer(state, action={}) {
           tvShow_cast: tvShow_cast_data
         }
     case 'set_reviews':
-      console.log('setting reviews',action.payload)
       return{
         ...state,
         reviews: action.payload

@@ -19,8 +19,6 @@ const Navbar = () => {
 
   const fetchSuggestions = async (query) => {
     try {
-      console.log('fetch suggestions');
-      console.log(query);
       const response = await axios.get(`${apiBaseUrl}/api/search`, { params: { query } });
      
 
@@ -32,7 +30,6 @@ const Navbar = () => {
 
   const handleSearch = async (event) => {
     event.preventDefault();
-    console.log('in handle Search');
     if (query.length > 2) {
       try {
 
@@ -57,7 +54,6 @@ const Navbar = () => {
 
   const handleSuggestionClick = (suggestion) => {
     setQuery(suggestion.title || suggestion.name);
-    console.log(suggestion);
     setResults([suggestion]);
     setSuggestions([]);
   };

@@ -26,7 +26,6 @@ const TvShow = () => {
         dispatch({ type: 'set_tvShow_cast', payload: tvShowCastCrewResponse.data });
 
         const reviews = await axios.get(`${apiBaseUrl}/api/review?id=${id}`);
-        console.log("reviews",reviews)
         dispatch({type:'set_reviews',payload:reviews.data})
       }
         getTvShowDetails();

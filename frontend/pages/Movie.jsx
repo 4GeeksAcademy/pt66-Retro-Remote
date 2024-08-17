@@ -13,8 +13,6 @@ const Movie = () => {
   const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
 
   const isAuthenticated = localStorage.getItem('isAuthenticated')
-  console.log(isAuthenticated)
-  console.log(token);
   const navigate = useNavigate();
 
 

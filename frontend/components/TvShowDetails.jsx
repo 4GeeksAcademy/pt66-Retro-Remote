@@ -11,7 +11,6 @@ const TvShow_details = () => {
 
     const { tvShow_details = [],tvShow_cast =[],id,username,reviews} = store;
 
-    console.log('reviews',reviews);
 
     const [airedYear,setAiredYear] = useState();
     const [seasonsEpisodes,setSeasonsEpisodes] = useState({'seasons':'','episodes':''});
@@ -54,7 +53,6 @@ const TvShow_details = () => {
            {
                const response_data = await resp.json();
                setReviewData('')
-               console.log('pageReviews',pageReviews);
                setpageReviews((prevReviews)=>{
                    return [...prevReviews,response_data]
                });

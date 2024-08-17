@@ -11,7 +11,6 @@ function TopRated() {
   const carouselRef = useRef(null);
   const isAuthenticated = localStorage.getItem('isAuthenticated')
 
-  console.log(isAuthenticated);
   useEffect(() => {
     const carouselElement = carouselRef.current; 
     if (carouselElement) {
