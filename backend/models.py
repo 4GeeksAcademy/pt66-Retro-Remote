@@ -9,8 +9,8 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(256), nullable=False)
     reviews = db.relationship("Reviews", backref="user", lazy=True)
-    movie_favorites = db.relationship("MovieFavorites", backref="user", lazy=True)
-    tv_show_favorites = db.relationship("TvShowFavorites", backref="user", lazy=True)
+    movie_favorites = db.relationship("MovieFavorites", back_populates="user", lazy=True)
+    tv_show_favorites = db.relationship("TvShowFavorites", back_populates="user", lazy=True)
 
     def __repr__(self):
         return f'<User {self.username}>'
@@ -23,7 +23,7 @@ class User(db.Model):
             "reviews": [review.serialize() for review in self.reviews],
             "movieFavorites": [fav.serialize() for fav in self.movie_favorites],
             "tvShowFavorites": [fav.serialize() for fav in self.tv_show_favorites]
-            # do not serialize the password, its a security breach
+            # do not serialize the password, it's a security breach
         }
 
 class Reviews(db.Model):
@@ -50,7 +50,7 @@ class Movie(db.Model):
     fav_count = db.Column(db.Integer, default=0)
 
     # Define the relationship with MovieFavorites
-    movie_favorites = db.relationship('MovieFavorites', backref='movie', lazy=True)
+    movie_favorites = db.relationship('MovieFavorites', back_populates='movie', lazy=True)
 
     def serialize(self):
         return {
@@ -72,14 +72,14 @@ class MovieFavorites(db.Model):
     user = db.relationship('User', back_populates='movie_favorites')
     movie = db.relationship('Movie', back_populates='movie_favorites')
 
-    def serialize(self):
-        return {
-            "id": self.id,
-            "user_id": self.user_id,
-            "movie_id": self.movie_id,
-        }
+def serialize(self):
+    return {
+        "id": self.id,
+        "user_id": self.user_id,
+        "movie_id": self.movie_id,
+    }
 
-class Tv_show(db.Model):
+class TvShow(db.Model):
     __tablename__ = 'tv_show'
     id = db.Column(db.Integer, primary_key=True)
     tv_show_id = db.Column(db.Integer, nullable=False, unique=True)
@@ -88,7 +88,7 @@ class Tv_show(db.Model):
     poster_path = db.Column(db.String(255), nullable=False)
     fav_count = db.Column(db.Integer, default=0)
 
-    tv_show_favorites = db.relationship('TvShowFavorites', backref='tv_show', lazy=True)
+    tv_show_favorites = db.relationship('TvShowFavorites', back_populates='tv_show', lazy=True)
 
     def serialize(self):
         return {
@@ -107,7 +107,7 @@ class TvShowFavorites(db.Model):
     tv_show_id = db.Column(db.Integer, db.ForeignKey('tv_show.id'), nullable=False)
 
     user = db.relationship('User', back_populates='tv_show_favorites')
-    tv_show = db.relationship('Tv_show', back_populates='tv_show_favorites')
+    tv_show = db.relationship('TvShow', back_populates='tv_show_favorites')
 
     def serialize(self):
         return {

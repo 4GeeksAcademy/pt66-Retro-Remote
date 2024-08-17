@@ -11,7 +11,6 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { FavoritesProvider } from './pages/FavoritesContext';
 
 // Define Main component before using it
-
 const Main = () => {
     return (
         <React.StrictMode>
@@ -35,5 +34,3 @@ if (rootElement.hasChildNodes()) {
   // Create a new root
   ReactDOM.createRoot(rootElement).render(<Main />);
 }
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<Main />);

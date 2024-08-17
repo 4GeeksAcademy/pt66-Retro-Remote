@@ -13,7 +13,7 @@ bcrypt = Bcrypt()
 CORS(api)
 
 # TMDB API key
-TMDB_API_KEY = 'import.meta.env.VITE_BACKEND_URL'
+TMDB_API_KEY = 'f0d14b30a61125698e4990acdb103e21'
 
 # User Authentication Routes
 @api.route("/login", methods=['POST'])
