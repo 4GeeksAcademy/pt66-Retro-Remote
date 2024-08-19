@@ -37,7 +37,7 @@ const Home = () => {
     navigate('/personal-queue'); // Redirect to the personal queue page
   };
 
-  if(isAuthenticated && token){
+  if(token !== null){
     return ( 
       <>
       <Navbar></Navbar>
@@ -90,7 +90,7 @@ const Home = () => {
    
   }
   else {
-    navigate('/login')  
+    <login></login>
   }
    
 
