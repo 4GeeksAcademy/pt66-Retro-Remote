@@ -86,6 +86,12 @@ const Navbar = () => {
     };
   }, []);
 
+  const handleSignOut = () => {
+    
+    dispatch({ type: 'LOGOUT' });
+    window.location.href = '/'; 
+  };
+
   return (
     <div>
       {
@@ -170,7 +176,7 @@ const Navbar = () => {
                   <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <li><a className="dropdown-item" href="#">Favorites</a></li>
                     <li><a className="dropdown-item" href="#">Profile</a></li>
-                    <li><a className="dropdown-item" href="#">Sign out</a></li>
+                    <li><a className="dropdown-item" href="#" onClick={handleSignOut}>Sign out</a></li>
                   </ul>
                 </li>
               </ul>
