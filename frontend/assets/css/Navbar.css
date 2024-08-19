@@ -1,9 +1,12 @@
+
+
 .suggestion-item {
   border: 5px solid #660600; 
   border-radius: 4px; /* Rounded corners */
   padding: 10px; /* Padding inside the item */
   background-color: #fff; /* White background */
   margin-bottom: 2px; /* Space between items */
+  height: 30px;
 }
 
 .suggestion-item:hover {

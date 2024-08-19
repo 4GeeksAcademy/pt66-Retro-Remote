@@ -1,0 +1,6 @@
+.favorites-section button {
+    font-size: 1.5rem;
+    padding: 5px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+  }

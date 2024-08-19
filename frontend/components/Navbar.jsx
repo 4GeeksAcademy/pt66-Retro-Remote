@@ -140,7 +140,7 @@ const Navbar = () => {
                       &times;
                     </button>
                   )}
-                  {suggestions.length > 0 && (
+                  {suggestions.length > 2 && (
                     <ul className="list-group position-absolute" style={{ width: '400px', zIndex: 1000 }}>
                       {suggestions.slice(0, 5).map((suggestion) => (
                         <li

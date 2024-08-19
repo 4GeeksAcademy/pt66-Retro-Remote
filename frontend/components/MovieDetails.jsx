@@ -3,10 +3,11 @@ import useGlobalReducer from '../hooks/useGlobalReducer';
 import { Duration } from "luxon";
 import "../index.css";
 import { Link } from "react-router-dom";
+import '../assets/css/MovieDetails.css';
 
 const MovieDetails = () => {
     const { store } = useGlobalReducer();
-    const { movie_details = [], movie_cast = [], id, username } = store;
+    const { movie_details = {}, movie_cast = {}, username } = store;
 
     const [releaseYear, setReleaseYear] = useState();
     const [movieDuration, setMovieDuration] = useState({ hours: '', minutes: '' });
@@ -18,6 +19,8 @@ const MovieDetails = () => {
     const [favCount, setFavCount] = useState(0);
 
     useEffect(() => {
+        if (!movie_details.release_date) return; // Guard clause for empty movie details
+
         const d = new Date(movie_details.release_date);
         setReleaseYear(d.getFullYear());
 
@@ -28,54 +31,68 @@ const MovieDetails = () => {
         // Fetch favorite status and count
         const fetchFavoriteStatus = async () => {
             const token = store.token || localStorage.getItem('token');
-            const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/api/favorites/${movie_details.id}`, {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            });
-            const data = await response.json();
-            setIsFavored(data.isFavored);
-            setFavCount(data.favCount);
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/movies/favorites/${movie_details.id}`, {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+                if (!response.ok) throw new Error('Failed to fetch favorite status');
+
+                const data = await response.json();
+                setIsFavored(data.isFavored);
+                setFavCount(data.favCount);
+            } catch (error) {
+                console.error('Error fetching favorite status:', error);
+            }
         };
 
         fetchFavoriteStatus();
-    }, [movie_details]);
+    }, [movie_details, store.token]);
 
     const handleFavorite = async () => {
         const token = store.token || localStorage.getItem('token');
-        const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/api/favorites/${movie_details.id}/toggle`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-
-            if (result.warn) {
-                const userConfirmed = window.confirm(result.warn);
-                if (userConfirmed) {
-                    const confirmResponse = await fetch(import.meta.env.VITE_BACKEND_URL + `/api/favorites/${movie_details.id}/toggle`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`
-                        },
-                        body: JSON.stringify({ confirm_removal: true })
-                    });
-
-                    if (confirmResponse.ok) {
-                        const confirmResult = await confirmResponse.json();
-                        setIsFavored(confirmResult.isFavored);
-                        setFavCount(confirmResult.favCount);
-                    }
+    
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/movies/favorites/${movie_details.id}/toggle`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
-            } else {
+            });
+
+            if (!response.ok) throw new Error('Failed to toggle favorite');
+
+            const result = await response.json();
+    
+            if (result.isFavored !== isFavored) {
                 setIsFavored(result.isFavored);
                 setFavCount(result.favCount);
             }
+    
+            if (result.warn) {
+                const userConfirmed = window.confirm(result.warn);
+                if (userConfirmed) {
+                    const confirmResponse = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/movies/favorites/${movie_details.id}/toggle`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ confirm_removal: true })
+                    });
+    
+                    if (!confirmResponse.ok) throw new Error('Failed to confirm removal');
+    
+                    const confirmResult = await confirmResponse.json();
+                    setIsFavored(confirmResult.isFavored);
+                    setFavCount(confirmResult.favCount);
+                }
+            }
+        } catch (error) {
+            console.error('Error in handleFavorite:', error);
+            alert('An error occurred while trying to update your favorites. Please try again later.');
         }
     };
 
@@ -88,21 +105,23 @@ const MovieDetails = () => {
         };
 
         const token = store.token || localStorage.getItem('token');
-        const resp = await fetch(import.meta.env.VITE_BACKEND_URL + '/api/review', {
-            method: "POST",
-            body: JSON.stringify(review_data),
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
-        });
-        if (resp.ok) {
+        try {
+            const resp = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/review`, {
+                method: "POST",
+                body: JSON.stringify(review_data),
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            if (!resp.ok) throw new Error('Failed to submit review');
+
             const response_data = await resp.json();
             console.log(response_data);
             setReviewData('');
-        } else {
-            const error = await resp.json();
-            console.log('error', error);
+        } catch (error) {
+            console.error('Error in handleSubmitReview:', error);
+            alert('An error occurred while submitting your review. Please try again later.');
         }
     }
 
@@ -142,8 +161,11 @@ const MovieDetails = () => {
                             {movie_cast['writers']?.map((writer) => <span className="names" key={writer}>{writer}</span>)}
                         </p>
                         <div className="favorites-section">
-                            <button className={`btn ${isFavored ? 'btn-warning' : 'btn-outline-warning'}`} onClick={handleFavorite}>
-                                ⭐ {favCount}
+                            <button 
+                                className={`btn ${isFavored ? 'btn-warning' : 'btn-outline-warning'}`} 
+                                onClick={handleFavorite}
+                            >
+                                {isFavored ? '⭐' : '☆'} {favCount}
                             </button>
                         </div>
                         <div className="mb-3">

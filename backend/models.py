@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+# from backend.db import db
 
 db = SQLAlchemy()
 
@@ -105,6 +106,7 @@ class TvShowFavorites(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     tv_show_id = db.Column(db.Integer, db.ForeignKey('tv_show.id'), nullable=False)
+    added_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
     user = db.relationship('User', back_populates='tv_show_favorites')
     tv_show = db.relationship('TvShow', back_populates='tv_show_favorites')
@@ -114,4 +116,5 @@ class TvShowFavorites(db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "tv_show_id": self.tv_show_id,
+            "added_at": self.added_at.isoformat()
         }

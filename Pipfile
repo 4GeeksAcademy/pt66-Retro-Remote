@@ -15,6 +15,11 @@ python-dotenv = "*"
 flask-jwt-extended = "*"
 requests = "*"
 flask-bcrypt = "*"
+jinja2 = "*"
+markupsafe = "*"
+werkzeug = "*"
+flask--jwt-extended = "*"
+bcrypt = "*"
 
 [dev-packages]
 

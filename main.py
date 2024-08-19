@@ -13,7 +13,7 @@ from flask_jwt_extended import JWTManager
 from backend.admin import setup_admin
 from backend.commands import setup_commands
 from backend.models import db
-from backend.routes import api
+# from backend.routes import api
 
 load_dotenv()
 
@@ -37,7 +37,7 @@ jwt = JWTManager(app)
 setup_admin(app)
 setup_commands(app)
 
-app.register_blueprint(api)
+# app.register_blueprint(api)
 
 
 def has_no_empty_params(rule):
