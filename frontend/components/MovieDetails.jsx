@@ -17,7 +17,6 @@ const MovieDetails = (type) => {
     const [writers,setWriters] = useState([]);
     const [reviewData,setReviewData] = useState();
     const [pageReviews,setpageReviews] = useState([]);
-  
 
  useEffect(() => {
     const d = new Date(movie_details.release_date)
@@ -26,10 +25,9 @@ const MovieDetails = (type) => {
     const duration = Duration.fromObject({ minutes: movie_details.runtime});
     const hrs_mins = duration.shiftTo('hours', 'minutes').toObject();
     setMovieDuration({'hours' : hrs_mins['hours'],'minutes':hrs_mins['minutes']})
-    if(reviews && reviews.length>0){
         setpageReviews(reviews);
-    }
- }, [movie_details])
+    
+ }, [movie_details,reviews])
 
   
 
@@ -57,7 +55,14 @@ async function handleSubmitReview(e){
                 const response_data = await resp.json();
                 setReviewData('')
                 setpageReviews((prevReviews)=>{
-                    return [...prevReviews,response_data]
+                    console.log('prevReviews',prevReviews)
+                    if(prevReviews['msg']) {
+                        return [response_data]
+                    }
+                    else {
+                        return [...prevReviews,response_data]
+                    }
+                    
                 });
                      
               

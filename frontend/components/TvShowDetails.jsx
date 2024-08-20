@@ -11,7 +11,6 @@ const TvShow_details = () => {
 
     const { tvShow_details = [],tvShow_cast =[],id,username,reviews} = store;
 
-
     const [airedYear,setAiredYear] = useState();
     const [seasonsEpisodes,setSeasonsEpisodes] = useState({'seasons':'','episodes':''});
     const [actors,setActors] = useState([]);
@@ -29,7 +28,9 @@ const TvShow_details = () => {
         'seasons' : tvShow_details.number_of_seasons,
         'episodes': tvShow_details.number_of_episodes
     })
- }, [tvShow_details])
+
+    setpageReviews(reviews);
+ }, [tvShow_details,reviews])
 
   
 
@@ -38,7 +39,7 @@ const TvShow_details = () => {
 
     const review_data = {
        reviewData : reviewData,
-       id : movie_details.id,
+       id : tvShow_details.id,
        username:username
 
     }
@@ -54,8 +55,15 @@ const TvShow_details = () => {
                const response_data = await resp.json();
                setReviewData('')
                setpageReviews((prevReviews)=>{
-                   return [...prevReviews,response_data]
-               });
+                console.log('prevReviews',prevReviews)
+                if(prevReviews['msg']) {
+                    return [response_data]
+                }
+                else {
+                    return [...prevReviews,response_data]
+                }
+                
+            });
                     
              
            }else{
@@ -119,9 +127,9 @@ const TvShow_details = () => {
        <span className="reviewTitle">Reviews : </span>
         <ul class="list-group d-flex justify-content-between align-items-center me-3 ms-3">
                    {                   
-                    reviews && reviews.length >0 ? reviews.map((review)=>{
+                    pageReviews && pageReviews.length >0 ? pageReviews.map((review)=>{
                        return (
-                        <li class="list-group-item w-100">
+                        <li class="list-group-item w-100" key={review.id}>
                         <div class="ms-2 me-auto">
                          <div class="fw-bold">{review.username}</div>
                           {review.review}
@@ -134,7 +142,7 @@ const TvShow_details = () => {
                     <li class="list-group-item w-100">
                         <div class="ms-2 me-auto">
                          {
-                            reviews.msg ? reviews.msg : ''
+                            reviews?.msg ? reviews.msg : ''
                          }
                         
                         </div>

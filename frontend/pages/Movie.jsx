@@ -20,10 +20,10 @@ const Movie = () => {
   useEffect(() =>{
 
     async function getMovieDetails() {
-        const movieDetailsResponse = await axios.get(`${apiBaseUrl}api/movieDetails?id=${id}`);
+        const movieDetailsResponse = await axios.get(`${apiBaseUrl}/api/movieDetails?id=${id}`);
         dispatch({ type: 'set_movie_details', payload: movieDetailsResponse.data });
 
-        const movieCastCrewResponse = await axios.get(`${apiBaseUrl}api/movieCast?id=${id}`);
+        const movieCastCrewResponse = await axios.get(`${apiBaseUrl}/api/movieCast?id=${id}`);
         dispatch({ type: 'set_movie_cast', payload: movieCastCrewResponse.data });
 
         const reviews = await axios.get(`${apiBaseUrl}/api/review?id=${id}`);
