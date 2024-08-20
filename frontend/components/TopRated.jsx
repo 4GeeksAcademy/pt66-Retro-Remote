@@ -4,6 +4,7 @@ import { Carousel } from 'react-bootstrap';
 import useGlobalReducer from '../hooks/useGlobalReducer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
+import FetchInitialData from '../pages/FetchInitialData';
 
 function TopRated() {
   const { store } = useGlobalReducer();

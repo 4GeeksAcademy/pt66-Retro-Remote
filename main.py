@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 
 from flask import (
-    Flask, jsonify, send_from_directory, url_for
+    Flask, send_from_directory, url_for
 )
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy

@@ -1,5 +1,5 @@
 export const initialStore = () => {
-  return {
+  return{
     token: null,
     user_id:null,
     username:'',

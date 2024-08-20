@@ -1,9 +1,9 @@
-from flask import Flask, jsonify, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
-import requests
+# import requests
 import bcrypt
 
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
+from flask_jwt_extended import jwt_required
 from backend.models import db, User, MovieFavorites, TvShowFavorites, Movie, TvShow
 from backend.routes import create_token, create_user, get_user, get_top_rated_movies, get_movie_cast, get_tv_show_details,  get_top_rated_shows, get_movie_details, get_tv_show_cast, search, toggle_favorite_movie, add_favorite, remove_favorite, add_review, get_movie_streaming_services, get_tv_show_streaming_services, add_to_personal_queue, get_personal_queue, remove_from_personal_queue, not_found_error, internal_error
 
@@ -11,8 +11,20 @@ app = Flask(__name__)
 CORS(app)
 db.init_app(app)
 
+# Hashing a password
+password = b"my_secret_password"  # The password to hash
+salt = bcrypt.gensalt()  # Generate a salt
+hashed_password = bcrypt.hashpw(password, salt)  # Hash the password
 
-bcrypt = Bcrypt(app)
+print(f"Hashed Password: {hashed_password}")
+
+# Checking a password
+password_attempt = b"my_secret_password"  # The password attempt
+
+if bcrypt.checkpw(password_attempt, hashed_password):
+    print("Password is correct!")
+else:
+    print("Password is incorrect!")
 
 # Register Blueprint
 #
@@ -118,92 +130,92 @@ def not_found(error):
 def inter_error(error):
     return internal_error(error)
 
-# def get_streaming_providers_tmdb(movie_id):
-#     url = f'https://api.themoviedb.org/3/movie/{movie_id}/watch/providers'
-#     headers = {
-#         'Authorization': f'Bearer {TMDB_API_KEY}',
-#     }
-#     response = requests.get(url, headers=headers)
-#     return response.json()
+def get_streaming_providers_tmdb(movie_id):
+    url = f'https://api.themoviedb.org/3/movie/{movie_id}/watch/providers'
+    headers = {
+        'Authorization': f'Bearer {TMDB_API_KEY}',
+    }
+    response = requests.get(url, headers=headers)
+    return response.json()
 
-# def get_streaming_providers_reelgood(movie_id):
-#     # Replace with actual Reelgood API URL and headers if needed
-#     url = f'https://api.reelgood.com/v1.0/deeplink/movie/{movie_id}'
-#     headers = {
-#         'Authorization': f'Bearer {REELGOOD_API_KEY}',
-#     }
-#     response = requests.get(url, headers=headers)
-#     return response.json()
+def get_streaming_providers_reelgood(movie_id):
+    # Replace with actual Reelgood API URL and headers if needed
+    url = f'https://api.reelgood.com/v1.0/deeplink/movie/{movie_id}'
+    headers = {
+        'Authorization': f'Bearer {REELGOOD_API_KEY}',
+    }
+    response = requests.get(url, headers=headers)
+    return response.json()
 
-# @app.route('/api/personal-queue', methods=['GET'])
-# def get_personal_queue():
-#     # Replace with actual data fetching logic
-#     personal_queue = [
-#         {'id': 550, 'title': 'Fight Club'},
-#         {'id': 299536, 'title': 'Avengers: Infinity War'},
-#     ]
-#     return jsonify(personal_queue)
+@app.route('/api/personal-queue', methods=['GET'])
+def get_personal_queue():
+    # Replace with actual data fetching logic
+    personal_queue = [
+        {'id': 550, 'title': 'Fight Club'},
+        {'id': 299536, 'title': 'Avengers: Infinity War'},
+    ]
+    return jsonify(personal_queue)
 
-# @app.route('/api/movie/<int:movie_id>/streaming', methods=['GET'])
-# def get_movie_streaming(movie_id):
-#     # For TMDB streaming providers
-#     providers = get_streaming_providers_tmdb(movie_id)
-#     return jsonify(providers)
+@app.route('/api/movie/<int:movie_id>/streaming', methods=['GET'])
+def get_movie_streaming(movie_id):
+    # For TMDB streaming providers
+    providers = get_streaming_providers_tmdb(movie_id)
+    return jsonify(providers)
 
-# @app.route('/api/reelgood/movie/<int:movie_id>/streaming', methods=['GET'])
-# def get_movie_streaming_reelgood(movie_id):
-#     # For Reelgood streaming providers
-#     providers = get_streaming_providers_reelgood(movie_id)
-#     return jsonify(providers)
+@app.route('/api/reelgood/movie/<int:movie_id>/streaming', methods=['GET'])
+def get_movie_streaming_reelgood(movie_id):
+    # For Reelgood streaming providers
+    providers = get_streaming_providers_reelgood(movie_id)
+    return jsonify(providers)
 
 
 
-# @app.route('/api/favorites/toggle', methods=['POST'])
-# def toggle_favorite():
-#     data = request.json
-#     item_id = data['id']
-#     item_type = data['type']  # "movie" or "tv-show"
-#     user_id = data['user_id']
+@app.route('/api/favorites/toggle', methods=['POST'])
+def toggle_favorite():
+    data = request.json
+    item_id = data['id']
+    item_type = data['type']  # "movie" or "tv-show"
+    user_id = data['user_id']
 
-#     if item_type == 'movie':
-#         favorite = MovieFavorites.query.filter_by(user_id=user_id, movie_id=item_id).first()
-#         movie = Movie.query.get(item_id)
+    if item_type == 'movie':
+        favorite = MovieFavorites.query.filter_by(user_id=user_id, movie_id=movie_id).first()
+        movie = Movie.query.get(item_id)
 
-#         if favorite:
-#             db.session.delete(favorite)
-#             movie.fav_count -= 1
-#         else:
-#             new_favorite = MovieFavorites(user_id=user_id, movie_id=item_id)
-#             db.session.add(new_favorite)
-#             movie.fav_count += 1
+        if favorite:
+            db.session.delete(favorite)
+            movie.fav_count -= 1
+        else:
+            new_favorite = MovieFavorites(user_id=user_id, movie_id=movie_id)
+            db.session.add(new_favorite)
+            movie.fav_count += 1
         
-#         db.session.commit()
-#         return jsonify({"favCount": movie.fav_count})
+        db.session.commit()
+        return jsonify({"favCount": movie.fav_count})
 
-#     elif item_type == 'tv-show':
-#         favorite = TvShowFavorites.query.filter_by(user_id=user_id, tvShow_id=item_id).first()
-#         tv_show = TvShow.query.get(item_id)
+    elif item_type == 'tv-show':
+        favorite = TvShowFavorites.query.filter_by(user_id=user_id, tvShow_id=tvshow_id).first()
+        tv_show = TvShow.query.get(item_id)
 
-#         if favorite:
-#             db.session.delete(favorite)
-#             tv_show.fav_count -= 1
-#         else:
-#             new_favorite = TvShowFavorites(user_id=user_id, tvShow_id=item_id)
-#             db.session.add(new_favorite)
-#             tv_show.fav_count += 1
+        if favorite:
+            db.session.delete(favorite)
+            tv_show.fav_count -= 1
+        else:
+            new_favorite = TvShowFavorites(user_id=user_id, tvShow_id=tvshow_id)
+            db.session.add(new_favorite)
+            tv_show.fav_count += 1
         
-#         db.session.commit()
-#         return jsonify({"favCount": tv_show.fav_count})
+        db.session.commit()
+        return jsonify({"favCount": tv_show.fav_count})
 
-#     return jsonify({"error": "Invalid type"}), 400
-
-
-# # if __name__ == '__main__':
-# #     app.run(debug=True)
-
-#     # Initialize Blueprint for API routes
+    return jsonify({"error": "Invalid type"}), 400
 
 
-if __name__ == '__main__':
-    app = create_app()
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)
+
+    # Initialize Blueprint for API routes
+
+
+# if __name__ == '__main__':
+#     app = create_app()
+#     app.run(debug=True)
