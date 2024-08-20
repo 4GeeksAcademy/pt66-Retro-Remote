@@ -1,18 +1,28 @@
+from flask_jwt_extended import jwt_required
 from flask_jwt_extended import create_access_token, get_jwt_identity
-from backend.models import db, User, Reviews, Movie, MovieFavorites
-from flask import Flask
+from werkzeug.security import (
+    generate_password_hash, check_password_hash
+)
+from flask import Flask, request, jsonify, url_for, Blueprint
+from backend.models import db, User, Reviews, PersonalQueue
 from flask_cors import CORS
-from flask_bcrypt import Bcrypt
 import requests
 import datetime
+from flask_bcrypt import Bcrypt
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 
+# Initialize Blueprint for API routes
+api = Blueprint('api', __name__, url_prefix="/api")
+bcrypt = Bcrypt()
+
+# Allow CORS requests to this API
+CORS(api)
 
 # TMDB API key
 TMDB_API_KEY = 'f0d14b30a61125698e4990acdb103e21'
 
 # User Authentication Routes
-
-
+@api.route("/login", methods=['POST'])
 def create_token():
     username = request.json.get('username')
     password = request.json.get('password')
@@ -50,15 +60,13 @@ def create_user():
     access_token = create_access_token(identity=new_user.username)
     return jsonify(msg="User created", user=new_user.serialize(), token=access_token), 200
 
-
+@api.route("/user", methods=['GET'])
 def get_user():
     current_user = get_jwt_identity()
     user = User.query.filter_by(username=current_user).first()
     return jsonify(user.serialize()), 200
 
-# TMDB API Routes
-
-
+@api.route('/top-rated/movies', methods=['GET'])
 def get_top_rated_movies():
     try:
         response = requests.get(
@@ -68,7 +76,7 @@ def get_top_rated_movies():
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
 
-
+@api.route('/top-rated/shows', methods=['GET'])
 def get_top_rated_shows():
     try:
         response = requests.get(
@@ -78,7 +86,7 @@ def get_top_rated_shows():
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
 
-
+@api.route('/movieDetails', methods=['GET'])
 def get_movie_details():
     movie_id = request.args.get('id')
     try:
@@ -89,7 +97,7 @@ def get_movie_details():
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
 
-
+@api.route('/movieCast', methods=['GET'])
 def get_movie_cast():
     movie_id = request.args.get('id')
     try:
@@ -101,6 +109,7 @@ def get_movie_cast():
         return jsonify({'error': str(e)}), 500
 
 
+@api.route('/tvShowDetails', methods=['GET'])
 def get_tv_show_details():
     id = request.args.get('id')
     try:
@@ -111,7 +120,7 @@ def get_tv_show_details():
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
 
-
+@api.route('/tvShowCast', methods=['GET'])
 def get_tv_show_cast():
     id = request.args.get('id')
     try:
@@ -122,7 +131,7 @@ def get_tv_show_cast():
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
 
-
+@api.route('/search', methods=['GET'])
 def search():
     query = request.args.get('query')
     try:
@@ -135,9 +144,8 @@ def search():
 
 # Favorites Routes
 
-
+@api.route('/toggleFavoriteMovie', methods=['GET'])
 def toggle_favorite_movie(movie_id):
-    print(data)
     user_id = get_jwt_identity()
 
     existing_fav = MovieFavorites.query.filter_by(
@@ -161,7 +169,7 @@ def toggle_favorite_movie(movie_id):
             db.session.commit()
         return jsonify({"isFavored": True, "favCount": movie.fav_count if movie else 0})
 
-
+@api.route('/addFavorite', methods=['GET'])
 def add_favorite(movie_id):
     user_id = get_jwt_identity()
 
@@ -180,7 +188,7 @@ def add_favorite(movie_id):
         db.session.commit()
     return jsonify({"isFavored": True, "favCount": movie.fav_count if movie else 0})
 
-
+@api.route('/removeFavorite', methods=['GET'])
 def remove_favorite(movie_id):
     user_id = get_jwt_identity()
 
@@ -198,11 +206,9 @@ def remove_favorite(movie_id):
         db.session.commit()
     return jsonify({"isFavored": False, "favCount": movie.fav_count if movie else 0})
 
-
 # Reviews Route
-
+@api.route("/review", methods=["POST"])
 def add_review(body):
-
     review = Reviews(
         review=body["reviewData"],
         movie_id=body["movieId"],
@@ -214,7 +220,7 @@ def add_review(body):
     return jsonify(review.serialize())
 
 #personal Queue
-
+@api.route("/addPersonQueue", methods=["POST"])
 def add_to_personal_queue():
     data = request.get_json()
     user_id = data.get('user_id')
@@ -226,7 +232,7 @@ def add_to_personal_queue():
     if existing_item:
         return jsonify({"message": "Item already in queue"}), 409
 
-
+@api.route("/removePersonQueue", methods=["POST"])
 def remove_from_personal_queue(item_id):
     user_id = request.args.get('user_id')
     item_type = request.args.get('item_type')
@@ -237,7 +243,7 @@ def remove_from_personal_queue(item_id):
         db.session.commit()
         return '', 204
     
-
+@api.route("/getPersonQueue", methods=["POST"])
 def get_personal_queue():
     user_id = request.args.get('user_id')
     queue = PersonalQueue.query.filter_by(user_id=user_id).all()

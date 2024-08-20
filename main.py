@@ -3,17 +3,16 @@ import os
 from dotenv import load_dotenv
 
 from flask import (
-    Flask, send_from_directory, url_for
+    Flask, jsonify, send_from_directory, url_for
 )
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_jwt_extended import JWTManager
 
 from backend.admin import setup_admin
 from backend.commands import setup_commands
 from backend.models import db
-# from backend.routes import api
+from backend.routes import api
 
 load_dotenv()
 
@@ -27,17 +26,15 @@ app = Flask(__name__,
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
     "DATABASE_URI", 'sqlite:///app.db')
-app.config["JWT_SECRET_KEY"] = "This secret can be anything, really."
 
 db.init_app(app)
 migrate = Migrate(app, db)
 cors = CORS(app)
-jwt = JWTManager(app)
 
 setup_admin(app)
 setup_commands(app)
 
-# app.register_blueprint(api)
+app.register_blueprint(api)
 
 
 def has_no_empty_params(rule):
