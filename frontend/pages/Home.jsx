@@ -4,7 +4,6 @@ import { FavoritesContext } from "./FavoritesContext"; // Import the context
 import { Link} from "react-router-dom";
 import Login from "./Loginform.jsx";
 import "../style.css";
-import { Navigate, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import Navbar from "../components/Navbar.jsx";
 
@@ -37,7 +36,7 @@ const Home = () => {
     navigate('/personal-queue'); // Redirect to the personal queue page
   };
 
-  if(isAuthenticated && token){
+  if(token !== null){
     return ( 
       <>
       <Navbar></Navbar>
@@ -88,8 +87,9 @@ const Home = () => {
 
     );
    
-  }else {
-    return <Login></Login>
+  }
+  else {
+    <login></login>
   }
 
 };

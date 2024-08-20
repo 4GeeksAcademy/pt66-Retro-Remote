@@ -31,7 +31,7 @@ const TvShow = () => {
         getTvShowDetails();
     },[])
 
-    if(isAuthenticated && token){
+    if(token !== null){
       return (
         <div>
           <Navbar></Navbar>

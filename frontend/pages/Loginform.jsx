@@ -152,6 +152,7 @@ const Login = () => {
             Sign Up
           </h2>
           <form onSubmit={handleRegisterSubmit}>
+
             <div
               className="input-box animation"
               style={{ "--i": 18, "--j": 1 }}
@@ -161,7 +162,9 @@ const Login = () => {
                 value={username}
                 onChange={(ev) => setUsername(ev.target.value)}
                 placeholder="username"
+                required
               />
+              <label>Username</label>
               <i className="bx bxs-user"></i>
             </div>
             <div
