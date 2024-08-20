@@ -1,16 +1,15 @@
 import {  useEffect, useState } from "react";
 import useGlobalReducer from '../hooks/useGlobalReducer';
 import { Duration } from "luxon";
-import "../index.css"
+import "../assets/css/details.css"
 import { object } from "prop-types";
 import { Link } from "react-router-dom";
+
 
 const TvShow_details = () => {
     const { store } = useGlobalReducer();
 
-    const { tvShow_details = []} = store;
-    const { tvShow_cast =[]} =store;
-
+    const { tvShow_details = [],tvShow_cast =[],id,username,reviews} = store;
 
     const [airedYear,setAiredYear] = useState();
     const [seasonsEpisodes,setSeasonsEpisodes] = useState({'seasons':'','episodes':''});
@@ -18,6 +17,7 @@ const TvShow_details = () => {
     const [directors,setDirectors] = useState([]);
     const [writers,setWriters] = useState([]);
     const [reviewData,setReviewData] = useState();
+    const [pageReviews,setpageReviews] = useState([])
 
  useEffect(() => {
     //get year
@@ -28,9 +28,49 @@ const TvShow_details = () => {
         'seasons' : tvShow_details.number_of_seasons,
         'episodes': tvShow_details.number_of_episodes
     })
- }, [tvShow_details])
+
+    setpageReviews(reviews);
+ }, [tvShow_details,reviews])
 
   
+
+ async function handleSubmitReview(e){
+    e.preventDefault();
+
+    const review_data = {
+       reviewData : reviewData,
+       id : tvShow_details.id,
+       username:username
+
+    }
+   const resp = await fetch(import.meta.env.VITE_BACKEND_URL  + '/api/review', {
+       method: "POST",
+       body: JSON.stringify(review_data),
+       headers: {
+       "Content-Type": "application/json"
+       }
+       });
+       if(resp.ok)
+           {
+               const response_data = await resp.json();
+               setReviewData('')
+               setpageReviews((prevReviews)=>{
+                console.log('prevReviews',prevReviews)
+                if(prevReviews['msg']) {
+                    return [response_data]
+                }
+                else {
+                    return [...prevReviews,response_data]
+                }
+                
+            });
+                    
+             
+           }else{
+               const error = await resp.json();
+               console.log('error',error)
+           }
+}
 
 
 
@@ -82,9 +122,36 @@ const TvShow_details = () => {
                 </div>
                 </div>
             
-            </div> 
+            </div>
+            <div className="reviewsContainer">
+       <span className="reviewTitle">Reviews : </span>
+        <ul class="list-group d-flex justify-content-between align-items-center me-3 ms-3">
+                   {                   
+                    pageReviews && pageReviews.length >0 ? pageReviews.map((review)=>{
+                       return (
+                        <li class="list-group-item w-100" key={review.id}>
+                        <div class="ms-2 me-auto">
+                         <div class="fw-bold">{review.username}</div>
+                          {review.review}
+                        </div>
+                      </li>
+                       ) 
+                       
+                    }) 
+                    :
+                    <li class="list-group-item w-100">
+                        <div class="ms-2 me-auto">
+                         {
+                            reviews?.msg ? reviews.msg : ''
+                         }
+                        
+                        </div>
+                      </li>
+                   
+                }
+        </ul>
+    </div> 
          </div> 
-         <div><Link to="/home">Go to Home Page</Link></div>
     </div>
 )
 

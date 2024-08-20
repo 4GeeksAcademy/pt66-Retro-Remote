@@ -8,7 +8,8 @@ export const initialStore = () => {
     movie_details:[],
     movie_cast : [],
     tvShow_details:[],
-    tvShow_cast:[]
+    tvShow_cast:[],
+    reviews:[]
   }
 };
 
@@ -44,13 +45,11 @@ export default function storeReducer(state, action={}) {
     case 'login':
       return state;
     case 'set_movies':
-      console.log('Setting movies:', action.payload); // Log the action payload
       return {
         ...state,
         movies: action.payload.results || action.payload // Ensure it handles the correct payload structure
       };
     case 'set_shows':
-      console.log('Setting shows:', action.payload); // Log the action payload
       return {
         ...state,
         shows: action.payload.results || action.payload // Ensure it handles the correct payload structure
@@ -69,13 +68,11 @@ export default function storeReducer(state, action={}) {
         token: null
       }
       case 'set_movie_details':
-      console.log('setting movie details',action.payload);
       return {
         ...state,
         movie_details: action.payload.results || action.payload
       }
       case 'set_movie_cast':
-        console.log('setting movie cast and crew',action.payload);
       const results = action.payload;
       const movie_cast = results['cast'];
       const movie_crew = results['crew'];
@@ -87,13 +84,11 @@ export default function storeReducer(state, action={}) {
           movie_cast: movie_cast_data
         }
     case 'set_tvShow_details':
-        console.log('setting tvShow details',action.payload);
         return {
           ...state,
           tvShow_details: action.payload.results || action.payload
         }
     case 'set_tvShow_cast':
-        console.log('setting tvShow cast and crew',action.payload);
       const tvShow_results = action.payload;
       const tvShow_cast = tvShow_results['cast'];
       const tvShow_crew = tvShow_results['crew'];
@@ -103,6 +98,11 @@ export default function storeReducer(state, action={}) {
           ...state,
           tvShow_cast: tvShow_cast_data
         }
+    case 'set_reviews':
+      return{
+        ...state,
+        reviews: action.payload
+      }
     default:
       return state;
   }

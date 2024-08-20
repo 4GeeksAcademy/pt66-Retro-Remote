@@ -1,23 +1,22 @@
 import {  useEffect, useState } from "react";
 import useGlobalReducer from '../hooks/useGlobalReducer';
 import { Duration } from "luxon";
-import "../index.css"
+import "../assets/css/details.css"
 import { Link } from "react-router-dom";
+import { object } from "prop-types";
 
-const MovieDetails = () => {
+
+const MovieDetails = (type) => {
     const { store } = useGlobalReducer();
 
-    const { movie_details=[],movie_cast=[],id,username} = store;
-    console.log('movieDetaile',movie_details);
-    console.log('id',id)
-    console.log('username',username)
-
+    const { movie_details=[],movie_cast=[],id,username,reviews} = store;
     const [releaseYear,setReleaseYear] = useState();
     const [movieDuration,setMovieDuration] = useState({hours:'',minutes:''});
     const [actors,setActors] = useState([]);
     const [directors,setDirectors] = useState([]);
     const [writers,setWriters] = useState([]);
     const [reviewData,setReviewData] = useState();
+    const [pageReviews,setpageReviews] = useState([]);
 
  useEffect(() => {
     const d = new Date(movie_details.release_date)
@@ -26,7 +25,9 @@ const MovieDetails = () => {
     const duration = Duration.fromObject({ minutes: movie_details.runtime});
     const hrs_mins = duration.shiftTo('hours', 'minutes').toObject();
     setMovieDuration({'hours' : hrs_mins['hours'],'minutes':hrs_mins['minutes']})
- }, [movie_details])
+        setpageReviews(reviews);
+    
+ }, [movie_details,reviews])
 
   
 
@@ -35,13 +36,13 @@ const MovieDetails = () => {
 
 async function handleSubmitReview(e){
      e.preventDefault();
+
      const review_data = {
         reviewData : reviewData,
-        movieId : movie_details.id,
+        id : movie_details.id,
         username:username
 
      }
-     console.log(review_data);
     const resp = await fetch(import.meta.env.VITE_BACKEND_URL  + '/api/review', {
         method: "POST",
         body: JSON.stringify(review_data),
@@ -52,14 +53,23 @@ async function handleSubmitReview(e){
         if(resp.ok)
             {
                 const response_data = await resp.json();
-                console.log(response_data);
                 setReviewData('')
-                                        
+                setpageReviews((prevReviews)=>{
+                    console.log('prevReviews',prevReviews)
+                    if(prevReviews['msg']) {
+                        return [response_data]
+                    }
+                    else {
+                        return [...prevReviews,response_data]
+                    }
+                    
+                });
+                     
+              
             }else{
                 const error = await resp.json();
                 console.log('error',error)
             }
-
 }
 
 
@@ -117,8 +127,36 @@ return(
            </div>
        
        </div> 
+       <div className="reviewsContainer">
+       <span className="reviewTitle">Reviews : </span>
+        <ul class="list-group d-flex justify-content-between align-items-center me-3 ms-3">
+                   {                   
+                    pageReviews && pageReviews.length >0 ? pageReviews.map((review)=>{
+                       return (
+                        <li class="list-group-item w-100" key={review.id}>
+                        <div class="ms-2 me-auto">
+                         <div class="fw-bold">{review.username}</div>
+                          {review.review}
+                        </div>
+                      </li>
+                       ) 
+                       
+                    }) 
+                    :
+                    <li class="list-group-item w-100">
+                        <div class="ms-2 me-auto">
+                         {
+                            reviews?.msg ? reviews.msg : ''
+                         }
+                        
+                        </div>
+                      </li>
+                   
+                }
+        </ul>
+    </div>
     </div> 
-    <div><Link to="/home">Go to Home Page</Link></div>
+
 </div>
 )
 

@@ -29,7 +29,7 @@ const Login = () => {
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
-    const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "api/login", {
+    const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,13 +42,11 @@ const Login = () => {
     if (resp.ok) {
       const data = await resp.json();
       dispatch({ type: "LOGIN_SUCCESS", payload: data });
-      console.log('logindata',data)
       localStorage.setItem("isAuthenticated", true);
       navigate("/home");
 
     } else {
       const error = await resp.json();
-      console.log('error',error);
       setError(error.msg)
       dispatch({ type: "LOGIN_FAILURE", payload: "Login failed" });
       
@@ -57,7 +55,7 @@ const Login = () => {
   
   const handleRegisterSubmit = async (event) => {
     event.preventDefault();
-    const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "api/signup", {
+    const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -70,13 +68,11 @@ const Login = () => {
     });
     if (resp.ok) {
       const data = await resp.json();
-      console.log('signup resp',data);
       dispatch({ type: "LOGIN_SUCCESS", payload: data });
       setSignUpError('');
       setSignupSuccess('User created successfully!')
     } else {
       const error = await resp.json();
-      console.log('error',error);
       setSignUpError(error.msg)
       dispatch({ type: "LOGIN_FAILURE", payload: "Login failed" });
     }

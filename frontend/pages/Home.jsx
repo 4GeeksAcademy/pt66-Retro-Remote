@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Card, Button, Row, Col, Container } from "react-bootstrap";
 import { FavoritesContext } from "./FavoritesContext"; // Import the context
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import Login from "./Loginform.jsx";
 import "../style.css";
 import useGlobalReducer from "../hooks/useGlobalReducer";
@@ -13,16 +13,15 @@ const Home = () => {
   const {token} = store;
   const {id} = store;
   
-  console.log('id',id)
 
   const [httpbin, setHttpbin] = useState({});
   const { favorites, toggleFavorite, addToPersonalQueue,addToWatchList } = useContext(FavoritesContext); // Use the context
   const navigate = useNavigate(); // Hook for navigation
   const isAuthenticated= localStorage.getItem('isAuthenticated')
-  console.log(id);
 
 
   useEffect(() => {
+
     const getHttpBin = async () => {
       const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/relay");
       const data = await resp.json();
@@ -92,7 +91,6 @@ const Home = () => {
   else {
     <login></login>
   }
-   
 
 };
 

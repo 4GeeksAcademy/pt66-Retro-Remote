@@ -1,0 +1,157 @@
+body {
+    background-color: #262625 !important;
+    color:white !important;
+  }
+  
+  
+  .movie-card {
+    background-color: #1c1c1c; /* Dark background for poster effect */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Deep shadow for depth */
+    transition: transform 0.2s ease-in-out;
+    border: 1px solid #333; /* Thin border to frame the poster */
+    border-radius: 0; /* Sharp edges for traditional movie poster look */
+    overflow: hidden; /* Ensure content doesn't overflow */
+  }
+  
+  .movie-card:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover for emphasis */
+  }
+  
+  .movie-card .card-img-top {
+    border-radius: 0; /* Remove rounded corners for a poster look */
+    width: 100%; /* Full width */
+    height: auto; /* Maintain aspect ratio */
+  }
+  
+  .movie-card .card-body {
+    padding: 1rem;
+    text-align: center;
+    background-color: #282828; /* Dark background for the text area */
+  }
+  
+  .movie-card .card-title {
+    font-size: 1.4rem; /* Larger font for a bold title */
+    margin-bottom: 0.5rem;
+    color: #fff;
+  }
+  
+  .movie-card .card-text {
+    font-size: 1rem;
+    color: #bbb; /* Lighter color for the text */
+  }
+  
+  
+  
+  .movie-card .btn {
+    margin-top: 0.5rem;
+  }
+  
+  .card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  
+  /* .movieDetailsWrapper{
+      background: white;
+      height: auto;
+      width: 71rem;
+      margin: auto;
+      margin-top: 4rem;
+  } */
+    
+  
+  
+  .movieDetailsWrapper {
+    background: linear-gradient(217deg, rgba(127, 125, 125, 0.8), rgba(255, 0, 0, 0) 70.71%),
+      linear-gradient(127deg, rgba(97, 101, 97, 0.8), rgba(0, 255, 0, 0) 70.71%),
+      linear-gradient(336deg, rgba(194, 220, 208, 0.8), rgba(0, 0, 255, 0) 70.71%),
+      linear-gradient(336deg, rgba(29, 36, 33, 0.8), rgba(0, 0, 255, 0) 70.71%);
+    height: auto;
+    width: 71rem;
+    margin: auto;
+    margin-top: 4rem;
+  }
+  
+  .genres span {
+    border: 1px solid white;
+    padding: 0.3rem;
+    margin-right: 1rem;
+    border-radius: 0.5rem;
+  }
+  
+  .type,
+  .form-label {
+    font-weight: bold;
+  }
+  
+  
+  
+  .names {
+    color: rgb(234, 98, 98);
+    font-weight: bold;
+    padding-left: 1rem;
+  }
+  
+  .actors span:not(:last-of-type, :first-of-type)::after {
+    padding: 1rem;
+    content: '\00B7';
+  }
+  
+  .writers span:not(:last-of-type, :first-of-type)::after {
+    padding: 1rem;
+    content: '\00B7';
+  }
+  
+  .directors span:not(:last-of-type, :first-of-type)::after {
+    padding: 1rem;
+    content: '\00B7';
+  }
+  
+  #exampleFormControlTextarea1 {
+    max-width: 40rem;
+  }
+  
+  img {
+    width: 30rem;
+    height: 30rem;
+  }
+  
+  .container1 {
+    width: 19rem; /* Adjust width for poster-like appearance */
+  }
+  
+  .tvShowNo {
+    color:rgb(234, 98, 98);
+    font-weight: bold;
+  }
+  /* frontend/src/styles/index.css */
+  
+  body {
+    background-color: #1c1c1c;
+    color: #fff;
+    font-family: Arial, sans-serif;
+  }
+  
+  
+    .directors span:not(:last-of-type,:first-of-type)::after {
+      padding:1rem;
+      content: '\00B7';
+    }
+  
+    #reviewdata{
+      width:46rem;
+    }
+  
+    .reviewsContainer {
+      margin: 0 1rem 0 22rem;
+    }
+  
+    .reviewTitle {
+      font-weight: bold;
+      margin-left: 1rem;
+    }
+  #exampleFormControlTextarea1{
+      max-width:40rem;
+    }

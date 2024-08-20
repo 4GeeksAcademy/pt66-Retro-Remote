@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 
 export const Recommended = () => {
   const { favorites, toggleFavorite, addToPersonalQueue } = useContext(FavoritesContext); // Use the context
-  console.log("favorites",favorites);
   const [httpbin, setHttpbin] = useState({});
 
   useEffect(() => {

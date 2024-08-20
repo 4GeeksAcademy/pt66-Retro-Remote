@@ -24,7 +24,6 @@ const PersonalQueue = () => {
         ? `${import.meta.env.VITE_BACKEND_URL}/api/play/movie/${id}`
         : `${import.meta.env.VITE_BACKEND_URL}/api/play/tv/${id}`;
 
-    console.log('Requesting play for:', endpoint);
     fetch(endpoint)
       .then(response => {
         if (response.ok) {
@@ -34,7 +33,6 @@ const PersonalQueue = () => {
         }
       })
       .then(data => {
-        console.log('Streaming services data:', data);
         if (data.streamingServices && data.streamingServices.length > 0) {
           setStreamingOptions(data.streamingServices);
           setSelectedItem(item);
@@ -49,7 +47,6 @@ const PersonalQueue = () => {
   };
 
   const handleServiceSelect = (url) => {
-    console.log('Redirecting to streaming service URL:', url);
     window.location.href = url; // Redirects the user to the selected streaming service URL
   };
 
