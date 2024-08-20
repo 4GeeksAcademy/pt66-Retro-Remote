@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, session, redirect
-from backend.models import db, User
+from backend.models import db, User, MovieFavorites, TvShowsFavorites  # Ensure all models are imported
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -36,38 +36,37 @@ def logout():
 
 @app.route('/api/favorites/movies', methods=['GET'])
 def get_favorite_movies():
-    user_id = request.args.get('user-id')
-    favorites = MoviesFavorite.query.filter_by(user_id).all()
-    return jsonify([fav.serialze() for fav in favorites])
+    user_id = request.args.get('user_id')  # Ensure consistent naming
+    favorites = MovieFavorites.query.filter_by(user_id=user_id).all()
+    return jsonify([fav.serialize() for fav in favorites])  # Ensure serialize method is correct
 
 @app.route('/api/favorites/tv-shows', methods=['GET'])
 def get_favorite_tv_shows():
-    user_id = request.args.get('user_id')
+    user_id = request.args.get('user_id')  # Ensure consistent naming
     favorites = TvShowsFavorites.query.filter_by(user_id=user_id).all()
-    return jsonify([fav.serialze() for fav in favorites])
-
+    return jsonify([fav.serialize() for fav in favorites])
 
 @app.route('/api/favorites/movies', methods=['POST'])
 def add_favorite_movie():
     data = request.get_json()
-    new_favorite = MovieFavorites.query.filter_by(user_id=data['user_id'], movie_id=data['movie_id']).first()
-
-    db.session.add(new_favorites)
+    existing_favorite = MovieFavorites.query.filter_by(user_id=data['user_id'], movie_id=data['movie_id']).first()
+    if existing_favorite:
+        return jsonify({"message": "Movie already in favorites"}), 409
+    new_favorite = MovieFavorites(user_id=data['user_id'], movie_id=data['movie_id'])
+    db.session.add(new_favorite)
     db.session.commit()
-    return jsonify(new_favorites.serialize()), 201
+    return jsonify(new_favorite.serialize()), 201
 
 @app.route('/api/favorites/movie', methods=['DELETE'])
 def remove_favorite_movie():
-    data =request.get_json()
-    favorite = MovieFavorites.query.filter_by(user_id=data['movie_id']).first()
+    data = request.get_json()
+    favorite = MovieFavorites.query.filter_by(user_id=data['user_id'], movie_id=data['movie_id']).first()
     if favorite:
         db.session.delete(favorite)
         db.session.commit()
         return '', 204
     return jsonify({'error': 'Favorite not found'}), 404
 
-
-
-
 if __name__ == '__main__':
     app.run(debug=True)
+

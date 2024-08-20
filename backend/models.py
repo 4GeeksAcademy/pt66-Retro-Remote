@@ -118,3 +118,22 @@ class TvShowFavorites(db.Model):
             "tv_show_id": self.tv_show_id,
             "added_at": self.added_at.isoformat()
         }
+        
+class PersonalQueue(db.Model):
+    __tablename__ = 'personal_queue'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    item_id = db.Column(db.Integer, nullable=False)  # This can be either a movie or a TV show ID
+    item_type = db.Column(db.String(50), nullable=False)  # "movie" or "tv-show"
+    added_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+    user = db.relationship('User', backref='personal_queue', lazy=True)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "item_id": self.item_id,
+            "item_type": self.item_type,
+            "added_at": self.added_at.isoformat()
+        }

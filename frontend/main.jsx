@@ -14,13 +14,11 @@ import { FavoritesProvider } from './pages/FavoritesContext';
 const Main = () => {
     return (
         <React.StrictMode>
-            {/* <AuthProvider> */}
-                <StoreProvider>
-                    <FavoritesProvider>
-                        <RouterProvider router={router} />
-                    </FavoritesProvider>
-                </StoreProvider>
-            {/* </AuthProvider> */}
+             <StoreProvider>
+                <FavoritesProvider>
+                    <RouterProvider router={router} />
+                </FavoritesProvider>
+            </StoreProvider>
         </React.StrictMode>
     );
 };

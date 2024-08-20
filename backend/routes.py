@@ -213,6 +213,48 @@ def add_review(body):
     db.session.refresh(review)
     return jsonify(review.serialize())
 
+#personal Queue
+
+def add_to_personal_queue():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    item_id = data.get('item_id')
+    item_type = data.get('item_type')
+
+    # Check if the item is already in the user's queue
+    existing_item = PersonalQueue.query.filter_by(user_id=user_id, item_id=item_id, item_type=item_type).first()
+    if existing_item:
+        return jsonify({"message": "Item already in queue"}), 409
+
+
+def remove_from_personal_queue(item_id):
+    user_id = request.args.get('user_id')
+    item_type = request.args.get('item_type')
+
+    queue_item = PersonalQueue.query.filter_by(user_id=user_id, item_id=item_id, item_type=item_type).first()
+    if queue_item:
+        db.session.delete(queue_item)
+        db.session.commit()
+        return '', 204
+    
+
+def get_personal_queue():
+    user_id = request.args.get('user_id')
+    queue = PersonalQueue.query.filter_by(user_id=user_id).all()
+    return jsonify([item.serialize() for item in queue])
+    
+
+    return jsonify({'error': 'Item not found in queue'}), 404
+
+
+    # Add the item to the queue
+    new_queue_item = PersonalQueue(user_id=user_id, item_id=item_id, item_type=item_type)
+    db.session.add(new_queue_item)
+    db.session.commit()
+
+    return jsonify(new_queue_item.serialize()), 201
+
+
 # Streaming Services Routes
 
 

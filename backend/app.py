@@ -5,7 +5,7 @@ import bcrypt
 
 from flask_jwt_extended import jwt_required
 from backend.models import db, User, MovieFavorites, TvShowFavorites, Movie, TvShow
-from backend.routes import create_token, create_user, get_user, get_top_rated_movies, get_movie_cast, get_tv_show_details,  get_top_rated_shows, get_movie_details, get_tv_show_cast, search, toggle_favorite_movie, add_favorite, remove_favorite, add_review, get_movie_streaming_services, get_tv_show_streaming_services, add_to_personal_queue, get_personal_queue, remove_from_personal_queue, not_found_error, internal_error
+from backend.routes import create_token, create_user, get_user, get_top_rated_movies, get_movie_cast, get_tv_show_details,  get_top_rated_shows, get_movie_details, get_tv_show_cast, search, toggle_favorite_movie, add_favorite, remove_favorite, add_review, get_movie_streaming_services, get_tv_show_streaming_services, add_to_personal_queue, get_personal_queue, remove_from_personal_queue, not_found_error, internal_error, add_to_personal_queue, remove_from_personal_queue, get_personal_queue
 
 app = Flask(__name__)
 CORS(app)
@@ -122,6 +122,22 @@ def get_queue():
 def remove_from_queue(item_id):
     return remove_from_personal_queue(item_id)
 
+@app.route('/personal-queue', methods=['POST'])
+@jwt_required()
+def to_personal_queue():
+    retun add_to_personal_queue()
+    
+@app.route('/personal-queue/<int:item_id>', methods=['DELETE'])
+@jwt_required()
+def from_personal_que('item_id'):
+  return remove_from_personal_queue('item_id')    
+
+@app.route('/personal-queue', methods=['GET'])
+@jwt_required()
+def personal_que('user_id'):
+    return get_personal_queue('user_id'):
+  
+    user_id = reques
 @app.errorhandler(404)
 def not_found(error):
     return not_found_error(error)
@@ -206,6 +222,8 @@ def toggle_favorite():
         
         db.session.commit()
         return jsonify({"favCount": tv_show.fav_count})
+    
+
 
     return jsonify({"error": "Invalid type"}), 400
 
