@@ -16,7 +16,6 @@ const Home = () => {
 
   const [httpbin, setHttpbin] = useState({});
   const { favorites, toggleFavorite, addToPersonalQueue,addToWatchList } = useContext(FavoritesContext); // Use the context
-  const navigate = useNavigate(); // Hook for navigation
   const isAuthenticated= localStorage.getItem('isAuthenticated')
 
 
@@ -89,7 +88,7 @@ const Home = () => {
    
   }
   else {
-    <login></login>
+    <Login></Login>
   }
 
 };
