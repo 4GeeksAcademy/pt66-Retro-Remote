@@ -42,13 +42,11 @@ const Login = () => {
     if (resp.ok) {
       const data = await resp.json();
       dispatch({ type: "LOGIN_SUCCESS", payload: data });
-      console.log('logindata',data)
       localStorage.setItem("isAuthenticated", true);
       navigate("/home");
 
     } else {
       const error = await resp.json();
-      console.log('error',error);
       setError(error.msg)
       dispatch({ type: "LOGIN_FAILURE", payload: "Login failed" });
       
@@ -70,13 +68,11 @@ const Login = () => {
     });
     if (resp.ok) {
       const data = await resp.json();
-      console.log('signup resp',data);
       dispatch({ type: "LOGIN_SUCCESS", payload: data });
       setSignUpError('');
       setSignupSuccess('User created successfully!')
     } else {
       const error = await resp.json();
-      console.log('error',error);
       setSignUpError(error.msg)
       dispatch({ type: "LOGIN_FAILURE", payload: "Login failed" });
     }
@@ -156,6 +152,7 @@ const Login = () => {
             Sign Up
           </h2>
           <form onSubmit={handleRegisterSubmit}>
+
             <div
               className="input-box animation"
               style={{ "--i": 18, "--j": 1 }}
@@ -165,7 +162,9 @@ const Login = () => {
                 value={username}
                 onChange={(ev) => setUsername(ev.target.value)}
                 placeholder="username"
+                required
               />
+              <label>Username</label>
               <i className="bx bxs-user"></i>
             </div>
             <div

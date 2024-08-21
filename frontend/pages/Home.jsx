@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Card, Button, Row, Col, Container } from "react-bootstrap";
 import { FavoritesContext } from "./FavoritesContext"; // Import the context
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import Login from "./Loginform.jsx";
 import "../style.css";
 import useGlobalReducer from "../hooks/useGlobalReducer";
@@ -9,11 +9,18 @@ import Navbar from "../components/Navbar.jsx";
 
 
 const Home = () => {
+  //  const [httpbin, setHttpbin] = useState({});
+  const { store, dispatch } = useGlobalReducer();
+  const {token} = store;
+  const {id} = store;
+  
+
   const [httpbin, setHttpbin] = useState({});
   const { favorites, toggleFavorite, addToPersonalQueue } = useContext(FavoritesContext); // Use the context
   const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
+
     const getHttpBin = async () => {
       const resp = await fetch(import.meta.env.VITE_BACKEND_URL + "/api/relay");
       const data = await resp.json();

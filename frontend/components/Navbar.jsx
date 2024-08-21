@@ -19,8 +19,6 @@ const Navbar = () => {
 
   const fetchSuggestions = async (query) => {
     try {
-      console.log('fetch suggestions');
-      console.log(query);
       const response = await axios.get(`${apiBaseUrl}/api/search`, { params: { query } });
      
 
@@ -32,7 +30,6 @@ const Navbar = () => {
 
   const handleSearch = async (event) => {
     event.preventDefault();
-    console.log('in handle Search');
     if (query.length > 2) {
       try {
 
@@ -57,7 +54,6 @@ const Navbar = () => {
 
   const handleSuggestionClick = (suggestion) => {
     setQuery(suggestion.title || suggestion.name);
-    console.log(suggestion);
     setResults([suggestion]);
     setSuggestions([]);
   };
@@ -85,6 +81,12 @@ const Navbar = () => {
       }
     };
   }, []);
+
+  const handleSignOut = () => {
+    
+    dispatch({ type: 'LOGOUT' });
+    window.location.href = '/'; 
+  };
 
   return (
     <div>
@@ -162,6 +164,7 @@ const Navbar = () => {
                 </div>
                 <button className="btn search" type="submit">Search</button>
               </form>
+                  <div><Link to="/home">Home</Link></div>
               <ul className="navbar-nav ms-auto menu">
                 <li className="nav-item dropdown">
                   <a className="nav-link dropdown-toggle pe-5" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" ref={dropdownRef}>
@@ -170,7 +173,7 @@ const Navbar = () => {
                   <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <li><a className="dropdown-item" href="#">Favorites</a></li>
                     <li><a className="dropdown-item" href="#">Profile</a></li>
-                    <li><a className="dropdown-item" href="#">Sign out</a></li>
+                    <li><a className="dropdown-item" href="#" onClick={handleSignOut}>Sign out</a></li>
                   </ul>
                 </li>
               </ul>

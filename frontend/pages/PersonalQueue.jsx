@@ -8,6 +8,38 @@ import "../style.css";
 const TMDB_API_KEY = 'c2fbec3b6737ac039d19ec2bc0281187'; 
 
 const PersonalQueue = () => {
+  const { personalQueue } = useContext(FavoritesContext);
+  const [showModal, setShowModal] = useState(false);
+  const [streamingOptions, setStreamingOptions] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handlePlay = (item) => {
+    const { id, type } = item; // Assuming `type` is either 'movie' or 'tv'
+
+    const endpoint = type === 'movie'
+        ? `${import.meta.env.VITE_BACKEND_URL}/api/play/movie/${id}`
+        : `${import.meta.env.VITE_BACKEND_URL}/api/play/tv/${id}`;
+
+    fetch(endpoint)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Network response was not ok.');
+        }
+      })
+      .then(data => {
+        if (data.streamingServices && data.streamingServices.length > 0) {
+          setStreamingOptions(data.streamingServices);
+          setSelectedItem(item);
+          setShowModal(true);
+        } else {
+          console.error('Error: No streaming services found');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching streaming services:', error);
+      });
   const [queueItems, setQueueItems] = useState([]);
   const navigate = useNavigate();
 

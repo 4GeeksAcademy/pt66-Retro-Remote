@@ -218,7 +218,6 @@ export const FavoritesProvider = ({ children }) => {
     setPersonalQueue((prevQueue) => {
       if (!prevQueue.some((queueItem) => queueItem.id === item.id)) {
         const newQueue = [...prevQueue, item];
-        console.log("Updated Personal Queue: ", newQueue); // Debug log
         return newQueue;
       }
       return prevQueue;
