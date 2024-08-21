@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Container, Row, Col, Card, Button, Carousel } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FavoritesContext } from './FavoritesContext';
 import { faTrash } from '@fortawesome/free-solid-svg-icons'; // Import the trash icon
 import "../style.css";
 
