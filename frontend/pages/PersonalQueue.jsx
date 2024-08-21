@@ -40,6 +40,8 @@ const PersonalQueue = () => {
       .catch(error => {
         console.error('Error fetching streaming services:', error);
       });
+
+    }
   const [queueItems, setQueueItems] = useState([]);
   const navigate = useNavigate();
 

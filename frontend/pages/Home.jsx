@@ -17,7 +17,6 @@ const Home = () => {
 
   const [httpbin, setHttpbin] = useState({});
   const { favorites, toggleFavorite, addToPersonalQueue } = useContext(FavoritesContext); // Use the context
-  const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
 
@@ -50,6 +49,8 @@ const Home = () => {
 };
 
   return (
+    <>
+    <Navbar></Navbar>
     <Container className="mt-5">
       <Link to="/personal-queue">personalQueue</Link>
       {/* <pre>{JSON.stringify(httpbin, null, 2)}</pre> */}
@@ -99,6 +100,7 @@ const Home = () => {
         ))}
       </Row>
     </Container>
+    </>
   );
 };
 
